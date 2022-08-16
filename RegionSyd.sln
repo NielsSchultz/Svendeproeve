@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Web.Services", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Web", "RegionSyd.Web\RegionSyd.Web.csproj", "{78341B86-E329-4623-ACB5-812B0050A51F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{444F31BB-5E6A-43DC-9CAD-1179E99EA27B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Repository", "Repository\RegionSyd.Repository.csproj", "{444F31BB-5E6A-43DC-9CAD-1179E99EA27B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
