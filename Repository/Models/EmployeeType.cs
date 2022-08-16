@@ -11,7 +11,7 @@ namespace RegionSyd.Repository.Models
         }
 
         public int EmployeeTypeId { get; set; }
-        public int? EmployeeTypeName { get; set; }
+        public string EmployeeTypeName { get; set; } = null!;
 
         public virtual ICollection<Employee> Employees { get; set; }
     }
