@@ -49,9 +49,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Alarm");
 
-                entity.Property(e => e.AlarmId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AlarmID");
+                entity.Property(e => e.AlarmId).HasColumnName("AlarmID");
 
                 entity.Property(e => e.BedId).HasColumnName("BedID");
 
@@ -65,9 +63,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Bed");
 
-                entity.Property(e => e.BedId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BedID");
+                entity.Property(e => e.BedId).HasColumnName("BedID");
 
                 entity.Property(e => e.RoomId).HasColumnName("RoomID");
 
@@ -81,9 +77,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Booking");
 
-                entity.Property(e => e.BookingId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BookingID");
+                entity.Property(e => e.BookingId).HasColumnName("BookingID");
 
                 entity.Property(e => e.JournalEntryId).HasColumnName("JournalEntryID");
 
@@ -118,9 +112,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Department");
 
-                entity.Property(e => e.DepartmentId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("DepartmentID");
+                entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
                 entity.Property(e => e.TreatmentPlaceId).HasColumnName("TreatmentPlaceID");
 
@@ -135,9 +127,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Employee");
 
-                entity.Property(e => e.EmployeeId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("EmployeeID");
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.Birthday).HasColumnType("date");
 
@@ -166,18 +156,14 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("EmployeeType");
 
-                entity.Property(e => e.EmployeeTypeId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("EmployeeTypeID");
+                entity.Property(e => e.EmployeeTypeId).HasColumnName("EmployeeTypeID");
             });
 
             modelBuilder.Entity<FileType>(entity =>
             {
                 entity.ToTable("FileType");
 
-                entity.Property(e => e.FileTypeId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("FileTypeID");
+                entity.Property(e => e.FileTypeId).HasColumnName("FileTypeID");
 
                 entity.Property(e => e.FileTypeName).HasMaxLength(50);
             });
@@ -186,9 +172,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Journal");
 
-                entity.Property(e => e.JournalId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("JournalID");
+                entity.Property(e => e.JournalId).HasColumnName("JournalID");
 
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
 
@@ -203,9 +187,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("JournalEntry");
 
-                entity.Property(e => e.JournalEntryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("JournalEntryID");
+                entity.Property(e => e.JournalEntryId).HasColumnName("JournalEntryID");
 
                 entity.Property(e => e.DateAdded).HasColumnType("datetime");
 
@@ -236,9 +218,7 @@ namespace RegionSyd.Repository.Models
 
                 entity.ToTable("JournalEntryFile");
 
-                entity.Property(e => e.FileId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("FileID");
+                entity.Property(e => e.FileId).HasColumnName("FileID");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -275,9 +255,7 @@ namespace RegionSyd.Repository.Models
 
                 entity.ToTable("JournalEntryNote");
 
-                entity.Property(e => e.NoteId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("NoteID");
+                entity.Property(e => e.NoteId).HasColumnName("NoteID");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -300,8 +278,6 @@ namespace RegionSyd.Repository.Models
 
             modelBuilder.Entity<Monitor>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Monitor");
 
                 entity.Property(e => e.MonitorId).HasColumnName("MonitorID");
@@ -309,7 +285,7 @@ namespace RegionSyd.Repository.Models
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
 
                 entity.HasOne(d => d.Patient)
-                    .WithMany()
+                    .WithMany(p => p.Monitors)
                     .HasForeignKey(d => d.PatientId)
                     .HasConstraintName("FK_Monitor_Patient");
             });
@@ -337,9 +313,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Room");
 
-                entity.Property(e => e.RoomId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("RoomID");
+                entity.Property(e => e.RoomId).HasColumnName("RoomID");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
@@ -354,9 +328,7 @@ namespace RegionSyd.Repository.Models
             {
                 entity.ToTable("Treatment");
 
-                entity.Property(e => e.TreatmentId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("TreatmentID");
+                entity.Property(e => e.TreatmentId).HasColumnName("TreatmentID");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
