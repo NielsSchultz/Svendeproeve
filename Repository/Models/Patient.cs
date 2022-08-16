@@ -8,6 +8,7 @@ namespace RegionSyd.Repository.Models
         public Patient()
         {
             Journals = new HashSet<Journal>();
+            Monitors = new HashSet<Monitor>();
         }
 
         public int PatientId { get; set; }
@@ -17,5 +18,6 @@ namespace RegionSyd.Repository.Models
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Journal> Journals { get; set; }
+        public virtual ICollection<Monitor> Monitors { get; set; }
     }
 }
