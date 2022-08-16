@@ -157,6 +157,8 @@ namespace RegionSyd.Repository.Models
                 entity.ToTable("EmployeeType");
 
                 entity.Property(e => e.EmployeeTypeId).HasColumnName("EmployeeTypeID");
+
+                entity.Property(e => e.EmployeeTypeName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<FileType>(entity =>
