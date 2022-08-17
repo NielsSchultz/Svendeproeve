@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Web.Services", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Web", "RegionSyd.Web\RegionSyd.Web.csproj", "{78341B86-E329-4623-ACB5-812B0050A51F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Repository", "Repository\RegionSyd.Repository.csproj", "{444F31BB-5E6A-43DC-9CAD-1179E99EA27B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Repositories", "Repository\RegionSyd.Repositories.csproj", "{444F31BB-5E6A-43DC-9CAD-1179E99EA27B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.WebApi", "RegionSyd.WebApi\RegionSyd.WebApi.csproj", "{913DFB80-CE9B-4902-89C8-28A8C30E22FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionSyd.WebApi.Services", "RegionSyd.WebApi.Services\RegionSyd.WebApi.Services.csproj", "{5080BF84-EE09-4074-B777-42418AD40E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.WebApi.Services", "RegionSyd.WebApi.Services\RegionSyd.WebApi.Services.csproj", "{5080BF84-EE09-4074-B777-42418AD40E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegionSyd.Common", "RegionSyd.Common\RegionSyd.Common.csproj", "{5DE2358B-50D8-4E2A-A74E-EB9724D7EBF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegionSyd.Common", "RegionSyd.Common\RegionSyd.Common.csproj", "{5DE2358B-50D8-4E2A-A74E-EB9724D7EBF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

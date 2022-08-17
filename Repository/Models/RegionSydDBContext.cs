@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace RegionSyd.Repository.Models
+namespace RegionSyd.Repositories.Models
 {
     public partial class RegionSydDBContext : DbContext
     {
