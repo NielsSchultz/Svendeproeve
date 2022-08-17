@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace RegionSyd.Repository.Models
 {
-    public partial class RegionSydContext : DbContext
+    public partial class RegionSydDBContext : DbContext
     {
-        public RegionSydContext()
+        public RegionSydDBContext()
         {
         }
 
-        public RegionSydContext(DbContextOptions<RegionSydContext> options)
+        public RegionSydDBContext(DbContextOptions<RegionSydDBContext> options)
             : base(options)
         {
         }
@@ -32,6 +32,7 @@ namespace RegionSyd.Repository.Models
         public virtual DbSet<Room> Rooms { get; set; } = null!;
         public virtual DbSet<Treatment> Treatments { get; set; } = null!;
         public virtual DbSet<TreatmentPlace> TreatmentPlaces { get; set; } = null!;
+        public virtual DbSet<TreatmentPlaceType> TreatmentPlaceTypes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserType> UserTypes { get; set; } = null!;
 
@@ -39,12 +40,14 @@ namespace RegionSyd.Repository.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=RegionSyd;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.UseCollation("Danish_Norwegian_CI_AS");
+
             modelBuilder.Entity<Alarm>(entity =>
             {
                 entity.ToTable("Alarm");
@@ -354,6 +357,23 @@ namespace RegionSyd.Repository.Models
                 entity.Property(e => e.City).HasMaxLength(50);
 
                 entity.Property(e => e.TreatmentPlaceName).HasMaxLength(50);
+
+                entity.Property(e => e.TreatmentPlaceTypeId).HasColumnName("TreatmentPlaceTypeID");
+
+                entity.HasOne(d => d.TreatmentPlaceType)
+                    .WithMany(p => p.TreatmentPlaces)
+                    .HasForeignKey(d => d.TreatmentPlaceTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TreatmentPlace_TreatmentPlaceType");
+            });
+
+            modelBuilder.Entity<TreatmentPlaceType>(entity =>
+            {
+                entity.ToTable("TreatmentPlaceType");
+
+                entity.Property(e => e.TreatmentPlaceTypeId).HasColumnName("TreatmentPlaceTypeID");
+
+                entity.Property(e => e.TreatmentPlaceTypeName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<User>(entity =>
