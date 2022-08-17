@@ -12,11 +12,13 @@ namespace RegionSyd.Repository.Models
         }
 
         public int TreatmentPlaceId { get; set; }
+        public int TreatmentPlaceTypeId { get; set; }
         public string TreatmentPlaceName { get; set; } = null!;
         public string Address { get; set; } = null!;
         public int ZipCode { get; set; }
         public string City { get; set; } = null!;
 
+        public virtual TreatmentPlaceType TreatmentPlaceType { get; set; } = null!;
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
     }
