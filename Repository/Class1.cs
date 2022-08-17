@@ -1,4 +1,4 @@
-﻿namespace RegionSyd.Repository
+﻿namespace RegionSyd.Repositories
 {
     public class Class1
     {

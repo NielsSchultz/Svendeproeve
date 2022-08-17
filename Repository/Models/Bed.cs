@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RegionSyd.Repository.Models
+namespace RegionSyd.Repositories.Models
 {
     public partial class Bed
     {
