@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RegionSyd.Repositories.Interfaces;
-using RegionSyd.Repositories.Models;
+using RegionSyd.Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace RegionSyd.Repositories
 
         public BedRepository(RegionSydDBContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<Bed> GetBedAsync(int id)
@@ -29,16 +29,32 @@ namespace RegionSyd.Repositories
             return await _context.Beds.AsNoTracking().ToListAsync();
         }
 
-        public async Task CreateBedAsync(Bed bed)
+        public async Task<Bed> CreateBedAsync(Bed newBed)
         {
-            _context.Beds.Add(bed);
-            await _context.SaveChangesAsync();
+            if (newBed != null)
+            {
+                _context.Beds.Add(newBed);
+                await _context.SaveChangesAsync();
+                return newBed;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
-        public async Task UpdateBedAsync(Bed bed)
+        public async Task<Bed> UpdateBedAsync(Bed newBed)
         {
-            _context.Beds.Update(bed);
-            await _context.SaveChangesAsync();
+            var bed = GetBedAsync(newBed.BedId);
+            if(bed != null)
+            {
+                _context.Beds.Update(newBed);
+                await _context.SaveChangesAsync();
+                return newBed;
+            } else
+            {
+                throw new ArgumentNullException();
+            }
         }
     }
 }
