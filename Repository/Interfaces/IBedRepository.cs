@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Repositories.Interfaces
 {
-    internal interface IBedRepository
+    public interface IBedRepository
     {
     }
 }
