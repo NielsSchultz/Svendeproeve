@@ -1,9 +1,98 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="container-fluid p-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-2 col-lg-2">
+            <button class="btn btn-green p-2 w-100" @onclick=PatientLogin>Borger</button>
+        </div>
+        <div class="col-sm-12 col-md-2 col-lg-2">
+            <input class="btn btn-green p-2 w-100" type="button" value="Fagperson" @onclick=EmployeeLogin />
+        </div>
+    </div>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Corona</h5>
+                <p>Patient- og pårørendeinformation om COVID-19, herunder nærmeste teststed og hvordan du kan blive testet eller vaccineret som borger i Region Syddanmark.</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Book blodprøver digitalt</h5>
+                <p>Find oplysninger om, hvordan du kan bestille eller ændre din tid til blodprøvetagning. </p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Akuthjælp</h5>
+                <p>Har du brug for akuthjælp i forbindelse med skader eller for at finde oplysninger om nærmeste vagtapotek, kan du læse mere i nedenstående.</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Patientrettigheder</h5>
+                <p>Har du brug for vejledning om dine patientrettigheder, som f.eks. hvornår du har mulighed for at få godtgørelse for transport til og fra sygehuset, eller hjælp til refusion af behandling i udlandet. </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Corona</h5>
+                <p>Patient- og pårørendeinformation om COVID-19, herunder nærmeste teststed og hvordan du kan blive testet eller vaccineret som borger i Region Syddanmark.</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Book blodprøver digitalt</h5>
+                <p>Find oplysninger om, hvordan du kan bestille eller ændre din tid til blodprøvetagning. </p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Akuthjælp</h5>
+                <p>Har du brug for akuthjælp i forbindelse med skader eller for at finde oplysninger om nærmeste vagtapotek, kan du læse mere i nedenstående.</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 col-lg-3">
+            <div class="index-box p-3">
+                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
+                <h5 class="text-center">Patientrettigheder</h5>
+                <p>Har du brug for vejledning om dine patientrettigheder, som f.eks. hvornår du har mulighed for at få godtgørelse for transport til og fra sygehuset, eller hjælp til refusion af behandling i udlandet. </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    public void PatientLogin()
+    {
+
+    }
+
+    public void EmployeeLogin()
+    {
+
+    }
+}
