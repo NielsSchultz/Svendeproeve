@@ -82,8 +82,6 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.BookingId).HasColumnName("BookingID");
 
-                entity.Property(e => e.JournalEntryId).HasColumnName("JournalEntryID");
-
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
 
                 entity.Property(e => e.TreatmentEnd).HasColumnType("datetime");
@@ -93,12 +91,6 @@ namespace RegionSyd.Repositories.Entities
                 entity.Property(e => e.TreatmentPlaceId).HasColumnName("TreatmentPlaceID");
 
                 entity.Property(e => e.TreatmentStart).HasColumnType("datetime");
-
-                entity.HasOne(d => d.JournalEntry)
-                    .WithMany(p => p.Bookings)
-                    .HasForeignKey(d => d.JournalEntryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Booking_JournalEntry");
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.Bookings)

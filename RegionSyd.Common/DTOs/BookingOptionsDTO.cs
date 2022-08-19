@@ -6,8 +6,8 @@ namespace RegionSyd.Common.DTOs
 {
     public class BookingOptionsDTO
     {
-        public List<TreatmentDTO> treatments { get; set; } = null!;
-        public List<TreatmentPlaceDTO> treatmentPlaces { get; set; } = null!;
-        public List<DateTime> calendar { get; set; } = null!;
+        public List<TreatmentDTO> treatments = new List<TreatmentDTO>();
+        public List<TreatmentPlaceDTO> treatmentPlaces = new List<TreatmentPlaceDTO>();
+        public List<DateTime> calendar = new List<DateTime>();
     }
 }

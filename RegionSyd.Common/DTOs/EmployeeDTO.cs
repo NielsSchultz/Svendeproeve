@@ -10,6 +10,7 @@ namespace RegionSyd.Common.DTOs
         public int UserId { get; set; }
         public int EmployeeTypeId { get; set; }
         public int DepartmentId { get; set; }
+        // public string EmployeeName { get; set; }
         public string EmployeeCode { get; set; } = null!;
         public string Email { get; set; } = null!;
         public DateTime Birthday { get; set; }
