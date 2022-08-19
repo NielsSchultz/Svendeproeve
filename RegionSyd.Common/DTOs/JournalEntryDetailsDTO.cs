@@ -11,6 +11,5 @@ namespace RegionSyd.Common.DTOs
 
         public List<JournalEntryNoteDTO> notes = new List<JournalEntryNoteDTO>();
         public List<JournalEntryFileDTO> files = new List<JournalEntryFileDTO>();
-        public List<BookingDTO> bookings = new List<BookingDTO>();
     }
 }
