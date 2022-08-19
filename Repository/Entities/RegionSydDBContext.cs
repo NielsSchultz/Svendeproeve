@@ -27,6 +27,7 @@ namespace RegionSyd.Repositories.Entities
         public virtual DbSet<JournalEntry> JournalEntries { get; set; } = null!;
         public virtual DbSet<JournalEntryFile> JournalEntryFiles { get; set; } = null!;
         public virtual DbSet<JournalEntryNote> JournalEntryNotes { get; set; } = null!;
+        public virtual DbSet<JournalEntryStatus> JournalEntryStatuses { get; set; } = null!;
         public virtual DbSet<Monitor> Monitors { get; set; } = null!;
         public virtual DbSet<Patient> Patients { get; set; } = null!;
         public virtual DbSet<Room> Rooms { get; set; } = null!;
@@ -40,6 +41,7 @@ namespace RegionSyd.Repositories.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
             }
         }
@@ -210,7 +212,11 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.Description).HasMaxLength(4000);
 
+                entity.Property(e => e.Diagnosis).HasMaxLength(150);
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.JournalEntryStatusId).HasColumnName("JournalEntryStatusID");
 
                 entity.Property(e => e.JournalId).HasColumnName("JournalID");
 
@@ -223,6 +229,12 @@ namespace RegionSyd.Repositories.Entities
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_JournalEntry_Employee");
+
+                entity.HasOne(d => d.JournalEntryStatus)
+                    .WithMany(p => p.JournalEntries)
+                    .HasForeignKey(d => d.JournalEntryStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_JournalEntry_JournalEntryStatus");
 
                 entity.HasOne(d => d.Journal)
                     .WithMany(p => p.JournalEntries)
@@ -293,6 +305,15 @@ namespace RegionSyd.Repositories.Entities
                     .HasForeignKey(d => d.JournalEntryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_JournalEntryNote_JournalEntry");
+            });
+
+            modelBuilder.Entity<JournalEntryStatus>(entity =>
+            {
+                entity.ToTable("JournalEntryStatus");
+
+                entity.Property(e => e.JournalEntryStatusId).HasColumnName("JournalEntryStatusID");
+
+                entity.Property(e => e.StatusName).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Monitor>(entity =>

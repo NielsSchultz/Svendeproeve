@@ -18,6 +18,12 @@ namespace RegionSyd.Repositories.Interfaces
         // Get bookings by PatientID
         Task<List<Booking>> GetBookingsForPatientByID(int id);
 
+        // Get bookings by Date
+        Task<List<Booking>> GetBookingsByDate(DateTime date);
+
+        // Get bookings by Date and Treatment Type
+        Task<List<Booking>> GetBookingsForDepartmentByDate(Treatment treatment, DateTime date);
+
         // Get booking by BookingID
         Task<Booking> GetBookingById(int id);
 
