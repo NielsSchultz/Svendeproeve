@@ -27,7 +27,7 @@ namespace RegionSyd.Repositories
                 return newBooking;
             } else
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(newBooking));
             }
         }
 
@@ -55,6 +55,16 @@ namespace RegionSyd.Repositories
             return await _context.Bookings.ToListAsync();
         }
 
+        public async Task<List<Booking>> GetBookingsByDate(DateTime date)
+        {
+            return await _context.Bookings.Where(b => b.TreatmentStart.Date == date.Date).ToListAsync();
+        }
+
+        public async Task<List<Booking>> GetBookingsForDepartmentByDate(Treatment treatment, DateTime date)
+        {
+            return await _context.Bookings.Where(b => b.TreatmentId == treatment.TreatmentId).Where(b => b.TreatmentStart.Date == date).ToListAsync();
+        }
+
         public async Task<List<Booking>> GetBookingsForPatientByID(int id)
         {
             return await _context.Bookings.Where(b => b.PatientId == id).ToListAsync();
@@ -70,7 +80,7 @@ namespace RegionSyd.Repositories
                 return newBooking;
             } else
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(newBooking));
             }
         }
     }
