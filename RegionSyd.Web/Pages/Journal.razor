@@ -1,15 +1,45 @@
 ﻿@page "/journal"
+@using RegionSyd.Common.DTOs
+@using RegionSyd.Common.Enums
 
 
 <div class="container">
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-2">
-
+    @foreach (var entry in JournalEntries)
+    {
+        <div class="row">
+            <div class="col-1">
+                Senest opdateret
+                <p>@entry.journalEntryDTO.LastEdited.ToShortDateString()</p>
+            </div>
+            <div class="col-1">
+                 Forløb startdato
+                <p>@entry.journalEntryDTO.DateAdded.ToShortDateString()</p>
+            </div>
+            <div class="col-2">
+                 Status
+            </div> 
+            <div class="col-2">
+                 Sygehus
+                 <p>@entry.treatmentPlaceDTO.TreatmentPlaceName</p>
+                    
+            </div> 
+            <div class="col-2">
+                 Afdeling
+                <p>@entry.departmentDTO.DepartmentName</p>
+            </div> 
+            <div class="col-2">
+                 Diagnose
+                    
+            </div> 
+            <div class="col-2">
+                 Notat
+                 <p>@entry.</p>   
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 
@@ -18,12 +48,40 @@
 
     //FILE icon <i class="fa-solid fa-file-lines"></i>
 
-    //TODO 
-    // public List<JournalEntry> JournalEntries {get;set;}  
-
+    //TODO
+    public List<JournalEntryDetailsDTO> JournalEntries { get; set; }
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        JournalEntries = new List<JournalEntryDetailsDTO>()
+        {
+            new JournalEntryDetailsDTO()
+            {
+                journalEntryDTO = new JournalEntryDTO()
+                {
+                    DateAdded = new DateTime(2022,08,18),
+                    LastEdited = new DateTime(2022,08,18),
+                    Description = "Test",
+                },
+                departmentDTO = new DepartmentDTO()
+                {
+                    DepartmentName = "Øre-næse-halskirurgi"
+                },
+                employeeDTO = new EmployeeDTO()
+                {
+                    // TODO JKL add employee name
+                },
+                treatmentPlaceDTO = new TreatmentPlaceDTO(){
+                    City = "Aabenraa",
+                    Address = "Kresten Philipsens Vej 15",
+                    ZipCode = 6200,
+                    TreatmentPlaceName = "Sygehus Sønderjylland Aabenraa"
+                },
+                notes = new List<JournalEntryNoteDTO>()
+                {
+                    
+                }
+            },
+        };
     }
 }

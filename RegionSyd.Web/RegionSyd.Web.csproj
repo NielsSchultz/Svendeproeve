@@ -10,4 +10,8 @@
     <Folder Include="Modals\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RegionSyd.Common\RegionSyd.Common.csproj" />
+  </ItemGroup>
+
 </Project>

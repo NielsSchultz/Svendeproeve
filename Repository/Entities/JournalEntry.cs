@@ -22,6 +22,8 @@ namespace RegionSyd.Repositories.Entities
         public DateTime DateAdded { get; set; }
         public DateTime LastEdited { get; set; }
 
+
+        public string EmployeeName { get; set; }
         public virtual Employee Employee { get; set; } = null!;
         public virtual Journal Journal { get; set; } = null!;
         public virtual JournalEntryStatus JournalEntryStatus { get; set; } = null!;

@@ -1,15 +1,23 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using RegionSyd.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
+
+//HttpClient
+//builder.Services.AddHttpClient("RegionSydApi", httpClient =>
+//{
+//    // TODO add api BaseAddress
+//    httpClient.BaseAddress = new Uri("https://date.nager.at/api/");
+//});
+
+builder.Services.AddScoped<IApplicationBuilder, ApplicationBuilder>();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
