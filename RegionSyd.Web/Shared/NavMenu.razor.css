@@ -23,6 +23,7 @@
     padding-bottom: 0.5rem;
 }
 
+  
     .nav-item:first-of-type {
         padding-top: 1rem;
     }
@@ -60,3 +61,39 @@
         display: block;
     }
 }
+
+.navlink-fane {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: 1px solid #6b8f00;
+    border-right: 1px solid #6b8f00;
+    border-left: 1px solid #6b8f00;
+    padding: 15px 15px 0px 15px;
+    height: 55px;
+}
+
+    .navlink-fane:hover {
+        background-color: #afc27b;
+        color: white;
+        border-top: 1px solid transparent;
+        border-right: 1px solid transparent;
+        border-left: 1px solid transparent;
+    }
+
+.active .navlink-fane {
+    background-color: #6b8f00 !important;
+    color: white;
+
+}
+
+.navlink-fane span {
+    font-size: 18px;
+    font-weight:bold;
+}
+
+
+
+
+
+
+
