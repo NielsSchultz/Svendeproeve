@@ -6,7 +6,6 @@ root {
 }
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #e8ebec;
 }
 
 h1:focus {
@@ -96,13 +95,16 @@ a, .btn-link {
 
 .banner {
     background-image: url(../images/Index/Aabenraa_Sygehus.jpg);
-    height: 420px;
-    background-position: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
     background-blend-mode: luminosity;
-    background-color: goldenrod;
-    border-top:23px solid white;
-    border-bottom:23px solid white;
-    margin-bottom:25px;
+    background-color: darkorange;
+    height: 500px;
+    border-bottom: 25px solid white;
+    margin-bottom: 25px;
+    border-top: 25px solid white;
+    margin-top: 25px;
 }
 
 .green-border-top {
@@ -114,10 +116,10 @@ a, .btn-link {
     border-radius: 4px;
     /*border: 1px solid lightgray;*/
     background-color: white;
-    height: 350px;
-    padding: 0 20px 0 20px;
-    font-size:14px;
-    text-align:center;
+    padding: 5px 30px 0 30px;
+    text-align: center;
+    height: 360px;
+    font-size: 0.9rem;
 }
 
     .index-box:hover {

@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repository\RegionSyd.Repositories.csproj" />
+    <Compile Remove="DTOs\BookingListDTO.cs" />
+    <Compile Remove="DTOs\DepartmentDetailsDTO.cs" />
+    <Compile Remove="DTOs\EmployeeDetailsDTO.cs" />
+    <Compile Remove="DTOs\JournalDetailsDTO.cs" />
+    <Compile Remove="DTOs\JournalEntryDetailsDTO.cs" />
+    <Compile Remove="DTOs\RoomDetailsDTO.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Profiles\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
