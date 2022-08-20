@@ -1,45 +1,48 @@
 ﻿@page "/"
 
-
-
-<div class="container-fluid p-5">
+<div class="container-fluid pb-4">
     <div class="row justify-content-center">
-        <div class="col-sm-12 col-md-2 col-lg-2">
-            <button class="btn btn-green p-2 w-100" @onclick=PatientLogin>Borger</button>
+        <h6 class="text-center" style="color:dimgray">Log ind på Region Syds Sundhedsportal</h6>
+        <div class="col-sm-6 col-md-1 col-lg-1">
+            <input class="btn btn-green p-1 w-100" type="button" value="Borger" @onclick=PatientLogin />
         </div>
-        <div class="col-sm-12 col-md-2 col-lg-2">
-            <input class="btn btn-green p-2 w-100" type="button" value="Fagperson" @onclick=EmployeeLogin />
+        <div class="col-sm-6 col-md-1 col-lg-1">
+            <input class="btn btn-green p-1 w-100" type="button" value="Fagperson" @onclick=EmployeeLogin />
         </div>
     </div>
 </div>
-
-<div class="container">
+<div class="banner"></div>
+<div class="container"> 
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Corona</h5>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_1.svg" />
+                <hr />
+                <h5>Corona</h5>
                 <p>Patient- og pårørendeinformation om COVID-19, herunder nærmeste teststed og hvordan du kan blive testet eller vaccineret som borger i Region Syddanmark.</p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Book blodprøver digitalt</h5>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_2.svg" />
+                 <hr />
+                <h5>Book blodprøver digitalt</h5>
                 <p>Find oplysninger om, hvordan du kan bestille eller ændre din tid til blodprøvetagning. </p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Akuthjælp</h5>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_3.svg" />
+                 <hr />
+                <h5>Akuthjælp</h5>
                 <p>Har du brug for akuthjælp i forbindelse med skader eller for at finde oplysninger om nærmeste vagtapotek, kan du læse mere i nedenstående.</p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Patientrettigheder</h5>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_4.svg" />
+                 <hr />
+                <h5>Patientrettigheder</h5>
                 <p>Har du brug for vejledning om dine patientrettigheder, som f.eks. hvornår du har mulighed for at få godtgørelse for transport til og fra sygehuset, eller hjælp til refusion af behandling i udlandet. </p>
             </div>
         </div>
@@ -47,31 +50,35 @@
     </div>
     <div class="row justify-content-center mt-4 mb-4">
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Corona</h5>
-                <p>Patient- og pårørendeinformation om COVID-19, herunder nærmeste teststed og hvordan du kan blive testet eller vaccineret som borger i Region Syddanmark.</p>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_5.svg" />
+                 <hr />
+                <h5>Søg en forurenet grund</h5>
+                <p>Søg oplysninger om jordforureningssager i hele regionen. Her får du de samme oplysninger, som hvis du skriver eller ringer til os.</p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Book blodprøver digitalt</h5>
-                <p>Find oplysninger om, hvordan du kan bestille eller ændre din tid til blodprøvetagning. </p>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_6.svg" />
+                 <hr />
+                <h5>Kontakt</h5>
+                <p>Find generelle kontaktoplysninger herunder hjælp til at finde vej til bestemte afdelinger på sygehusene, socialområdet og den generelle administration. </p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Akuthjælp</h5>
-                <p>Har du brug for akuthjælp i forbindelse med skader eller for at finde oplysninger om nærmeste vagtapotek, kan du læse mere i nedenstående.</p>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_7.svg" />
+                 <hr />
+                <h5>Den Regionale Visitation</h5>
+                <p>Ønsker du en hurtigere tid til udredning, undersøgelse eller behandling end den, du allerede er blevet tilbudt på et sygehus, kan du kontakte Den Regionale Visitation. Find kontaktformular på siden. </p>
             </div>
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3">
-            <div class="index-box p-3">
-                <img class="mx-auto d-table pb-4" src="/images/RegionSydLogoWeb.png" style="width:35%" />
-                <h5 class="text-center">Patientrettigheder</h5>
-                <p>Har du brug for vejledning om dine patientrettigheder, som f.eks. hvornår du har mulighed for at få godtgørelse for transport til og fra sygehuset, eller hjælp til refusion af behandling i udlandet. </p>
+            <div class="index-box">
+                <img class="mx-auto d-table health-icon" src="/images/index/ikon_8.svg" />
+                 <hr />
+                <h5>Patientkontoret - hjælp til patienter</h5>
+                <p>Hvis du som patient eller pårørende har brug for information, vejledning og rådgivning i forhold til sundhedssystemet, kan du kontakte en patientvejleder i Patientkontoret.</p>
             </div>
         </div>
 

@@ -94,12 +94,30 @@ a, .btn-link {
 
 /*INDEX*/
 
+.banner {
+    background-image: url(../images/Index/Aabenraa_Sygehus.jpg);
+    height: 420px;
+    background-position: center;
+    background-blend-mode: luminosity;
+    background-color: goldenrod;
+    border-top:23px solid white;
+    border-bottom:23px solid white;
+    margin-bottom:25px;
+}
+
+.green-border-top {
+    border-top: 4px solid #6b8f00;
+}
+
 .index-box {
     /*box-shadow:0px 0px 25px 0px rgba(0,0,0,0.1);*/
     border-radius: 4px;
     /*border: 1px solid lightgray;*/
     background-color: white;
-    height: 300px
+    height: 350px;
+    padding: 0 20px 0 20px;
+    font-size:14px;
+    text-align:center;
 }
 
     .index-box:hover {
@@ -111,4 +129,8 @@ a, .btn-link {
 
     .index-box h5 {
         padding-bottom: 15px;
+    }
+
+    .index-box .health-icon{
+        height:120px;
     }
