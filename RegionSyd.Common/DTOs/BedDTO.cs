@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using RegionSyd.Repositories.Entities;
 
 namespace RegionSyd.Common.DTOs
 {

@@ -9,6 +9,14 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+
+//HttpClient
+//builder.Services.AddHttpClient("RegionSydApi", httpClient =>
+//{
+//    // TODO add api BaseAddress
+//    httpClient.BaseAddress = new Uri("https://date.nager.at/api/");
+//});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
