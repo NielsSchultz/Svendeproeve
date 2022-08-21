@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegionSyd.Common\RegionSyd.Common.csproj" />
+    <ProjectReference Include="..\RegionSyd.WebApi.Services\RegionSyd.WebApi.Services.csproj" />
+    <ProjectReference Include="..\Repository\RegionSyd.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

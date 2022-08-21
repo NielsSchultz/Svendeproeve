@@ -6,6 +6,6 @@
         public int DepartmentId { get; set; }
         //DepartmentName
         public string TreatmentName { get; set; } = null!;
-        public TimeSpan TreatmentDuration { get; set; }
+        public int TreatmentDuration { get; set; }
     }
 }
