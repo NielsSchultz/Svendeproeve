@@ -20,9 +20,9 @@ namespace RegionSyd.Web.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<JournalEntryDTO> GetJournalById(int patientId)
+        public async Task<JournalDTO> GetJournalById(int patientId)
         {
-            JournalEntryDTO journal = new JournalEntryDTO();
+            JournalDTO journal = new JournalDTO();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -33,10 +33,29 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalEntryDTO>(await content);
+                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
             }
 
             return journal;
+        }
+        
+        public async Task<JournalEntryDTO> SaveJournalEntry(JournalEntryDTO JournalEntryDTO)
+        {
+            var journalEntry = new JournalEntryDTO();
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
+            // TODO JKL add the right api endpoint
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{Controller.Journal.ToString()}", new StringContent(JsonConvert.SerializeObject(JournalEntryDTO), Encoding.UTF8));
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                journalEntry = JsonConvert.DeserializeObject<JournalEntryDTO>(await content);
+            }
+
+            return journalEntry;
         }
     }
 }

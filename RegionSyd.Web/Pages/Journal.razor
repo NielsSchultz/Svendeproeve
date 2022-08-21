@@ -1,71 +1,150 @@
 ﻿@page "/journal"
 @using RegionSyd.Common.DTOs
 @using RegionSyd.Common.Enums
-
+@using Radzen.Blazor
+@using Radzen
+@using RegionSyd.Web.Helpers
+@inject IJSRuntime JsRuntime
 
 <div class="container">
 </div>
 
-<div class="container">
-    @foreach (var entry in JournalEntries)
+<div class="container-fluid w-75">
+    @if (true) //TODO show only if user is employee
     {
-        <div class="row">
-            <div class="col-1">
-                Senest opdateret
-                <p>@entry.LastEdited.ToShortDateString()</p>
-            </div>
-            <div class="col-1">
-                 Forløb startdato
-                <p>@entry.DateAdded.ToShortDateString()</p>
-            </div>
-            <div class="col-2">
-                 Status
-            </div> 
-            <div class="col-2">
-                 Sygehus
-                 <p>@entry.TreatmentPlaceName</p>
-                    
-            </div> 
-            <div class="col-2">
-                 Afdeling
-                <p>@entry.DepartmentName</p>
-            </div> 
-            <div class="col-2">
-                 Diagnose
-                 <p>@entry.Diagnosis</p>
-                    
-            </div> 
-            <div class="col-2">
-                 Notat
-                 <p></p>   
-            </div>
+        <div class="justify-content-end d-flex mb-2">
+            <input type="button" value="Tilføj ny journal data" class="btn btn-green btm-sm" />
         </div>
     }
+
+    <div class="bg-light p-2">
+
+        <h4>Journal</h4>
+        @{
+            var name = FullNameHelper.GetFullName(PatientJournal.FirstName, PatientJournal.MiddleName, PatientJournal.LastName); //firstname + middlename + lastname;
+            var cpr = CprHideFourLastDigitsHelper.GetCprWithHidedDigits(PatientJournal.Cpr);
+        }
+        <h6>@name (@cpr)</h6>
+    </div>
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowSorting="true" FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@PatientJournal.JournalEntries" TItem="JournalEntryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="LastEdited" Title="Senest opdateret" Filterable="false" FormatString="{0:d}" Width="auto" />
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DateAdded" Title="Forløb startdato" Filterable="false" FormatString="{0:d}" Width="auto" />
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="StatusName" Title="Status" Filterable="false" Width="auto" />
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="TreatmentPlaceName" Title="Sygehus" Filterable="false" Width="auto" />
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
+
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                <Template Context="data">
+                    <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                <Template Context="data">
+                    <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                </Template>
+            </RadzenDataGridColumn>
+
+            @if (1 == 1) //TODO check if user is employee or not
+            {
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="journalEntry">
+                        <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => UpdateEntry(journalEntry))">
+                        </RadzenButton>
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+            @if (1 == 1) //TODO check if user is employee or not
+            {
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="journalEntry">
+                        <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry))">
+                        </RadzenButton>
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+        </Columns>
+    </RadzenDataGrid>
+
 </div>
-
-
 
 @code {
 
-    //FILE icon <i class="fa-solid fa-file-lines"></i>
-
     //TODO
-    public List<JournalEntryDTO> JournalEntries { get; set; }
+    JournalDTO PatientJournal { get; set; }
+    List<JournalEntryDTO> JournalEntries;
+    //RadzenDataGrid<JournalEntryDTO> journalGrid;
 
     protected override void OnInitialized()
     {
-        JournalEntries = new List<JournalEntryDTO>()
-        {
-            new JournalEntryDTO()
+        CreateJournalEntries();
+    }
+
+    public async void OpenFilesList(int id)
+    {
+        await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
+    }
+    public async void OpenNotesList(int id)
+    {
+        await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
+    }
+
+    JournalEntryDTO newJournalEntry;
+
+    async void CreateJournalEntry(JournalEntryDTO journalEntry)
+    {
+        //journalService.Add(journalEntry);
+        await JsRuntime.InvokeVoidAsync("alert", $"new JournalEntry: {journalEntry.DateAdded}"); // Alert
+    }
+
+    public async Task UpdateEntry(JournalEntryDTO journalEntry)
+    {
+        //journalService.UpdateEntry(journalEntry);
+    }
+
+    public async void DeleteEntry(JournalEntryDTO journalEntry)
+    {
+        //await journalGrid.Reload();
+        await JsRuntime.InvokeVoidAsync("alert", $"SLET JournalEntryId: {journalEntry.JournalEntryId}"); // Alert
+    }
+
+    public void CreateJournalEntries()
+    {
+
+        PatientJournal = new JournalDTO()
             {
-                    DateAdded = new DateTime(2022,08,18),
-                    LastEdited = new DateTime(2022,08,18),
-                    Description = "Test",
-                    DepartmentName = "Øre-næse-halskirurgi",
-                    EmployeeCode = "D123",
-                    EmployeeName = "Dr. Martin Hansen",
-                    TreatmentPlaceName = "Sygehus Sønderjylland Aabenraa",
-            },
-        };
+                FirstName = "Joan",
+                MiddleName = "Krarup",
+                LastName = "Langgaard",
+                Cpr = 1910872342,
+                JournalEntries = new List<JournalEntryDTO>()
+            {
+                new JournalEntryDTO()
+                {
+                        JournalEntryId = 1,
+                        DateAdded = new DateTime(2022,08,18),
+                        LastEdited = new DateTime(2022,08,18),
+                        Description = "Anden kontakt",
+                        StatusName = "Igangværende",
+                        DepartmentName = "Øre-næse-halskirurgi",
+                        Diagnosis = "Sten i øret",
+                        TreatmentPlaceName = "Sygehus Sønderjylland",
+                },
+                new JournalEntryDTO()
+                {
+                        JournalEntryId = 2,
+                        DateAdded = new DateTime(2022,06,17),
+                        LastEdited = new DateTime(2022,06,17),
+                        Description = "Røntgen",
+                        StatusName = "Igangværende",
+                        DepartmentName = "Røntgen og Skanning",
+                        Diagnosis = "Kontakt mhp radiologisk undersøgelse",
+                        TreatmentPlaceName = "Sygehus Sønderjylland",
+                }
+            }
+            };
     }
 }
