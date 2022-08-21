@@ -15,6 +15,15 @@ h1:focus {
 a, .btn-link {
     color: rgb(56, 56, 56);
 }
+/*
+.rz-button:hover {
+    filter: brightness(70%) !important;
+    background-color: var(--primary-green) !important;
+}
+
+.rz-button{
+    background-color:var(--primary-green)!important;
+}*/
 
 /*a:hover {
     color: red;*/
@@ -25,11 +34,11 @@ a, .btn-link {
         background-color: green !important;
     }
 */
-.btn-primary {
+/*.btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
-}
+}*/
 
 a:hover {
     text-decoration: none;
@@ -41,10 +50,10 @@ a,.navlink {
 
 
 .btn-green {
-    color: white;
+    color: white!important;
     /*color: #fff;*/
     font-size: 16px;
-    padding:5px;
+    padding: 5px;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#b4df5b+0,b4df5b+100;Green+Semi+Flat */
     /*background: #b4df5b;*/ /* Old browsers */
     /*background: -moz-linear-gradient(top, #b4df5b 0%, #b4df5b 100%);*/ /* FF3.6-15 */
@@ -56,10 +65,13 @@ a,.navlink {
     border-color: #85d35f;*/
 
     background-image: linear-gradient(0deg, #6b8f00, #789f05 80%);
+    border-color: #6b8f00 !important;
 }
 
     .btn-green:hover {
-        background-image: linear-gradient(0deg, #789f05, v 80%);
+        background-image: linear-gradient(0deg, #789f05, #98c414 80%) !important;
+        border-color: #98c414!important;
+        /*background-image: linear-gradient(0deg, #789f05 80%) !important;*/
         /*background-color: #95c30a;*/
     }
 

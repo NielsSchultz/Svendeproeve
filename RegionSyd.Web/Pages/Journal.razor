@@ -52,7 +52,7 @@
             {
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="journalEntry">
-                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="btn" Click="@(args => UpdateEntry(journalEntry))">
+                        <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => UpdateEntry(journalEntry))">
                         </RadzenButton>
                     </Template>
                 </RadzenDataGridColumn>
@@ -61,7 +61,7 @@
             {
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="journalEntry">
-                        <RadzenButton Icon="delete" Class="btn" Click="@(args => DeleteEntry(journalEntry))">
+                        <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry))">
                         </RadzenButton>
                     </Template>
                 </RadzenDataGridColumn>

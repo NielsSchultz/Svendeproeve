@@ -81,9 +81,10 @@
     }
 
 .active .navlink-fane {
-    background-color: #6b8f00 !important;
+    /*background-color: #6b8f00 !important;*/
+    background-image: linear-gradient(0deg, #6b8f00, #789f05 80%)!important;
+    border-color: #6b8f00 !important;
     color: white;
-
 }
 
 .navlink-fane span {
