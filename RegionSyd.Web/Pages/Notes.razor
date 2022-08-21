@@ -1,0 +1,39 @@
+﻿@using Common.DTOs
+
+<div class="container">
+        <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                         Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+            <Items>
+                @foreach (var note in notes)
+                {
+                    <RadzenAccordionItem Text="Note">
+                    @note.NoteContent
+                    </RadzenAccordionItem>
+                }
+                
+               
+            </Items>
+        </RadzenAccordion>
+
+</div>
+
+@code {
+    List<JournalEntryNoteDTO> notes;
+
+    protected override void OnInitialized()
+    {
+        //notes = journalService.GetNotes();
+        notes = new List<JournalEntryNoteDTO>()
+        {
+            new JournalEntryNoteDTO()
+            {
+                NoteContent = "jfkdlsflsdfl fklsædfkæsdfkæsdf fdkslflsdf"
+            }
+        };
+    }
+
+    void Change(object value, string name, string action)
+    {
+        //console.Log($"{name} item with index {value} {action}");
+    }
+}
