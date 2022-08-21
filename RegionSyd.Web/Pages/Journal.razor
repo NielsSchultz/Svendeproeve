@@ -1,10 +1,9 @@
 ﻿@page "/journal"
 @using RegionSyd.Common.DTOs
 @using RegionSyd.Common.Enums
-@using Radzen.Blazor
-@using Radzen
 @using RegionSyd.Web.Helpers
 @inject IJSRuntime JsRuntime
+@inject NavigationManager navigationManager
 
 <div class="container">
 </div>
@@ -13,7 +12,7 @@
     @if (true) //TODO show only if user is employee
     {
         <div class="justify-content-end d-flex mb-2">
-            <input type="button" value="Tilføj ny journal data" class="btn btn-green btm-sm" />
+            <input type="button" value="Tilføj ny journal data" @onclick="(args => AddEditEntry(0))" class="btn btn-green btm-sm" />
         </div>
     }
 
@@ -52,7 +51,7 @@
             {
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="journalEntry">
-                        <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => UpdateEntry(journalEntry))">
+                        <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => AddEditEntry(journalEntry.JournalEntryId))">
                         </RadzenButton>
                     </Template>
                 </RadzenDataGridColumn>
@@ -100,9 +99,9 @@
         await JsRuntime.InvokeVoidAsync("alert", $"new JournalEntry: {journalEntry.DateAdded}"); // Alert
     }
 
-    public async Task UpdateEntry(JournalEntryDTO journalEntry)
+    public async Task AddEditEntry(int id)
     {
-        //journalService.UpdateEntry(journalEntry);
+        navigationManager.NavigateTo($"/Journal-indlæg?Id={id}");
     }
 
     public async void DeleteEntry(JournalEntryDTO journalEntry)
@@ -115,12 +114,12 @@
     {
 
         PatientJournal = new JournalDTO()
-            {
-                FirstName = "Joan",
-                MiddleName = "Krarup",
-                LastName = "Langgaard",
-                Cpr = 1910872342,
-                JournalEntries = new List<JournalEntryDTO>()
+        {
+            FirstName = "Joan",
+            MiddleName = "Krarup",
+            LastName = "Langgaard",
+            Cpr = 1910872342,
+            JournalEntries = new List<JournalEntryDTO>()
             {
                 new JournalEntryDTO()
                 {
@@ -145,6 +144,6 @@
                         TreatmentPlaceName = "Sygehus Sønderjylland",
                 }
             }
-            };
+        };
     }
 }

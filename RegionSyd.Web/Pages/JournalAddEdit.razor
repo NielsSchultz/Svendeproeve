@@ -1,17 +1,24 @@
-﻿@using RegionSyd.Common.DTOs
+﻿@page "/Journal-indlæg"
+@using RegionSyd.Common.DTOs
 
 <div class="container">
     <div class="row">
-        <div class="col-8">
+        <div class="col-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <p class="card-title"></p>
+                    @{
+                        var startDate = Id > 0 ? journalEntry.DateAdded.ToShortDateString() : DateTime.Now.ToShortDateString();
+                    }
+                    <p class="card-title"><span class="fw-bold">@journalEntry.Description</span> <span class="float-end">Forløb startdato @startDate</span></p>
                 </div>
                 <div class="card-body">
-                    <input type="text"  />
+                    <label>Diagnose</label>
+                    <input class="form-control" type="text" @bind="journalEntry.Diagnosis" />
+
                 </div>
                 <div class="card-footer">
-
+                    <input type="button" class="btn btn-outline-secondary" value="Annuller" />
+                    <input type="button" class="btn btn-green" value="Gem" />
                 </div>
             </div>
         </div>
@@ -19,10 +26,23 @@
 </div>
 
 @code {
-    JournalDTO Journal { get; set; }
-    public string FirstName { get; set; }
-    public string? MiddleName { get; set; }
-    public string LastName { get; set; }
-    public int Cpr { get; set; }
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+    public JournalEntryDTO journalEntry;
 
+    protected override void OnInitialized()
+    {
+
+        journalEntry = new JournalEntryDTO()
+        {
+            JournalEntryId = 2,
+            DateAdded = new DateTime(2022, 06, 17),
+            LastEdited = new DateTime(2022, 06, 17),
+            Description = "Røntgen",
+            StatusName = "Igangværende",
+            DepartmentName = "Røntgen og Skanning",
+            Diagnosis = "Kontakt mhp radiologisk undersøgelse",
+            TreatmentPlaceName = "Sygehus Sønderjylland",
+        };
+    }
 }
