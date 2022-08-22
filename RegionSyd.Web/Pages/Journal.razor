@@ -2,8 +2,10 @@
 @using RegionSyd.Common.DTOs
 @using RegionSyd.Common.Enums
 @using RegionSyd.Web.Helpers
+@using RegionSyd.Web.Services.Interfaces
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navigationManager
+@*@inject IJournalService _journalService*@
 
 <div class="container">
 </div>
@@ -21,7 +23,7 @@
         <h4>Journal</h4>
         @{
             var name = FullNameHelper.GetFullName(PatientJournal.FirstName, PatientJournal.MiddleName, PatientJournal.LastName); //firstname + middlename + lastname;
-            var cpr = CprHideFourLastDigitsHelper.GetCprWithHidedDigits(PatientJournal.Cpr);
+            var cpr = CprHelper.HideLastDigits(PatientJournal.Cpr);
         }
         <h6>@name (@cpr)</h6>
     </div>
@@ -67,7 +69,6 @@
             }
         </Columns>
     </RadzenDataGrid>
-
 </div>
 
 @code {
@@ -88,7 +89,8 @@
     }
     public async void OpenNotesList(int id)
     {
-        await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
+        //await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
+        navigationManager.NavigateTo($"/journal/noter?Id={id}");
     }
 
     JournalEntryDTO newJournalEntry;
@@ -101,7 +103,7 @@
 
     public async Task AddEditEntry(int id)
     {
-        navigationManager.NavigateTo($"/Journal-indlæg?Id={id}");
+        navigationManager.NavigateTo($"/journal/indlæg?Id={id}");
     }
 
     public async void DeleteEntry(JournalEntryDTO journalEntry)

@@ -1,4 +1,43 @@
-﻿<h3>BookingTreatment</h3>
+﻿@page "/booking/undersøgelse"
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-6 mx-auto">
+        <h6>Vælg undersøgelse</h6>
+            <select class="form-control">
+                <option disabled>Vælg undersøgelse</option>
+                <option>Blodprøve</option>
+                <option>Faderskabstest</option>
+                <option>Bloddoner</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="row mb-4">
+        <div class="col-6 mx-auto">
+        <h6>Vælg sted</h6>
+            <select class="form-control">
+                <option disabled>Vælg sted</option>
+                <option>Aabenraa</option>
+                <option>Haderslev</option>
+                <option>Gråsten</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-6 mx-auto">
+        <h6>Vælg tid</h6>
+            <select class="form-control">
+                <option disabled>Ledige tider</option>
+                <option>d. 14 august kl. 14.00</option>
+                <option>d. 14 august kl. 16.00</option>
+                <option>d. 17 august kl. 11.00</option>
+            </select>
+        </div>
+    </div>
+</div>
 
 @code {
 

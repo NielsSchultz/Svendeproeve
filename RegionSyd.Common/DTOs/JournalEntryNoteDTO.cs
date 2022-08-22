@@ -3,10 +3,19 @@
     public class JournalEntryNoteDTO
     {
         public int NoteId { get; set; }
-        public int JournalEntryId { get; set; }
+        public string NoteContent { get; set; }
+        public DateTime DateAdded { get; set; }
+        //Employee
         public int EmployeeId { get; set; }
-        // EmployeeName
-        public string EmployeeName { get; set; } = null!;
-        public string NoteContent { get; set; } = null!;
+        public string EmployeeTypeName { get; set; }
+
+        //User
+        public int UserId { get; set; }
+        public string EmployeeFirstname{ get; set; }
+        public string EmployeeMiddlename{ get; set; }
+        public string EmployeeLastname { get; set; }
+
+        //JournalEntry
+        public int JournalEntryId { get; set; }
     }
 }

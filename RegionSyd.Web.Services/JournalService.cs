@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RegionSyd.Common.DTOs;
 using RegionSyd.Common.Enums;
+using RegionSyd.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class JournalService
+    public class JournalService : IJournalService
     {
         private IHttpClientFactory _httpClientFactory;
         //private const string CONTROLLER = "Journal";
@@ -38,7 +39,7 @@ namespace RegionSyd.Web.Services
 
             return journal;
         }
-        
+
         public async Task<JournalEntryDTO> SaveJournalEntry(JournalEntryDTO JournalEntryDTO)
         {
             var journalEntry = new JournalEntryDTO();
@@ -56,6 +57,25 @@ namespace RegionSyd.Web.Services
             }
 
             return journalEntry;
+        }
+
+        public async Task<string> TestTreatment()
+        {
+            var test = string.Empty;
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
+            // TODO JKL add the right api endpoint
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}Treatment");
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                test = JsonConvert.DeserializeObject<string>(await content);
+            }
+
+            return test;
         }
     }
 }
