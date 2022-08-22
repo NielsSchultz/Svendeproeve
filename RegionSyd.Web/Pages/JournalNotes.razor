@@ -1,20 +1,20 @@
-﻿@using Common.DTOs
+﻿@page "/journal/noter"
+
+@using Common.DTOs
 
 <div class="container">
-        <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                         Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
-            <Items>
-                @foreach (var note in notes)
-                {
-                    <RadzenAccordionItem Text="Note">
+    <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                     Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+        <Items>
+            @foreach (var note in notes)
+            {
+                var noteTitle = $"{note.NoteId}";
+                <RadzenAccordionItem Text="@noteTitle">
                     @note.NoteContent
-                    </RadzenAccordionItem>
-                }
-                
-               
-            </Items>
-        </RadzenAccordion>
-
+                </RadzenAccordionItem>
+            }
+        </Items>
+    </RadzenAccordion>
 </div>
 
 @code {
