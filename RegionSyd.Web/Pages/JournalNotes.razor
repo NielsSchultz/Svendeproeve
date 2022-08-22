@@ -5,20 +5,20 @@
 <div class="container">
     <div class="row">
         <div class="col-8 mx-auto">
-            <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                             Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
-                <Items>
-                    @foreach (var note in notes)
-                    {
+    <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
+                     Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
+        <Items>
+            @foreach (var note in notes)
+            {
                         var enployeeName = Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname);
                         var noteTitle = $"{note.DateAdded} {enployeeName}, {note.EmployeeTypeName}";
-                        <RadzenAccordionItem Text="@noteTitle">
-                            @note.NoteContent
-                        </RadzenAccordionItem>
-                    }
-                </Items>
-            </RadzenAccordion>
-        </div>
+                <RadzenAccordionItem Text="@noteTitle">
+                    @note.NoteContent
+                </RadzenAccordionItem>
+            }
+        </Items>
+    </RadzenAccordion>
+</div>
     </div>
 </div>
 
