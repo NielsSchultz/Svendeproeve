@@ -11,6 +11,9 @@ namespace RegionSyd.Repositories.Interfaces
     {
         // Get all treatments
         Task<List<Treatment>> GetTreatments();
+        Task<Treatment> GetTreatmentById(int id);
         Task<Treatment> CreateTreatment(Treatment treatment);
+        Task<Treatment> UpdateTreatment(Treatment treatment);
+        Task<bool> DeleteTreatment(int id);
     }
 }
