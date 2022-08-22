@@ -8,5 +8,8 @@
         public string? MiddleName { get; set; }
         public string LastName { get; set; }
         public int PatientId { get; set; }
+        public int Cpr { get; set; }
+
+        public ICollection<JournalEntryDTO> JournalEntries { get; set; }
     }
 }
