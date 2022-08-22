@@ -42,7 +42,8 @@ namespace RegionSyd.Repositories.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
+                //optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
             }
         }
 
@@ -442,8 +443,26 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.UserTypeName).HasMaxLength(50);
             });
+            //SEEDING DATA
+            modelBuilder.Entity<TreatmentPlaceType>().HasData(
+                new TreatmentPlaceType { TreatmentPlaceTypeId = 1, TreatmentPlaceTypeName = "Sygehus" },
+                new TreatmentPlaceType { TreatmentPlaceTypeId = 2, TreatmentPlaceTypeName = "Sundhedshus" });
 
+            modelBuilder.Entity<TreatmentPlace>().HasData(
+                new TreatmentPlace { TreatmentPlaceId = 1, TreatmentPlaceTypeId = 1, TreatmentPlaceName = "Sygehus Sønderjylland", Address = "Kresten Philipsens Vej 15", City = "Aabenraa", ZipCode = 6200 },
+                new TreatmentPlace { TreatmentPlaceId = 2, TreatmentPlaceTypeId = 2, TreatmentPlaceName = "Sundhedshus Gråsten", Address = "Ulsnæs 13", City = "Gråsten", ZipCode = 6300  });
+
+            modelBuilder.Entity<Department>().HasData(
+                new Department { DepartmentId = 1, TreatmentPlaceId = 1, DepartmentName = "Røntgen Afdeling" },
+                new Department { DepartmentId = 2, TreatmentPlaceId = 1, DepartmentName = "Søvnambulatoriet" },
+                new Department { DepartmentId = 3, TreatmentPlaceId = 1, DepartmentName = "Høreklinniken" },
+                new Department { DepartmentId = 4, TreatmentPlaceId = 2, DepartmentName = "Blodprøve" });
+
+            modelBuilder.Entity<Treatment>().HasData(
+                new Treatment { TreatmentId = 1, DepartmentId = 4, TreatmentName = "Blodprøve", TreatmentDuration = 15 },
+                new Treatment { TreatmentId = 2, DepartmentId = 1, TreatmentName = "CT-scanning", TreatmentDuration = 60 });
             OnModelCreatingPartial(modelBuilder);
+            
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
