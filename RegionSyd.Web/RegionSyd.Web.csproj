@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RegionSyd.Common\RegionSyd.Common.csproj" />
+    <ProjectReference Include="..\RegionSyd.Web.Services\RegionSyd.Web.Services.csproj" />
   </ItemGroup>
 
 </Project>
