@@ -462,7 +462,6 @@ namespace RegionSyd.Repositories.Entities
                 new Treatment { TreatmentId = 1, DepartmentId = 4, TreatmentName = "Blodprøve", TreatmentDuration = 15 },
                 new Treatment { TreatmentId = 2, DepartmentId = 1, TreatmentName = "CT-scanning", TreatmentDuration = 60 });
             OnModelCreatingPartial(modelBuilder);
-            
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

@@ -1,19 +1,31 @@
 ﻿@page "/mine-oplysninger"
+@using RegionSyd.Common.DTOs
 
 <div class="container">
     <div class="row">
         <div class="col-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <p class="card-title"></p>
+                    <h5 class="card-title">@Helpers.FullNameHelper.GetFullName(patient.Firstname, patient.Middlename, patient.Lastname)</h5>
+                    <p>@Helpers.CprHelper.HideLastDigits(patient.Cpr)</p>
                 </div>
                 <div class="card-body">
-
+                    <input type="text" class="form-control mb-2" @bind="patient.Address" disabled />
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" class="form-control mb-2" @bind="patient.ZipCode" disabled />
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control mb-2" @bind="patient.City" disabled />
+                        </div>
+                    </div>
+                    <input type="tel" class="form-control mb-2" @bind="patient.Phone" />
+                    <input type="email" class="form-control" @bind="patient.Email" />
 
                 </div>
                 <div class="card-footer">
-                    <input type="button" class="btn btn-outline-secondary" value="Annuller" />
-                    <input type="button" class="btn btn-green" value="Gem" />
+                    <input type="button" class="btn btn-green float-end m-1" value="Gem" />
+                    <input type="button" class="btn btn-outline-secondary float-end m-1" value="Annuller" />
                 </div>
             </div>
         </div>
@@ -21,5 +33,23 @@
 </div>
 
 @code {
+    PatientDTO patient { get; set; }
 
+    protected override void OnInitialized()
+    {
+        patient = new PatientDTO()
+            {
+                Cpr = 1910872342,
+                Firstname = "Joan",
+                Middlename = "Krarup",
+                Lastname = "Langgaard",
+                Address = "Kromai 43",
+                ZipCode = 6200,
+                City = "Aabenraa",
+                Phone = 25390009,
+                Email = "joan1329@elevcampus.dk"
+            };
+
+        base.OnInitialized();
+    }
 }
