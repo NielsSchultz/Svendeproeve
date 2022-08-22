@@ -1,13 +1,11 @@
-﻿using RegionSyd.Repositories.Entities;
-using System;
-using System.Collections.Generic;
-
-namespace RegionSyd.Common.DTOs
+﻿namespace RegionSyd.Common.DTOs
 {
     public class DepartmentDTO
     {
         public int DepartmentId { get; set; }
-        public int TreatmentPlaceId { get; set; }
         public string DepartmentName { get; set; } = null!;
+        public int TreatmentPlaceId { get; set; }
+        //TreatmentPlaceName?? Skal måske tilføjes
+        public string TreatmentPlaceName { get; set; } = null!;
     }
 }
