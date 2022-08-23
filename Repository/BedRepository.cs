@@ -18,18 +18,15 @@ namespace RegionSyd.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
-        public async Task<Bed> GetBedAsync(int id)
+        public async Task<List<Bed>> GetBeds()
         {
-            return await _context.Beds.Where(b => b.BedId == id).FirstOrDefaultAsync();
+            return await _context.Beds.ToListAsync();
         }
-
-        public async Task<ICollection<Bed>> GetAllBedsAsync()
+        public async Task<Bed> GetBedById(int id)
         {
-            return await _context.Beds.AsNoTracking().ToListAsync();
+            return await _context.Beds.FindAsync(id);
         }
-
-        public async Task<Bed> CreateBedAsync(Bed newBed)
+        public async Task<Bed> CreateBed(Bed newBed)
         {
             if (newBed != null)
             {
@@ -39,22 +36,39 @@ namespace RegionSyd.Repositories
             }
             else
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(newBed));
             }
         }
-
-        public async Task<Bed> UpdateBedAsync(Bed newBed)
+        public async Task<Bed> UpdateBed(Bed newBed)
         {
-            var bed = GetBedAsync(newBed.BedId);
-            if(bed != null)
+            if (newBed != null)
             {
                 _context.Beds.Update(newBed);
                 await _context.SaveChangesAsync();
                 return newBed;
-            } else
-            {
-                throw new ArgumentNullException();
             }
+            else
+            {
+                throw new ArgumentNullException(nameof(newBed));
+            }
+        }
+        public async Task<bool> DeleteBed(int id)
+        {
+            var bed = await _context.Beds.Where(b => b.BedId == id).FirstOrDefaultAsync();
+            if (bed != null)
+            {
+                _context.Beds.Remove(bed);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(bed));
+            }
+        }
+        public async Task<List<Bed>> GetUnoccupiedBeds()
+        {
+            return await _context.Beds.Where(b => b.IsOccupied == false).ToListAsync();
         }
     }
 }
