@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.WebApi.Services.Profiles
 {
-    public class JournalEntryStatusProfileProfile : Profile
+    public class JournalEntryStatusProfile : Profile
     {
         public JournalEntryStatusProfile()
         {
