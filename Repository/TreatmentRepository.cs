@@ -17,14 +17,17 @@ namespace RegionSyd.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
         public async Task<List<Treatment>> GetTreatments()
         {
             return await _context.Treatments.ToListAsync();
         }
+
         public async Task<Treatment> GetTreatmentById(int id)
         {
             return await _context.Treatments.FindAsync(id);
         }
+
         public async Task<Treatment> CreateTreatment(Treatment newTreatment)
         {
             if (newTreatment != null)
@@ -38,6 +41,7 @@ namespace RegionSyd.Repositories
                 throw new ArgumentNullException(nameof(newTreatment));
             }
         }
+
         public async Task<Treatment> UpdateTreatment(Treatment newTreatment)
         {
             if (newTreatment != null)
@@ -51,6 +55,7 @@ namespace RegionSyd.Repositories
                 throw new ArgumentNullException(nameof(newTreatment));
             }
         }
+
         public async Task<bool> DeleteTreatment(int id)
         {
             var treatment = await _context.Treatments.Where(b => b.TreatmentId == id).FirstOrDefaultAsync();

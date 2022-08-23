@@ -10,7 +10,7 @@ namespace RegionSyd.Repositories.Interfaces
     public interface IJournalEntryRepository
     {
         // Create Journal Entry
-        Task<JournalEntry> CreateJournalEntry(JournalEntry journalEntry);
+        Task<JournalEntry> CreateJournalEntry(JournalEntry newJournalEntry);
 
         // Get all journal entries for Journal by Journal ID
         Task<List<JournalEntry>> GetJournalEntriesForJournal(int id);
@@ -19,7 +19,7 @@ namespace RegionSyd.Repositories.Interfaces
         Task<JournalEntry> GetJournalEntry(int id);
 
         // Update Journal Entry
-        Task<JournalEntry> UpdateJournalEntry(JournalEntry journalEntry);
+        Task<JournalEntry> UpdateJournalEntry(JournalEntry newJournalEntry);
 
         // Delete Journal Entry
         Task<bool> DeleteJournalEntry(int id);

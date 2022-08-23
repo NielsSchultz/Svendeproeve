@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Monitor = RegionSyd.Repositories.Entities.Monitor;
 
 namespace RegionSyd.WebApi.Services.Profiles
 {
-    public class BedProfile : Profile
+    public class MonitorProfile : Profile
     {
-        public BedProfile()
+        public MonitorProfile()
         {
-            CreateMap<Bed, BedDTO>();
-            CreateMap<BedDTO, Bed>();
+            CreateMap<Monitor, MonitorDTO>();
+            CreateMap<MonitorDTO, Monitor>();
         }        
     }
 }
