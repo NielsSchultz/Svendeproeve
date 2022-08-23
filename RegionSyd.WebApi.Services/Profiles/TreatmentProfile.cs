@@ -15,6 +15,6 @@ namespace RegionSyd.WebApi.Services.Profiles
         {
             CreateMap<Treatment, TreatmentDTO>();
             CreateMap<TreatmentDTO, Treatment>();
-        }
+        }        
     }
 }

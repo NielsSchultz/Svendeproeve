@@ -64,8 +64,7 @@ namespace RegionSyd.Repositories
 
         public async Task<Journal> UpdateJournal(Journal newJournal)
         {
-            var journal = GetJournal(newJournal.JournalId);
-            if (journal != null)
+            if (newJournal != null)
             {
                 _context.Journals.Update(newJournal);
                 await _context.SaveChangesAsync();
