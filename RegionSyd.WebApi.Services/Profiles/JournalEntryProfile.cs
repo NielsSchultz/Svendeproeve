@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.WebApi.Services.Profiles
 {
-    public class JournalProfile : Profile
+    public class JournalEntryProfile : Profile
     {
-        public JournalProfile()
+        public JournalEntryProfile()
         {
-            CreateMap<Journal, JournalDTO>();
-
-            CreateMap<JournalDTO, Journal>();
+            CreateMap<JournalEntry, JournalEntryDTO>();
+            CreateMap<JournalEntryDTO, JournalEntry>();
         }
-
+        
     }
 }
