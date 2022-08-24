@@ -2,12 +2,11 @@
 {
     public class CprHelper
     {
-        public static string HideLastDigits(int cpr)
+        public static string HideLastDigits(string cpr)
         {
-            var cprString = cpr.ToString();
-            cprString = cprString.Substring(0, cprString.Length - 4);
-            cprString = cprString + "-XXXX";
-            return cprString;
+            cpr = cpr.Substring(0, cpr.Length - 4);
+            cpr = cpr + "-XXXX";
+            return cpr;
         }
     }
 }
