@@ -41,21 +41,23 @@ namespace RegionSyd.Repositories.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 //Local DB
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
+                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
+                
+                // Christian
+                optionsBuilder.UseSqlServer("Server=MSI;Database=RegionSydDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
                 //Azure DB
-                //optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
+                // optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("Danish_Norwegian_CI_AS");
-
             modelBuilder.Entity<Alarm>(entity =>
             {
                 entity.ToTable("Alarm");
+
+                entity.HasIndex(e => e.BedId, "IX_Alarm_BedID");
 
                 entity.Property(e => e.AlarmId).HasColumnName("AlarmID");
 
@@ -71,6 +73,8 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Bed");
 
+                entity.HasIndex(e => e.RoomId, "IX_Bed_RoomID");
+
                 entity.Property(e => e.BedId).HasColumnName("BedID");
 
                 entity.Property(e => e.RoomId).HasColumnName("RoomID");
@@ -84,6 +88,12 @@ namespace RegionSyd.Repositories.Entities
             modelBuilder.Entity<Booking>(entity =>
             {
                 entity.ToTable("Booking");
+
+                entity.HasIndex(e => e.PatientId, "IX_Booking_PatientID");
+
+                entity.HasIndex(e => e.TreatmentId, "IX_Booking_TreatmentID");
+
+                entity.HasIndex(e => e.TreatmentPlaceId, "IX_Booking_TreatmentPlaceID");
 
                 entity.Property(e => e.BookingId).HasColumnName("BookingID");
 
@@ -120,6 +130,8 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Department");
 
+                entity.HasIndex(e => e.TreatmentPlaceId, "IX_Department_TreatmentPlaceID");
+
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
                 entity.Property(e => e.DepartmentName).HasMaxLength(50);
@@ -137,13 +149,15 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Employee");
 
+                entity.HasIndex(e => e.DepartmentId, "IX_Employee_DepartmentID");
+
+                entity.HasIndex(e => e.EmployeeTypeId, "IX_Employee_EmployeeTypeID");
+
+                entity.HasIndex(e => e.UserId, "IX_Employee_UserID");
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
-                entity.Property(e => e.Birthday).HasColumnType("date");
-
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
-
-                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.EmployeeCode).HasMaxLength(50);
 
@@ -192,6 +206,8 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Journal");
 
+                entity.HasIndex(e => e.PatientId, "IX_Journal_PatientID");
+
                 entity.Property(e => e.JournalId).HasColumnName("JournalID");
 
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
@@ -206,6 +222,12 @@ namespace RegionSyd.Repositories.Entities
             modelBuilder.Entity<JournalEntry>(entity =>
             {
                 entity.ToTable("JournalEntry");
+
+                entity.HasIndex(e => e.EmployeeId, "IX_JournalEntry_EmployeeID");
+
+                entity.HasIndex(e => e.JournalEntryStatusId, "IX_JournalEntry_JournalEntryStatusID");
+
+                entity.HasIndex(e => e.JournalId, "IX_JournalEntry_JournalID");
 
                 entity.Property(e => e.JournalEntryId).HasColumnName("JournalEntryID");
 
@@ -252,6 +274,12 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.ToTable("JournalEntryFile");
 
+                entity.HasIndex(e => e.EmployeeId, "IX_JournalEntryFile_EmployeeID");
+
+                entity.HasIndex(e => e.FileTypeId, "IX_JournalEntryFile_FileTypeID");
+
+                entity.HasIndex(e => e.JournalEntryId, "IX_JournalEntryFile_JournalEntryID");
+
                 entity.Property(e => e.FileId).HasColumnName("FileID");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
@@ -289,6 +317,10 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.ToTable("JournalEntryNote");
 
+                entity.HasIndex(e => e.EmployeeId, "IX_JournalEntryNote_EmployeeID");
+
+                entity.HasIndex(e => e.JournalEntryId, "IX_JournalEntryNote_JournalEntryID");
+
                 entity.Property(e => e.NoteId).HasColumnName("NoteID");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
@@ -323,6 +355,8 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Monitor");
 
+                entity.HasIndex(e => e.PatientId, "IX_Monitor_PatientID");
+
                 entity.Property(e => e.MonitorId).HasColumnName("MonitorID");
 
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
@@ -337,11 +371,9 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("Patient");
 
+                entity.HasIndex(e => e.UserId, "IX_Patient_UserID");
+
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
-
-                entity.Property(e => e.Birthday).HasColumnType("date");
-
-                entity.Property(e => e.Cpr).HasColumnName("CPR");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -355,6 +387,8 @@ namespace RegionSyd.Repositories.Entities
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.ToTable("Room");
+
+                entity.HasIndex(e => e.DepartmentId, "IX_Room_DepartmentID");
 
                 entity.Property(e => e.RoomId).HasColumnName("RoomID");
 
@@ -370,6 +404,8 @@ namespace RegionSyd.Repositories.Entities
             modelBuilder.Entity<Treatment>(entity =>
             {
                 entity.ToTable("Treatment");
+
+                entity.HasIndex(e => e.DepartmentId, "IX_Treatment_DepartmentID");
 
                 entity.Property(e => e.TreatmentId).HasColumnName("TreatmentID");
 
@@ -387,6 +423,8 @@ namespace RegionSyd.Repositories.Entities
             modelBuilder.Entity<TreatmentPlace>(entity =>
             {
                 entity.ToTable("TreatmentPlace");
+
+                entity.HasIndex(e => e.TreatmentPlaceTypeId, "IX_TreatmentPlace_TreatmentPlaceTypeID");
 
                 entity.Property(e => e.TreatmentPlaceId).HasColumnName("TreatmentPlaceID");
 
@@ -418,13 +456,30 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("User");
 
+                entity.HasIndex(e => e.UserTypeId, "IX_User_UserTypeID");
+
+                entity.HasIndex(e => e.Cpr, "UK_CPR")
+                    .IsUnique();
+
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.CityName).HasMaxLength(50);
+
+                entity.Property(e => e.Cpr)
+                    .HasMaxLength(50)
+                    .HasColumnName("CPR");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.FirstName).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
 
                 entity.Property(e => e.MiddleName).HasMaxLength(50);
+
+                entity.Property(e => e.Phone).HasMaxLength(50);
 
                 entity.Property(e => e.UserTypeId).HasColumnName("UserTypeID");
 
@@ -445,24 +500,7 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.UserTypeName).HasMaxLength(50);
             });
-            //SEEDING DATA
-            modelBuilder.Entity<TreatmentPlaceType>().HasData(
-                new TreatmentPlaceType { TreatmentPlaceTypeId = 1, TreatmentPlaceTypeName = "Sygehus" },
-                new TreatmentPlaceType { TreatmentPlaceTypeId = 2, TreatmentPlaceTypeName = "Sundhedshus" });
 
-            modelBuilder.Entity<TreatmentPlace>().HasData(
-                new TreatmentPlace { TreatmentPlaceId = 1, TreatmentPlaceTypeId = 1, TreatmentPlaceName = "Sygehus Sønderjylland", Address = "Kresten Philipsens Vej 15", City = "Aabenraa", ZipCode = 6200 },
-                new TreatmentPlace { TreatmentPlaceId = 2, TreatmentPlaceTypeId = 2, TreatmentPlaceName = "Sundhedshus Gråsten", Address = "Ulsnæs 13", City = "Gråsten", ZipCode = 6300  });
-
-            modelBuilder.Entity<Department>().HasData(
-                new Department { DepartmentId = 1, TreatmentPlaceId = 1, DepartmentName = "Røntgen Afdeling" },
-                new Department { DepartmentId = 2, TreatmentPlaceId = 1, DepartmentName = "Søvnambulatoriet" },
-                new Department { DepartmentId = 3, TreatmentPlaceId = 1, DepartmentName = "Høreklinniken" },
-                new Department { DepartmentId = 4, TreatmentPlaceId = 2, DepartmentName = "Blodprøve" });
-
-            modelBuilder.Entity<Treatment>().HasData(
-                new Treatment { TreatmentId = 1, DepartmentId = 4, TreatmentName = "Blodprøve", TreatmentDuration = 15 },
-                new Treatment { TreatmentId = 2, DepartmentId = 1, TreatmentName = "CT-scanning", TreatmentDuration = 60 });
             OnModelCreatingPartial(modelBuilder);
         }
 

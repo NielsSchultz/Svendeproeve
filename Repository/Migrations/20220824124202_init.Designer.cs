@@ -12,7 +12,7 @@ using RegionSyd.Repositories.Entities;
 namespace RegionSyd.Repositories.Migrations
 {
     [DbContext(typeof(RegionSydDBContext))]
-    [Migration("20220821185120_init")]
+    [Migration("20220824124202_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,32 +129,6 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasIndex("TreatmentPlaceId");
 
                     b.ToTable("Department", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            DepartmentId = 1,
-                            DepartmentName = "Røntgen Afdeling",
-                            TreatmentPlaceId = 1
-                        },
-                        new
-                        {
-                            DepartmentId = 2,
-                            DepartmentName = "Søvnambulatoriet",
-                            TreatmentPlaceId = 1
-                        },
-                        new
-                        {
-                            DepartmentId = 3,
-                            DepartmentName = "Høreklinniken",
-                            TreatmentPlaceId = 1
-                        },
-                        new
-                        {
-                            DepartmentId = 4,
-                            DepartmentName = "Blodprøve",
-                            TreatmentPlaceId = 2
-                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Employee", b =>
@@ -166,17 +140,9 @@ namespace RegionSyd.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"), 1L, 1);
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("date");
-
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int")
                         .HasColumnName("DepartmentID");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("EmployeeCode")
                         .IsRequired()
@@ -368,6 +334,9 @@ namespace RegionSyd.Repositories.Migrations
                         .HasColumnType("int")
                         .HasColumnName("EmployeeID");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<int>("JournalEntryId")
                         .HasColumnType("int")
                         .HasColumnName("JournalEntryID");
@@ -434,13 +403,6 @@ namespace RegionSyd.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"), 1L, 1);
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("date");
-
-                    b.Property<int>("Cpr")
-                        .HasColumnType("int")
-                        .HasColumnName("CPR");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("UserID");
@@ -485,8 +447,8 @@ namespace RegionSyd.Repositories.Migrations
                         .HasColumnType("int")
                         .HasColumnName("DepartmentID");
 
-                    b.Property<int>("TreatmentDuration")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("TreatmentDuration")
+                        .HasColumnType("time");
 
                     b.Property<string>("TreatmentName")
                         .IsRequired()
@@ -498,22 +460,6 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Treatment", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TreatmentId = 1,
-                            DepartmentId = 4,
-                            TreatmentDuration = 15,
-                            TreatmentName = "Blodprøve"
-                        },
-                        new
-                        {
-                            TreatmentId = 2,
-                            DepartmentId = 1,
-                            TreatmentDuration = 60,
-                            TreatmentName = "CT-scanning"
-                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.TreatmentPlace", b =>
@@ -552,26 +498,6 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasIndex("TreatmentPlaceTypeId");
 
                     b.ToTable("TreatmentPlace", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TreatmentPlaceId = 1,
-                            Address = "Kresten Philipsens Vej 15",
-                            City = "Aabenraa",
-                            TreatmentPlaceName = "Sygehus Sønderjylland",
-                            TreatmentPlaceTypeId = 1,
-                            ZipCode = 6200
-                        },
-                        new
-                        {
-                            TreatmentPlaceId = 2,
-                            Address = "Ulsnæs 13",
-                            City = "Gråsten",
-                            TreatmentPlaceName = "Sundhedshus Gråsten",
-                            TreatmentPlaceTypeId = 2,
-                            ZipCode = 6300
-                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.TreatmentPlaceType", b =>
@@ -591,18 +517,6 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("TreatmentPlaceTypeId");
 
                     b.ToTable("TreatmentPlaceType", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TreatmentPlaceTypeId = 1,
-                            TreatmentPlaceTypeName = "Sygehus"
-                        },
-                        new
-                        {
-                            TreatmentPlaceTypeId = 2,
-                            TreatmentPlaceTypeName = "Sundhedshus"
-                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.User", b =>
@@ -613,6 +527,17 @@ namespace RegionSyd.Repositories.Migrations
                         .HasColumnName("UserID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+
+                    b.Property<string>("Cpr")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("CPR");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -628,6 +553,11 @@ namespace RegionSyd.Repositories.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("UserTypeId")
                         .HasColumnType("int")
                         .HasColumnName("UserTypeID");
@@ -640,6 +570,9 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("UserId");
 
                     b.HasIndex("UserTypeId");
+
+                    b.HasIndex(new[] { "Cpr" }, "UK_CPR")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });

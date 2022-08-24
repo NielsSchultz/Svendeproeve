@@ -30,7 +30,7 @@ namespace RegionSyd.WebApi.Services.Services
         }
         public async Task<TreatmentDTO> GetTreatmentById(int id)
         {
-            var treatment = await _treatmentRepository.GetTreatmentById(id);
+            var treatment = await _treatmentRepository.GetTreatment(id);
             return _mapper.Map<TreatmentDTO>(treatment);
         }
         public async Task<TreatmentDTO> CreateTreatment(TreatmentDTO treatmentDTO)

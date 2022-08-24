@@ -17,8 +17,6 @@ namespace RegionSyd.Repositories.Entities
         public int EmployeeTypeId { get; set; }
         public int DepartmentId { get; set; }
         public string EmployeeCode { get; set; } = null!;
-        public string Email { get; set; } = null!;
-        public DateTime Birthday { get; set; }
 
         public virtual Department Department { get; set; } = null!;
         public virtual EmployeeType EmployeeType { get; set; } = null!;
