@@ -12,14 +12,13 @@ using RegionSyd.Repositories.Entities;
 namespace RegionSyd.Repositories.Migrations
 {
     [DbContext(typeof(RegionSydDBContext))]
-    [Migration("20220824124202_init")]
+    [Migration("20220824134730_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("Danish_Norwegian_CI_AS")
                 .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -40,7 +39,7 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("AlarmId");
 
-                    b.HasIndex("BedId");
+                    b.HasIndex(new[] { "BedId" }, "IX_Alarm_BedID");
 
                     b.ToTable("Alarm", (string)null);
                 });
@@ -63,9 +62,215 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("BedId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex(new[] { "RoomId" }, "IX_Bed_RoomID");
 
                     b.ToTable("Bed", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            BedId = 1,
+                            IsOccupied = false,
+                            RoomId = 1
+                        },
+                        new
+                        {
+                            BedId = 2,
+                            IsOccupied = false,
+                            RoomId = 1
+                        },
+                        new
+                        {
+                            BedId = 3,
+                            IsOccupied = false,
+                            RoomId = 1
+                        },
+                        new
+                        {
+                            BedId = 4,
+                            IsOccupied = false,
+                            RoomId = 2
+                        },
+                        new
+                        {
+                            BedId = 5,
+                            IsOccupied = false,
+                            RoomId = 2
+                        },
+                        new
+                        {
+                            BedId = 6,
+                            IsOccupied = false,
+                            RoomId = 2
+                        },
+                        new
+                        {
+                            BedId = 7,
+                            IsOccupied = false,
+                            RoomId = 3
+                        },
+                        new
+                        {
+                            BedId = 8,
+                            IsOccupied = false,
+                            RoomId = 3
+                        },
+                        new
+                        {
+                            BedId = 9,
+                            IsOccupied = false,
+                            RoomId = 3
+                        },
+                        new
+                        {
+                            BedId = 10,
+                            IsOccupied = false,
+                            RoomId = 4
+                        },
+                        new
+                        {
+                            BedId = 11,
+                            IsOccupied = false,
+                            RoomId = 4
+                        },
+                        new
+                        {
+                            BedId = 12,
+                            IsOccupied = false,
+                            RoomId = 5
+                        },
+                        new
+                        {
+                            BedId = 13,
+                            IsOccupied = false,
+                            RoomId = 5
+                        },
+                        new
+                        {
+                            BedId = 14,
+                            IsOccupied = false,
+                            RoomId = 6
+                        },
+                        new
+                        {
+                            BedId = 15,
+                            IsOccupied = false,
+                            RoomId = 6
+                        },
+                        new
+                        {
+                            BedId = 16,
+                            IsOccupied = false,
+                            RoomId = 7
+                        },
+                        new
+                        {
+                            BedId = 17,
+                            IsOccupied = false,
+                            RoomId = 7
+                        },
+                        new
+                        {
+                            BedId = 18,
+                            IsOccupied = false,
+                            RoomId = 7
+                        },
+                        new
+                        {
+                            BedId = 19,
+                            IsOccupied = false,
+                            RoomId = 7
+                        },
+                        new
+                        {
+                            BedId = 20,
+                            IsOccupied = false,
+                            RoomId = 8
+                        },
+                        new
+                        {
+                            BedId = 21,
+                            IsOccupied = false,
+                            RoomId = 9
+                        },
+                        new
+                        {
+                            BedId = 22,
+                            IsOccupied = false,
+                            RoomId = 10
+                        },
+                        new
+                        {
+                            BedId = 23,
+                            IsOccupied = false,
+                            RoomId = 11
+                        },
+                        new
+                        {
+                            BedId = 24,
+                            IsOccupied = false,
+                            RoomId = 11
+                        },
+                        new
+                        {
+                            BedId = 25,
+                            IsOccupied = false,
+                            RoomId = 12
+                        },
+                        new
+                        {
+                            BedId = 26,
+                            IsOccupied = false,
+                            RoomId = 12
+                        },
+                        new
+                        {
+                            BedId = 27,
+                            IsOccupied = false,
+                            RoomId = 13
+                        },
+                        new
+                        {
+                            BedId = 28,
+                            IsOccupied = false,
+                            RoomId = 13
+                        },
+                        new
+                        {
+                            BedId = 29,
+                            IsOccupied = false,
+                            RoomId = 14
+                        },
+                        new
+                        {
+                            BedId = 30,
+                            IsOccupied = false,
+                            RoomId = 14
+                        },
+                        new
+                        {
+                            BedId = 31,
+                            IsOccupied = false,
+                            RoomId = 14
+                        },
+                        new
+                        {
+                            BedId = 32,
+                            IsOccupied = false,
+                            RoomId = 15
+                        },
+                        new
+                        {
+                            BedId = 33,
+                            IsOccupied = false,
+                            RoomId = 16
+                        },
+                        new
+                        {
+                            BedId = 34,
+                            IsOccupied = true,
+                            RoomId = 11
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Booking", b =>
@@ -97,11 +302,11 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("BookingId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex(new[] { "PatientId" }, "IX_Booking_PatientID");
 
-                    b.HasIndex("TreatmentId");
+                    b.HasIndex(new[] { "TreatmentId" }, "IX_Booking_TreatmentID");
 
-                    b.HasIndex("TreatmentPlaceId");
+                    b.HasIndex(new[] { "TreatmentPlaceId" }, "IX_Booking_TreatmentPlaceID");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -126,9 +331,35 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("DepartmentId");
 
-                    b.HasIndex("TreatmentPlaceId");
+                    b.HasIndex(new[] { "TreatmentPlaceId" }, "IX_Department_TreatmentPlaceID");
 
                     b.ToTable("Department", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            DepartmentId = 1,
+                            DepartmentName = "Røntgen Afdeling",
+                            TreatmentPlaceId = 1
+                        },
+                        new
+                        {
+                            DepartmentId = 2,
+                            DepartmentName = "Søvnambulatoriet",
+                            TreatmentPlaceId = 1
+                        },
+                        new
+                        {
+                            DepartmentId = 3,
+                            DepartmentName = "Høreklinniken",
+                            TreatmentPlaceId = 1
+                        },
+                        new
+                        {
+                            DepartmentId = 4,
+                            DepartmentName = "Blodprøve",
+                            TreatmentPlaceId = 2
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Employee", b =>
@@ -159,13 +390,71 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex(new[] { "DepartmentId" }, "IX_Employee_DepartmentID");
 
-                    b.HasIndex("EmployeeTypeId");
+                    b.HasIndex(new[] { "EmployeeTypeId" }, "IX_Employee_EmployeeTypeID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Employee_UserID");
 
                     b.ToTable("Employee", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            DepartmentId = 1,
+                            EmployeeCode = "marmag71",
+                            EmployeeTypeId = 1,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            EmployeeId = 2,
+                            DepartmentId = 2,
+                            EmployeeCode = "sigsig94",
+                            EmployeeTypeId = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            EmployeeId = 3,
+                            DepartmentId = 3,
+                            EmployeeCode = "emmell91",
+                            EmployeeTypeId = 1,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            EmployeeId = 4,
+                            DepartmentId = 4,
+                            EmployeeCode = "trotho77",
+                            EmployeeTypeId = 2,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            EmployeeId = 5,
+                            DepartmentId = 1,
+                            EmployeeCode = "winwol87",
+                            EmployeeTypeId = 3,
+                            UserId = 5
+                        },
+                        new
+                        {
+                            EmployeeId = 6,
+                            DepartmentId = 3,
+                            EmployeeCode = "robree66",
+                            EmployeeTypeId = 3,
+                            UserId = 6
+                        },
+                        new
+                        {
+                            EmployeeId = 7,
+                            DepartmentId = 4,
+                            EmployeeCode = "nadnis96",
+                            EmployeeTypeId = 4,
+                            UserId = 7
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.EmployeeType", b =>
@@ -185,6 +474,28 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("EmployeeTypeId");
 
                     b.ToTable("EmployeeType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeTypeId = 1,
+                            EmployeeTypeName = "Hospitals Læge"
+                        },
+                        new
+                        {
+                            EmployeeTypeId = 2,
+                            EmployeeTypeName = "Praktiserende Læge"
+                        },
+                        new
+                        {
+                            EmployeeTypeId = 3,
+                            EmployeeTypeName = "Sygeplejerske"
+                        },
+                        new
+                        {
+                            EmployeeTypeId = 4,
+                            EmployeeTypeName = "Sundhedshjælper"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.FileType", b =>
@@ -204,6 +515,18 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("FileTypeId");
 
                     b.ToTable("FileType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            FileTypeId = 1,
+                            FileTypeName = "png"
+                        },
+                        new
+                        {
+                            FileTypeId = 2,
+                            FileTypeName = "pdf"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Journal", b =>
@@ -221,9 +544,21 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("JournalId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex(new[] { "PatientId" }, "IX_Journal_PatientID");
 
                     b.ToTable("Journal", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            JournalId = 1,
+                            PatientId = 1
+                        },
+                        new
+                        {
+                            JournalId = 2,
+                            PatientId = 2
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntry", b =>
@@ -271,13 +606,51 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("JournalEntryId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_JournalEntry_EmployeeID");
 
-                    b.HasIndex("JournalEntryStatusId");
+                    b.HasIndex(new[] { "JournalEntryStatusId" }, "IX_JournalEntry_JournalEntryStatusID");
 
-                    b.HasIndex("JournalId");
+                    b.HasIndex(new[] { "JournalId" }, "IX_JournalEntry_JournalID");
 
                     b.ToTable("JournalEntry", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            JournalEntryId = 1,
+                            DateAdded = new DateTime(2021, 7, 24, 13, 45, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = 2,
+                            Description = "Patient klager over søvnbesvær",
+                            EmployeeId = 2,
+                            JournalEntryStatusId = 1,
+                            JournalId = 1,
+                            LastEdited = new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4947),
+                            TreatmentPlaceId = 2
+                        },
+                        new
+                        {
+                            JournalEntryId = 2,
+                            DateAdded = new DateTime(2017, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = 4,
+                            Description = "Patient vil gerne vide om de har mangel på D vitamin",
+                            EmployeeId = 4,
+                            JournalEntryStatusId = 1,
+                            JournalId = 1,
+                            LastEdited = new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4955),
+                            TreatmentPlaceId = 2
+                        },
+                        new
+                        {
+                            JournalEntryId = 3,
+                            DateAdded = new DateTime(2022, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = 3,
+                            Description = "Patient har svært ved at høre",
+                            EmployeeId = 3,
+                            JournalEntryStatusId = 2,
+                            JournalId = 2,
+                            LastEdited = new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4961),
+                            TreatmentPlaceId = 1
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntryFile", b =>
@@ -312,11 +685,11 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("FileId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_JournalEntryFile_EmployeeID");
 
-                    b.HasIndex("FileTypeId");
+                    b.HasIndex(new[] { "FileTypeId" }, "IX_JournalEntryFile_FileTypeID");
 
-                    b.HasIndex("JournalEntryId");
+                    b.HasIndex(new[] { "JournalEntryId" }, "IX_JournalEntryFile_JournalEntryID");
 
                     b.ToTable("JournalEntryFile", (string)null);
                 });
@@ -348,11 +721,61 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("NoteId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_JournalEntryNote_EmployeeID");
 
-                    b.HasIndex("JournalEntryId");
+                    b.HasIndex(new[] { "JournalEntryId" }, "IX_JournalEntryNote_JournalEntryID");
 
                     b.ToTable("JournalEntryNote", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            NoteId = 1,
+                            EmployeeId = 2,
+                            IsApproved = false,
+                            JournalEntryId = 1,
+                            NoteContent = "har givet rådgivning om brug af mobiltelefoner før sengetid"
+                        },
+                        new
+                        {
+                            NoteId = 2,
+                            EmployeeId = 2,
+                            IsApproved = false,
+                            JournalEntryId = 1,
+                            NoteContent = "patient mener de lider af søvnapnø, har givet CPAP-maskine med hjem til at måle det"
+                        },
+                        new
+                        {
+                            NoteId = 3,
+                            EmployeeId = 2,
+                            IsApproved = false,
+                            JournalEntryId = 1,
+                            NoteContent = "CPAP-maskine viser ikke tegn på søvnapnø"
+                        },
+                        new
+                        {
+                            NoteId = 4,
+                            EmployeeId = 4,
+                            IsApproved = false,
+                            JournalEntryId = 2,
+                            NoteContent = "Henvist patient til at få taget en blodprøve"
+                        },
+                        new
+                        {
+                            NoteId = 5,
+                            EmployeeId = 4,
+                            IsApproved = false,
+                            JournalEntryId = 2,
+                            NoteContent = "Måling viser mangel på vitamin D, gevet rådgivning om tilskud"
+                        },
+                        new
+                        {
+                            NoteId = 6,
+                            EmployeeId = 3,
+                            IsApproved = false,
+                            JournalEntryId = 3,
+                            NoteContent = "Udført undersøgelse af hørsel, anbefaler høreapparat"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntryStatus", b =>
@@ -372,6 +795,18 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("JournalEntryStatusId");
 
                     b.ToTable("JournalEntryStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            JournalEntryStatusId = 1,
+                            StatusName = "Igang"
+                        },
+                        new
+                        {
+                            JournalEntryStatusId = 2,
+                            StatusName = "Afsluttet"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Monitor", b =>
@@ -389,7 +824,7 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("MonitorId");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex(new[] { "PatientId" }, "IX_Monitor_PatientID");
 
                     b.ToTable("Monitor", (string)null);
                 });
@@ -409,9 +844,21 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("PatientId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "UserId" }, "IX_Patient_UserID");
 
                     b.ToTable("Patient", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PatientId = 1,
+                            UserId = 9
+                        },
+                        new
+                        {
+                            PatientId = 2,
+                            UserId = 10
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Room", b =>
@@ -429,9 +876,96 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("RoomId");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex(new[] { "DepartmentId" }, "IX_Room_DepartmentID");
 
                     b.ToTable("Room", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RoomId = 1,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 2,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 3,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 4,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 5,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 6,
+                            DepartmentId = 1
+                        },
+                        new
+                        {
+                            RoomId = 7,
+                            DepartmentId = 2
+                        },
+                        new
+                        {
+                            RoomId = 8,
+                            DepartmentId = 2
+                        },
+                        new
+                        {
+                            RoomId = 9,
+                            DepartmentId = 2
+                        },
+                        new
+                        {
+                            RoomId = 10,
+                            DepartmentId = 2
+                        },
+                        new
+                        {
+                            RoomId = 11,
+                            DepartmentId = 2
+                        },
+                        new
+                        {
+                            RoomId = 12,
+                            DepartmentId = 3
+                        },
+                        new
+                        {
+                            RoomId = 13,
+                            DepartmentId = 3
+                        },
+                        new
+                        {
+                            RoomId = 14,
+                            DepartmentId = 3
+                        },
+                        new
+                        {
+                            RoomId = 15,
+                            DepartmentId = 3
+                        },
+                        new
+                        {
+                            RoomId = 16,
+                            DepartmentId = 4
+                        },
+                        new
+                        {
+                            RoomId = 17,
+                            DepartmentId = 4
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Treatment", b =>
@@ -447,8 +981,8 @@ namespace RegionSyd.Repositories.Migrations
                         .HasColumnType("int")
                         .HasColumnName("DepartmentID");
 
-                    b.Property<TimeSpan>("TreatmentDuration")
-                        .HasColumnType("time");
+                    b.Property<int>("TreatmentDuration")
+                        .HasColumnType("int");
 
                     b.Property<string>("TreatmentName")
                         .IsRequired()
@@ -457,9 +991,46 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("TreatmentId");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex(new[] { "DepartmentId" }, "IX_Treatment_DepartmentID");
 
                     b.ToTable("Treatment", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            TreatmentId = 1,
+                            DepartmentId = 4,
+                            TreatmentDuration = 15,
+                            TreatmentName = "Blodprøve"
+                        },
+                        new
+                        {
+                            TreatmentId = 2,
+                            DepartmentId = 3,
+                            TreatmentDuration = 45,
+                            TreatmentName = "Høreprøve"
+                        },
+                        new
+                        {
+                            TreatmentId = 3,
+                            DepartmentId = 4,
+                            TreatmentDuration = 15,
+                            TreatmentName = "Blodprøve"
+                        },
+                        new
+                        {
+                            TreatmentId = 4,
+                            DepartmentId = 1,
+                            TreatmentDuration = 60,
+                            TreatmentName = "CT-scanning"
+                        },
+                        new
+                        {
+                            TreatmentId = 5,
+                            DepartmentId = 2,
+                            TreatmentDuration = 60,
+                            TreatmentName = "Polysomnografi"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.TreatmentPlace", b =>
@@ -495,9 +1066,29 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("TreatmentPlaceId");
 
-                    b.HasIndex("TreatmentPlaceTypeId");
+                    b.HasIndex(new[] { "TreatmentPlaceTypeId" }, "IX_TreatmentPlace_TreatmentPlaceTypeID");
 
                     b.ToTable("TreatmentPlace", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            TreatmentPlaceId = 1,
+                            Address = "Kresten Philipsens Vej 15",
+                            City = "Aabenraa",
+                            TreatmentPlaceName = "Sygehus Sønderjylland",
+                            TreatmentPlaceTypeId = 1,
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            TreatmentPlaceId = 2,
+                            Address = "Ulsnæs 13",
+                            City = "Gråsten",
+                            TreatmentPlaceName = "Sundhedshus Gråsten",
+                            TreatmentPlaceTypeId = 2,
+                            ZipCode = 6300
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.TreatmentPlaceType", b =>
@@ -517,6 +1108,18 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("TreatmentPlaceTypeId");
 
                     b.ToTable("TreatmentPlaceType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            TreatmentPlaceTypeId = 1,
+                            TreatmentPlaceTypeName = "Sygehus"
+                        },
+                        new
+                        {
+                            TreatmentPlaceTypeId = 2,
+                            TreatmentPlaceTypeName = "Sundhedshus"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.User", b =>
@@ -527,6 +1130,16 @@ namespace RegionSyd.Repositories.Migrations
                         .HasColumnName("UserID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Cpr")
                         .IsRequired()
@@ -567,14 +1180,159 @@ namespace RegionSyd.Repositories.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserTypeId");
+                    b.HasIndex(new[] { "UserTypeId" }, "IX_User_UserTypeID");
 
                     b.HasIndex(new[] { "Cpr" }, "UK_CPR")
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Address = "Vesterbrogade 1",
+                            CityName = "Aabenraa",
+                            Cpr = "050871-1595",
+                            Email = "marmag71@regionsyd.dk",
+                            FirstName = "Martin",
+                            LastName = "Magnussen",
+                            Phone = "19191919",
+                            UserTypeId = 1,
+                            Username = "Marmag",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Address = "Vesterbrogade 2",
+                            CityName = "Aabenraa",
+                            Cpr = "010394-4718",
+                            Email = "sigsig94@regionsyd.dk",
+                            FirstName = "Sigrid",
+                            LastName = "Sigurtsen",
+                            Phone = "17171717",
+                            UserTypeId = 1,
+                            Username = "Sigsig",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Address = "Vesterbrogade 3",
+                            CityName = "Aabenraa",
+                            Cpr = "090991-5628",
+                            Email = "emmell91@regionsyd.dk",
+                            FirstName = "Emma",
+                            LastName = "Ellert",
+                            Phone = "14141414",
+                            UserTypeId = 1,
+                            Username = "Emmell",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Address = "Vesterbrogade 4",
+                            CityName = "Aabenraa",
+                            Cpr = "090477-2345",
+                            Email = "trotho77@regionsyd.dk",
+                            FirstName = "Troels",
+                            LastName = "Thomsem",
+                            Phone = "24242424",
+                            UserTypeId = 1,
+                            Username = "Trotho",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Address = "Vesterbrogade 5",
+                            CityName = "Aabenraa",
+                            Cpr = "280587-2566",
+                            Email = "winwol87@regionsyd.dk",
+                            FirstName = "Winnie",
+                            LastName = "Wolfsen",
+                            Phone = "28282828",
+                            UserTypeId = 1,
+                            Username = "Winwol",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            Address = "Vesterbrogade 6",
+                            CityName = "Aabenraa",
+                            Cpr = "300666-2175",
+                            Email = "robree66@regionsyd.dk",
+                            FirstName = "Robert",
+                            LastName = "Reesen",
+                            Phone = "31313131",
+                            UserTypeId = 1,
+                            Username = "Robree",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            Address = "Vesterbrogade 7",
+                            CityName = "Aabenraa",
+                            Cpr = "110296-1232",
+                            Email = "nadnis96@regionsyd.dk",
+                            FirstName = "Nadja",
+                            LastName = "Nissen",
+                            Phone = "35353535",
+                            UserTypeId = 1,
+                            Username = "Nadnis",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            Address = "Vesterbrogade 8",
+                            CityName = "Aabenraa",
+                            Cpr = "230164-3457",
+                            Email = "iamthebest6969@ofir.dk",
+                            FirstName = "Poul",
+                            LastName = "Pedersen",
+                            Phone = "44444444",
+                            UserTypeId = 2,
+                            Username = "PoulPedersen3",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 9,
+                            Address = "Vesterbrogade 9",
+                            CityName = "Aabenraa",
+                            Cpr = "250502-3568",
+                            Email = "loooouiiise@hotmail.dk",
+                            FirstName = "Louise",
+                            LastName = "Lundsen",
+                            Phone = "40404040",
+                            UserTypeId = 2,
+                            Username = "Louiselundsen1",
+                            ZipCode = 6200
+                        },
+                        new
+                        {
+                            UserId = 10,
+                            Address = "Vesterbrogade 10",
+                            CityName = "Aabenraa",
+                            Cpr = "190199-2385",
+                            Email = "xXxsupermanxXx@yahoo.dk",
+                            FirstName = "Kim",
+                            LastName = "Kold",
+                            Phone = "57575757",
+                            UserTypeId = 2,
+                            Username = "Kimkold",
+                            ZipCode = 6200
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.UserType", b =>
@@ -594,6 +1352,18 @@ namespace RegionSyd.Repositories.Migrations
                     b.HasKey("UserTypeId");
 
                     b.ToTable("UserType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserTypeId = 1,
+                            UserTypeName = "Sundhedsmedarbejder"
+                        },
+                        new
+                        {
+                            UserTypeId = 2,
+                            UserTypeName = "Patient"
+                        });
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Alarm", b =>
