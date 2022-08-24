@@ -15,7 +15,6 @@ namespace RegionSyd.WebApi.Services.Profiles
         {
             CreateMap<JournalEntry, JournalEntryDTO>();
             CreateMap<JournalEntryDTO, JournalEntry>();
-        }
-        
+        }        
     }
 }

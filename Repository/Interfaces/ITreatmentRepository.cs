@@ -9,11 +9,11 @@ namespace RegionSyd.Repositories.Interfaces
 {
     public interface ITreatmentRepository
     {
-        // Get all treatments
+        Task<Treatment> CreateTreatment(Treatment newTreatment);
         Task<List<Treatment>> GetTreatments();
-        Task<Treatment> GetTreatmentById(int id);
-        Task<Treatment> CreateTreatment(Treatment treatment);
-        Task<Treatment> UpdateTreatment(Treatment treatment);
+        Task<Treatment> GetTreatment(int id);
+        Task<List<Treatment>> GetTreatmentsForHospital(int id);
+        Task<Treatment> UpdateTreatment(Treatment newTreatment);
         Task<bool> DeleteTreatment(int id);
     }
 }

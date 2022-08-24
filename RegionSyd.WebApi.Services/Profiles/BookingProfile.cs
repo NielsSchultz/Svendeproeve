@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.WebApi.Services.Profiles
 {
-    public class BedProfile : Profile
+    public class BookingProfile : Profile
     {
-        public BedProfile()
+        public BookingProfile()
         {
-            CreateMap<Bed, BedDTO>();
-            CreateMap<BedDTO, Bed>();
+            CreateMap<Booking, BookingDTO>();
+            CreateMap<BookingDTO, Booking>();
         }        
     }
 }

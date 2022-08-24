@@ -1,4 +1,5 @@
-﻿using RegionSyd.Repositories.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RegionSyd.Repositories.Entities;
 using RegionSyd.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,64 @@ namespace RegionSyd.Repositories
 {
     public class JournalEntryRepository : IJournalEntryRepository
     {
-        public Task<JournalEntry> CreateJournalEntry(JournalEntry journalEntry)
+        private readonly RegionSydDBContext _context;
+
+        public JournalEntryRepository(RegionSydDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Task<bool> DeleteJournalEntry(int id)
+        public async Task<JournalEntry> CreateJournalEntry(JournalEntry newJournalEntry)
         {
-            throw new NotImplementedException();
+            if (newJournalEntry != null)
+            {
+                _context.JournalEntries.Add(newJournalEntry);
+                await _context.SaveChangesAsync();
+                return newJournalEntry;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(newJournalEntry));
+            }
         }
 
-        public Task<List<JournalEntry>> GetJournalEntriesForJournal(int id)
+        public async Task<bool> DeleteJournalEntry(int id)
         {
-            throw new NotImplementedException();
+            var journalEntry = await _context.JournalEntries.FindAsync(id);
+            if (journalEntry != null)
+            {
+                _context.JournalEntries.Remove(journalEntry);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(journalEntry));
+            }
         }
 
-        public Task<JournalEntry> GetJournalEntry(int id)
+        public async Task<List<JournalEntry>> GetJournalEntriesForJournal(int id)
         {
-            throw new NotImplementedException();
+            return await _context.JournalEntries.Where(j => j.JournalId == id).ToListAsync();
         }
 
-        public Task<JournalEntry> UpdateJournalEntry(JournalEntry journalEntry)
+        public async Task<JournalEntry> GetJournalEntry(int id)
         {
-            throw new NotImplementedException();
+            return await _context.JournalEntries.FindAsync(id);
+        }
+
+        public async Task<JournalEntry> UpdateJournalEntry(JournalEntry newJournalEntry)
+        {
+            if (newJournalEntry != null)
+            {
+                _context.JournalEntries.Add(newJournalEntry);
+                await _context.SaveChangesAsync();
+                return newJournalEntry;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(newJournalEntry));
+            }
         }
     }
 }
