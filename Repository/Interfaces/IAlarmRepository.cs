@@ -12,7 +12,7 @@ namespace RegionSyd.Repositories.Interfaces
         Task<Alarm> CreateAlarm(Alarm newAlarm);
         Task<List<Alarm>> GetAlarms();
         Task<Alarm> GetAlarm(int id);
-        Task<List<Alarm>> GetAlarmForBed(int id);
+        Task<Alarm> GetAlarmForBed(int id);
         Task<Alarm> UpdateAlarm(Alarm newAlarm);
         Task<bool> DeleteAlarm(int id);
     }
