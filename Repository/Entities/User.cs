@@ -17,6 +17,12 @@ namespace RegionSyd.Repositories.Entities
         public string? MiddleName { get; set; }
         public string LastName { get; set; } = null!;
         public string Username { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Phone { get; set; } = null!;
+        public string Cpr { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public int ZipCode { get; set; }
+        public string CityName { get; set; } = null!;
 
         public virtual UserType UserType { get; set; } = null!;
         public virtual ICollection<Employee> Employees { get; set; }

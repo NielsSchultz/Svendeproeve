@@ -106,7 +106,10 @@ namespace RegionSyd.Repositories.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CPR = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,9 +146,7 @@ namespace RegionSyd.Repositories.Migrations
                 {
                     PatientID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    CPR = table.Column<int>(type: "int", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "date", nullable: false)
+                    UserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,9 +167,7 @@ namespace RegionSyd.Repositories.Migrations
                     UserID = table.Column<int>(type: "int", nullable: false),
                     EmployeeTypeID = table.Column<int>(type: "int", nullable: false),
                     DepartmentID = table.Column<int>(type: "int", nullable: false),
-                    EmployeeCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Birthday = table.Column<DateTime>(type: "date", nullable: false)
+                    EmployeeCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,7 +215,7 @@ namespace RegionSyd.Repositories.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DepartmentID = table.Column<int>(type: "int", nullable: false),
                     TreatmentName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TreatmentDuration = table.Column<int>(type: "int", nullable: false)
+                    TreatmentDuration = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -409,7 +408,8 @@ namespace RegionSyd.Repositories.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JournalEntryID = table.Column<int>(type: "int", nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
-                    NoteContent = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false)
+                    NoteContent = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -425,47 +425,6 @@ namespace RegionSyd.Repositories.Migrations
                         principalTable: "JournalEntry",
                         principalColumn: "JournalEntryID");
                 });
-
-            migrationBuilder.InsertData(
-                table: "TreatmentPlaceType",
-                columns: new[] { "TreatmentPlaceTypeID", "TreatmentPlaceTypeName" },
-                values: new object[] { 1, "Sygehus" });
-
-            migrationBuilder.InsertData(
-                table: "TreatmentPlaceType",
-                columns: new[] { "TreatmentPlaceTypeID", "TreatmentPlaceTypeName" },
-                values: new object[] { 2, "Sundhedshus" });
-
-            migrationBuilder.InsertData(
-                table: "TreatmentPlace",
-                columns: new[] { "TreatmentPlaceID", "Address", "City", "TreatmentPlaceName", "TreatmentPlaceTypeID", "ZipCode" },
-                values: new object[] { 1, "Kresten Philipsens Vej 15", "Aabenraa", "Sygehus Sønderjylland", 1, 6200 });
-
-            migrationBuilder.InsertData(
-                table: "TreatmentPlace",
-                columns: new[] { "TreatmentPlaceID", "Address", "City", "TreatmentPlaceName", "TreatmentPlaceTypeID", "ZipCode" },
-                values: new object[] { 2, "Ulsnæs 13", "Gråsten", "Sundhedshus Gråsten", 2, 6300 });
-
-            migrationBuilder.InsertData(
-                table: "Department",
-                columns: new[] { "DepartmentID", "DepartmentName", "TreatmentPlaceID" },
-                values: new object[,]
-                {
-                    { 1, "Røntgen Afdeling", 1 },
-                    { 2, "Søvnambulatoriet", 1 },
-                    { 3, "Høreklinniken", 1 },
-                    { 4, "Blodprøve", 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Treatment",
-                columns: new[] { "TreatmentID", "DepartmentID", "TreatmentDuration", "TreatmentName" },
-                values: new object[] { 1, 4, 15, "Blodprøve" });
-
-            migrationBuilder.InsertData(
-                table: "Treatment",
-                columns: new[] { "TreatmentID", "DepartmentID", "TreatmentDuration", "TreatmentName" },
-                values: new object[] { 2, 1, 60, "CT-scanning" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Alarm_BedID",
@@ -586,6 +545,12 @@ namespace RegionSyd.Repositories.Migrations
                 name: "IX_User_UserTypeID",
                 table: "User",
                 column: "UserTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "UK_CPR",
+                table: "User",
+                column: "CPR",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

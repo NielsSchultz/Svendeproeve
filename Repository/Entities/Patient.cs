@@ -14,8 +14,6 @@ namespace RegionSyd.Repositories.Entities
 
         public int PatientId { get; set; }
         public int UserId { get; set; }
-        public int Cpr { get; set; }
-        public DateTime Birthday { get; set; }
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Booking> Bookings { get; set; }

@@ -9,6 +9,7 @@ namespace RegionSyd.Repositories.Entities
         public int JournalEntryId { get; set; }
         public int EmployeeId { get; set; }
         public string NoteContent { get; set; } = null!;
+        public bool IsApproved { get; set; }
 
         public virtual Employee Employee { get; set; } = null!;
         public virtual JournalEntry JournalEntry { get; set; } = null!;
