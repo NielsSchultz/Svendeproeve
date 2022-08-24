@@ -34,16 +34,16 @@ namespace RegionSyd.Repositories
 
         public async Task<bool> DeleteDepartment(int id)
         {
-            var treatment = await _context.Departments.Where(b => b.DepartmentId == id).FirstOrDefaultAsync();
-            if (treatment != null)
+            var department = await _context.Departments.Where(b => b.DepartmentId == id).FirstOrDefaultAsync();
+            if (department != null)
             {
-                _context.Departments.Remove(treatment);
+                _context.Departments.Remove(department);
                 await _context.SaveChangesAsync();
                 return true;
             }
             else
             {
-                throw new ArgumentNullException(nameof(treatment));
+                throw new ArgumentNullException(nameof(department));
             }
         }
 

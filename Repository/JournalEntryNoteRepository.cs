@@ -34,16 +34,16 @@ namespace RegionSyd.Repositories
 
         public async Task<bool> DeleteJournalEntryNote(int id)
         {
-            var treatment = await _context.JournalEntryNotes.FindAsync(id);
-            if (treatment != null)
+            var journalEntryNote = await _context.JournalEntryNotes.FindAsync(id);
+            if (journalEntryNote != null)
             {
-                _context.JournalEntryNotes.Remove(treatment);
+                _context.JournalEntryNotes.Remove(journalEntryNote);
                 await _context.SaveChangesAsync();
                 return true;
             }
             else
             {
-                throw new ArgumentNullException(nameof(treatment));
+                throw new ArgumentNullException(nameof(journalEntryNote));
             }
         }
 

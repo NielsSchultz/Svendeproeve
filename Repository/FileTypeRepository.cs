@@ -34,16 +34,16 @@ namespace RegionSyd.Repositories
 
         public async Task<bool> DeleteFileType(int id)
         {
-            var treatment = await _context.FileTypes.Where(b => b.FileTypeId == id).FirstOrDefaultAsync();
-            if (treatment != null)
+            var fileType = await _context.FileTypes.Where(b => b.FileTypeId == id).FirstOrDefaultAsync();
+            if (fileType != null)
             {
-                _context.FileTypes.Remove(treatment);
+                _context.FileTypes.Remove(fileType);
                 await _context.SaveChangesAsync();
                 return true;
             }
             else
             {
-                throw new ArgumentNullException(nameof(treatment));
+                throw new ArgumentNullException(nameof(fileType));
             }
         }
 

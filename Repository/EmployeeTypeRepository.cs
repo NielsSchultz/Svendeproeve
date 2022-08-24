@@ -34,16 +34,16 @@ namespace RegionSyd.Repositories
 
         public async Task<bool> DeleteEmployeeType(int id)
         {
-            var treatment = await _context.EmployeeTypes.Where(b => b.EmployeeTypeId == id).FirstOrDefaultAsync();
-            if (treatment != null)
+            var employeeType = await _context.EmployeeTypes.Where(b => b.EmployeeTypeId == id).FirstOrDefaultAsync();
+            if (employeeType != null)
             {
-                _context.EmployeeTypes.Remove(treatment);
+                _context.EmployeeTypes.Remove(employeeType);
                 await _context.SaveChangesAsync();
                 return true;
             }
             else
             {
-                throw new ArgumentNullException(nameof(treatment));
+                throw new ArgumentNullException(nameof(employeeType));
             }
         }
 

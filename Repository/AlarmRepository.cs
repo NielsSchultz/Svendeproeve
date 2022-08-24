@@ -34,16 +34,16 @@ namespace RegionSyd.Repositories
 
         public async Task<bool> DeleteAlarm(int id)
         {
-            var treatment = await _context.Alarms.Where(b => b.AlarmId == id).FirstOrDefaultAsync();
-            if (treatment != null)
+            var alarm = await _context.Alarms.Where(b => b.AlarmId == id).FirstOrDefaultAsync();
+            if (alarm != null)
             {
-                _context.Alarms.Remove(treatment);
+                _context.Alarms.Remove(alarm);
                 await _context.SaveChangesAsync();
                 return true;
             }
             else
             {
-                throw new ArgumentNullException(nameof(treatment));
+                throw new ArgumentNullException(nameof(alarm));
             }
         }
 
