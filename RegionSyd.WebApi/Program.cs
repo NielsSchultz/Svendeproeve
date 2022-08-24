@@ -16,6 +16,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<RegionSydDBContext>();
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
+builder.Services.AddScoped<IJournalRepository, JournalRepository>();
+builder.Services.AddScoped<IJournalService, JournalService>();
+builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
+builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+builder.Services.AddScoped<IBedRepository, BedRepository>();
+builder.Services.AddScoped<IBedService, BedService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
