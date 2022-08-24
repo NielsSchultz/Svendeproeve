@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Repositories.Interfaces
 {
-    public interface IJournalEntryNoteRepository
+    public interface IJournalEntryFileRepository
     {
         // Create Journal Entry
-        Task<JournalEntryNote> CreateJournalEntryNote(JournalEntryNote newJournalEntryNote);
+        Task<JournalEntryFile> CreateJournalEntryFile(JournalEntryFile newJournalEntryFile);
 
         // Get all journal entries for Journal by Journal ID
-        Task<List<JournalEntryNote>> GetJournalEntryNotesForJournalEntry(int id);
+        Task<List<JournalEntryFile>> GetJournalEntryFilesForJournalEntry(int id);
 
         // Get journal entry by ID
-        Task<JournalEntryNote> GetJournalEntryNote(int id);
+        Task<JournalEntryFile> GetJournalEntryFile(int id);
 
         // Update Journal Entry
-        Task<JournalEntryNote> UpdateJournalEntryNote(JournalEntryNote newJournalEntryNote);
+        Task<JournalEntryFile> UpdateJournalEntryFile(JournalEntryFile newJournalEntryFile);
 
         // Delete Journal Entry
-        Task<bool> DeleteJournalEntryNote(int id);
+        Task<bool> DeleteJournalEntryFile(int id);
     }
 }
