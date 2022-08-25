@@ -4,8 +4,9 @@ namespace RegionSyd.Web.Services.Interfaces
 {
     public interface IJournalService
     {
-        Task<JournalDTO> GetJournalById(int patientId);
-        Task<JournalEntryDTO> SaveJournalEntry(JournalEntryDTO JournalEntryDTO);
-        Task<string> TestTreatment();
+        Task<JournalDTO> GetById(int patientId);
+        Task<JournalDTO> Create(JournalDTO journalDTO);
+        Task<JournalDTO> Update(JournalDTO journalDTO);
+        Task<string> Delete(int patientId);
     }
 }

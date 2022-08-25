@@ -11,13 +11,13 @@
 
         //Patient
         public int PatientId { get; set; }
-        public int PatientCpr { get; set; }
 
         //User
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }
         public string LastName { get; set; }
+        public string Cpr { get; set; }
 
         //Journal
         public int JournalEntryId { get; set; }

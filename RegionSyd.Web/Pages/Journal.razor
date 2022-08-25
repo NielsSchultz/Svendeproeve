@@ -5,7 +5,7 @@
 @using RegionSyd.Web.Services.Interfaces
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navigationManager
-@*@inject IJournalService _journalService*@
+@inject IJournalService _journalService
 
 <div class="container">
 </div>
@@ -78,9 +78,10 @@
     List<JournalEntryDTO> JournalEntries;
     //RadzenDataGrid<JournalEntryDTO> journalGrid;
 
-    protected override void OnInitialized()
+    protected async override void OnInitialized()
     {
-        CreateJournalEntries();
+        PatientJournal = await _journalService.GetJournalById(1);
+        //CreateJournalEntries();
     }
 
     public async void OpenFilesList(int id)
@@ -120,7 +121,7 @@
             FirstName = "Joan",
             MiddleName = "Krarup",
             LastName = "Langgaard",
-            Cpr = 1910872342,
+            Cpr = "1910872342",
             JournalEntries = new List<JournalEntryDTO>()
             {
                 new JournalEntryDTO()

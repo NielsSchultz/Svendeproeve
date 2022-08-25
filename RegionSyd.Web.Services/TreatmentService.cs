@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class JournalService : IJournalService
+    public class TreatmentService : ITreatmentService
     {
         private IHttpClientFactory _httpClientFactory;
-        private string CONTROLLER = Controller.Journal.ToString();
+        private string CONTROLLER = Controller.Treatment.ToString();
 
-        public JournalService(IHttpClientFactory httpClientFactory)
+        public TreatmentService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -40,37 +40,37 @@ namespace RegionSyd.Web.Services
             return journal;
         }
 
-        public async Task<JournalDTO> Create(JournalDTO journalDTO)
+        public async Task<TreatmentDTO> Create(TreatmentDTO treatmentDTO)
         {
-            var journalEntry = new JournalDTO();
+            var treatment = new TreatmentDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(journalDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journalEntry = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
             }
 
-            return journalEntry;
+            return treatment;
         }
-        public async Task<JournalDTO> Update(JournalDTO journalDTO)
+        public async Task<TreatmentDTO> Update(TreatmentDTO treatmentDTO)
         {
-            var journal = new JournalDTO();
+            var treatment = new TreatmentDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(journalDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
             }
 
-            return journal;
+            return treatment;
         }
 
         public async Task<string> Delete(int id)
@@ -79,11 +79,11 @@ namespace RegionSyd.Web.Services
 
             var httpResponseMessage = await httpClient.DeleteAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
 
-            var message = httpResponseMessage.IsSuccessStatusCode ? "Journal er slettet" : "Der er sket en fejl prøv igen senere";
+            var message = httpResponseMessage.IsSuccessStatusCode ? "undersøgelse er slettet" : "Der er sket en fejl prøv igen senere";
 
             return message;
         }
-
-
     }
 }
+
+
