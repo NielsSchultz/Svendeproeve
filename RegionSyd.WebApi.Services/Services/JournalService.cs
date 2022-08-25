@@ -27,6 +27,11 @@ namespace RegionSyd.WebApi.Services.Services
             var journals = await _journalRepository.GetJournals();
             return _mapper.Map<List<JournalDTO>>(journals);
         }
+        public async Task<JournalDTO> GetJournal(int id)
+        {
+            var journal = await _journalRepository.GetJournal(id);
+            return _mapper.Map<JournalDTO>(journal);
+        }
         public async Task<JournalDTO> GetJournalByPatientID(int id)
         {
             var journal = await _journalRepository.GetJournalByPatientID(id);

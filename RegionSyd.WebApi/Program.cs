@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddDbContext<RegionSydDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Christian")));
+builder.Services.AddDbContext<RegionSydDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Niels")));
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 builder.Services.AddScoped<IJournalRepository, JournalRepository>();
