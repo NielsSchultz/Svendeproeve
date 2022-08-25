@@ -16,6 +16,7 @@ namespace RegionSyd.WebApi.Services.Services
         private readonly IJournalEntryStatusRepository _journalEntryStatusRepository;
         private readonly IMapper _mapper;
 
+
         public JournalEntryStatusService(IJournalEntryStatusRepository journalEntryStatusRepository, IMapper mapper)
         {
             _journalEntryStatusRepository = journalEntryStatusRepository ?? throw new ArgumentNullException(nameof(journalEntryStatusRepository));
