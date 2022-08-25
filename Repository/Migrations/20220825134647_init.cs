@@ -327,7 +327,6 @@ namespace RegionSyd.Repositories.Migrations
                     JournalEntryStatusID = table.Column<int>(type: "int", nullable: false),
                     TreatmentPlaceID = table.Column<int>(type: "int", nullable: false),
                     DepartmentID = table.Column<int>(type: "int", nullable: true),
-                    EmployeeID = table.Column<int>(type: "int", nullable: false),
                     Diagnosis = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     DateAdded = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -336,11 +335,6 @@ namespace RegionSyd.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JournalEntry", x => x.JournalEntryID);
-                    table.ForeignKey(
-                        name: "FK_JournalEntry_Employee",
-                        column: x => x.EmployeeID,
-                        principalTable: "Employee",
-                        principalColumn: "EmployeeID");
                     table.ForeignKey(
                         name: "FK_JournalEntry_Journal",
                         column: x => x.JournalID,
@@ -624,12 +618,12 @@ namespace RegionSyd.Repositories.Migrations
 
             migrationBuilder.InsertData(
                 table: "JournalEntry",
-                columns: new[] { "JournalEntryID", "DateAdded", "DepartmentID", "Description", "Diagnosis", "EmployeeID", "JournalEntryStatusID", "JournalID", "LastEdited", "TreatmentPlaceID" },
+                columns: new[] { "JournalEntryID", "DateAdded", "DepartmentID", "Description", "Diagnosis", "JournalEntryStatusID", "JournalID", "LastEdited", "TreatmentPlaceID" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 7, 24, 13, 45, 0, 0, DateTimeKind.Unspecified), 2, "Patient klager over søvnbesvær", null, 2, 1, 1, new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4947), 2 },
-                    { 2, new DateTime(2017, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 4, "Patient vil gerne vide om de har mangel på D vitamin", null, 4, 1, 1, new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4955), 2 },
-                    { 3, new DateTime(2022, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 3, "Patient har svært ved at høre", null, 3, 2, 2, new DateTime(2022, 8, 24, 13, 47, 30, 478, DateTimeKind.Utc).AddTicks(4961), 1 }
+                    { 1, new DateTime(2021, 7, 24, 13, 45, 0, 0, DateTimeKind.Unspecified), 2, "Patient klager over søvnbesvær", null, 1, 1, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6275), 2 },
+                    { 2, new DateTime(2017, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 4, "Patient vil gerne vide om de har mangel på D vitamin", null, 1, 1, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6285), 2 },
+                    { 3, new DateTime(2022, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 3, "Patient har svært ved at høre", null, 2, 2, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6363), 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -694,11 +688,6 @@ namespace RegionSyd.Repositories.Migrations
                 name: "IX_Journal_PatientID",
                 table: "Journal",
                 column: "PatientID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JournalEntry_EmployeeID",
-                table: "JournalEntry",
-                column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JournalEntry_JournalEntryStatusID",
@@ -799,13 +788,16 @@ namespace RegionSyd.Repositories.Migrations
                 name: "FileType");
 
             migrationBuilder.DropTable(
+                name: "Employee");
+
+            migrationBuilder.DropTable(
                 name: "JournalEntry");
 
             migrationBuilder.DropTable(
                 name: "Room");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "EmployeeType");
 
             migrationBuilder.DropTable(
                 name: "Journal");
@@ -815,9 +807,6 @@ namespace RegionSyd.Repositories.Migrations
 
             migrationBuilder.DropTable(
                 name: "Department");
-
-            migrationBuilder.DropTable(
-                name: "EmployeeType");
 
             migrationBuilder.DropTable(
                 name: "Patient");
