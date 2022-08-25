@@ -32,7 +32,7 @@ namespace RegionSyd.WebApi.Controllers
         }
         
         [HttpPost]
-        public async Task<DepartmentDTO> CreateTreatment(DepartmentDTO departmentDTO)
+        public async Task<DepartmentDTO> CreateDepartment(DepartmentDTO departmentDTO)
         {
             return await _departmentService.CreateDepartment(departmentDTO);
         }
