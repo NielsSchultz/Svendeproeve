@@ -11,7 +11,7 @@
 
         //Patient
         public int PatientId { get; set; }
-        public int PatientCpr { get; set; }
+        public string PatientCpr { get; set; }
 
         //User
         public int UserId { get; set; }
