@@ -47,14 +47,46 @@ namespace RegionSyd.Repositories
             }
         }
 
+        public async Task<List<JournalEntry>> GetJournalEntries()
+        {
+            return await _context.JournalEntries
+                .Include(j => j.Journal)
+                .ThenInclude(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .Include(j => j.TreatmentPlace)
+                .Include(j => j.Department)
+                .Include(j => j.JournalEntryFiles)
+                .Include(j => j.JournalEntryNotes)
+                .Include(j => j.JournalEntryStatus)
+                .ToListAsync();
+        }
+
         public async Task<List<JournalEntry>> GetJournalEntriesForJournal(int id)
         {
-            return await _context.JournalEntries.Where(j => j.JournalId == id).ToListAsync();
+            return await _context.JournalEntries.Where(j => j.JournalId == id)
+                .Include(j => j.Journal)
+                .ThenInclude(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .Include(j => j.TreatmentPlace)
+                .Include(j => j.Department)
+                .Include(j => j.JournalEntryFiles)
+                .Include(j => j.JournalEntryNotes)
+                .Include(j => j.JournalEntryStatus)
+                .ToListAsync();
         }
 
         public async Task<JournalEntry> GetJournalEntry(int id)
         {
-            return await _context.JournalEntries.FindAsync(id);
+            return await _context.JournalEntries.Where(j => j.JournalEntryId == id)
+                .Include(j => j.Journal)
+                .ThenInclude(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .Include(j => j.TreatmentPlace)
+                .Include(j => j.Department)
+                .Include(j => j.JournalEntryFiles)
+                .Include(j => j.JournalEntryNotes)
+                .Include(j => j.JournalEntryStatus)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<JournalEntry> UpdateJournalEntry(JournalEntry newJournalEntry)

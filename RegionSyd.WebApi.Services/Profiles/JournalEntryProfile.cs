@@ -13,7 +13,13 @@ namespace RegionSyd.WebApi.Services.Profiles
     {
         public JournalEntryProfile()
         {
-            CreateMap<JournalEntry, JournalEntryDTO>();
+            CreateMap<JournalEntry, JournalEntryDTO>()
+                .ForMember(a => a.PatientId, b => b.MapFrom(c => c.Journal.PatientId))
+                .ForMember(a => a.TreatmentPlaceName, b => b.MapFrom(c => c.TreatmentPlace.TreatmentPlaceName))
+                .ForMember(a => a.StatusName, b => b.MapFrom(c => c.JournalEntryStatus.StatusName))
+                .ForMember(a => a.DepartmentName, b => b.MapFrom(c => c.Department.DepartmentName))
+                .ForMember(a => a.JournalEntryFilesCount, b => b.MapFrom(c => c.JournalEntryFiles.Count))
+                .ForMember(a => a.JournalEntryNotesCount, b => b.MapFrom(c => c.JournalEntryNotes.Count));
             CreateMap<JournalEntryDTO, JournalEntry>();
         }        
     }
