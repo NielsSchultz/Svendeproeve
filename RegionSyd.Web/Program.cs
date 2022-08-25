@@ -10,14 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-//builder.Services.AddScoped<IJournalService, JournalService>();
+builder.Services.AddScoped<IJournalService, JournalService>();
+builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 
 
 //HttpClient
 builder.Services.AddHttpClient("RegionSydApi", httpClient =>
 {
-    //TODO add api BaseAddress
-    httpClient.BaseAddress = new Uri("https://localhost:7297/api/");
+    httpClient.BaseAddress = new Uri("https://localhost:7297/api/"); //For localhost API
 });
 
 var app = builder.Build();

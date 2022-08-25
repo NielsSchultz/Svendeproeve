@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class JournalService : IJournalService
+    public class UserService : IUserService
     {
         private IHttpClientFactory _httpClientFactory;
-        private const string CONTROLLER = "Journal";
+        private const string CONTROLLER = "User";
 
-        public JournalService(IHttpClientFactory httpClientFactory)
+        public UserService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<JournalDTO> GetById(int id)
+        public async Task<UserDTO> GetById(int id)
         {
-            JournalDTO journal = new JournalDTO();
+            UserDTO user = new UserDTO();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -32,43 +32,43 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return journal;
+            return user;
         }
 
-        public async Task<JournalDTO> Create(JournalDTO journalDTO)
+        public async Task<UserDTO> Create(UserDTO userDTO)
         {
-            var journal = new JournalDTO();
+            var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(journalDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return journal;
+            return user;
         }
-        public async Task<JournalDTO> Update(JournalDTO journalDTO)
+        public async Task<UserDTO> Update(UserDTO userDTO)
         {
-            var journal = new JournalDTO();
+            var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(journalDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return journal;
+            return user;
         }
 
         public async Task<string> Delete(int id)
@@ -81,7 +81,5 @@ namespace RegionSyd.Web.Services
 
             return message;
         }
-
-
     }
 }

@@ -1,11 +1,11 @@
 ﻿@page "/journal"
 @using RegionSyd.Common.DTOs
-@using RegionSyd.Common.Enums
 @using RegionSyd.Web.Helpers
 @using RegionSyd.Web.Services.Interfaces
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navigationManager
-@*@inject IJournalService _journalService*@
+@inject IJournalService _journalService
+@inject IJournalEntryService _journalEntryService
 
 <div class="container">
 </div>
@@ -62,7 +62,7 @@
             {
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="journalEntry">
-                        <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry))">
+                        <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry.JournalEntryId))">
                         </RadzenButton>
                     </Template>
                 </RadzenDataGridColumn>
@@ -72,33 +72,21 @@
 </div>
 
 @code {
-
-    //TODO
     JournalDTO PatientJournal { get; set; }
     List<JournalEntryDTO> JournalEntries;
-    //RadzenDataGrid<JournalEntryDTO> journalGrid;
 
-    protected override void OnInitialized()
+    protected async override void OnInitialized()
     {
-        CreateJournalEntries();
+        PatientJournal = await _journalService.GetById(1);
     }
 
     public async void OpenFilesList(int id)
     {
-        await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
+        navigationManager.NavigateTo($"/journal/filer?Id={id}");
     }
     public async void OpenNotesList(int id)
     {
-        //await JsRuntime.InvokeVoidAsync("alert", $"JournalEntryId: {id}"); // Alert
         navigationManager.NavigateTo($"/journal/noter?Id={id}");
-    }
-
-    JournalEntryDTO newJournalEntry;
-
-    async void CreateJournalEntry(JournalEntryDTO journalEntry)
-    {
-        //journalService.Add(journalEntry);
-        await JsRuntime.InvokeVoidAsync("alert", $"new JournalEntry: {journalEntry.DateAdded}"); // Alert
     }
 
     public async Task AddEditEntry(int id)
@@ -106,10 +94,9 @@
         navigationManager.NavigateTo($"/journal/indlæg?Id={id}");
     }
 
-    public async void DeleteEntry(JournalEntryDTO journalEntry)
+    public async void DeleteEntry(int id)
     {
-        //await journalGrid.Reload();
-        await JsRuntime.InvokeVoidAsync("alert", $"SLET JournalEntryId: {journalEntry.JournalEntryId}"); // Alert
+        var message = await _journalEntryService.Delete(id);
     }
 
     public void CreateJournalEntries()
@@ -120,7 +107,7 @@
             FirstName = "Joan",
             MiddleName = "Krarup",
             LastName = "Langgaard",
-            Cpr = 1910872342,
+            Cpr = "1910872342",
             JournalEntries = new List<JournalEntryDTO>()
             {
                 new JournalEntryDTO()
