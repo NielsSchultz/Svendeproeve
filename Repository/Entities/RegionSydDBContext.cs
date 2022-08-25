@@ -223,7 +223,7 @@ namespace RegionSyd.Repositories.Entities
             {
                 entity.ToTable("JournalEntry");
 
-                entity.HasIndex(e => e.EmployeeId, "IX_JournalEntry_EmployeeID");
+                //entity.HasIndex(e => e.EmployeeId, "IX_JournalEntry_EmployeeID");
 
                 entity.HasIndex(e => e.JournalEntryStatusId, "IX_JournalEntry_JournalEntryStatusID");
 
@@ -239,7 +239,7 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.Diagnosis).HasMaxLength(150);
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+                //entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.JournalEntryStatusId).HasColumnName("JournalEntryStatusID");
 
@@ -249,11 +249,11 @@ namespace RegionSyd.Repositories.Entities
 
                 entity.Property(e => e.TreatmentPlaceId).HasColumnName("TreatmentPlaceID");
 
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.JournalEntries)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_JournalEntry_Employee");
+                //entity.HasOne(d => d.Employee)
+                //    .WithMany(p => p.JournalEntries)
+                //    .HasForeignKey(d => d.EmployeeId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_JournalEntry_Employee");
 
                 entity.HasOne(d => d.JournalEntryStatus)
                     .WithMany(p => p.JournalEntries)
@@ -582,9 +582,9 @@ namespace RegionSyd.Repositories.Entities
                 );
 
             modelBuilder.Entity<JournalEntry>().HasData(
-                new JournalEntry { JournalEntryId = 1, JournalId = 1, DepartmentId = 2, EmployeeId = 2, TreatmentPlaceId = 2, JournalEntryStatusId = 1, DateAdded = DateTime.Parse("2021-07-24 13:45:00"), Description = "Patient klager over søvnbesvær", LastEdited = DateTime.UtcNow },
-                new JournalEntry { JournalEntryId = 2, JournalId = 1, DepartmentId = 4, EmployeeId = 4, TreatmentPlaceId = 2, JournalEntryStatusId = 1, DateAdded = DateTime.Parse("2017-02-27 08:15:00"), Description = "Patient vil gerne vide om de har mangel på D vitamin", LastEdited = DateTime.UtcNow },
-                new JournalEntry { JournalEntryId = 3, JournalId = 2, DepartmentId = 3, EmployeeId = 3, TreatmentPlaceId = 1, JournalEntryStatusId = 2, DateAdded = DateTime.Parse("2022-02-27 08:15:00"), Description = "Patient har svært ved at høre", LastEdited = DateTime.UtcNow }
+                new JournalEntry { JournalEntryId = 1, JournalId = 1, DepartmentId = 2, /*EmployeeId = 2,*/ TreatmentPlaceId = 2, JournalEntryStatusId = 1, DateAdded = DateTime.Parse("2021-07-24 13:45:00"), Description = "Patient klager over søvnbesvær", LastEdited = DateTime.UtcNow },
+                new JournalEntry { JournalEntryId = 2, JournalId = 1, DepartmentId = 4, /*EmployeeId = 4,*/ TreatmentPlaceId = 2, JournalEntryStatusId = 1, DateAdded = DateTime.Parse("2017-02-27 08:15:00"), Description = "Patient vil gerne vide om de har mangel på D vitamin", LastEdited = DateTime.UtcNow },
+                new JournalEntry { JournalEntryId = 3, JournalId = 2, DepartmentId = 3, /*EmployeeId = 3,*/ TreatmentPlaceId = 1, JournalEntryStatusId = 2, DateAdded = DateTime.Parse("2022-02-27 08:15:00"), Description = "Patient har svært ved at høre", LastEdited = DateTime.UtcNow }
                 );
 
 

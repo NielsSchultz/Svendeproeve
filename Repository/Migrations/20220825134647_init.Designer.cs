@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RegionSyd.Repositories.Entities;
 
@@ -11,9 +12,10 @@ using RegionSyd.Repositories.Entities;
 namespace RegionSyd.Repositories.Migrations
 {
     [DbContext(typeof(RegionSydDBContext))]
-    partial class RegionSydDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220825134647_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -600,10 +602,6 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("JournalEntryId");
 
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("TreatmentPlaceId");
-
                     b.HasIndex(new[] { "JournalEntryStatusId" }, "IX_JournalEntry_JournalEntryStatusID");
 
                     b.HasIndex(new[] { "JournalId" }, "IX_JournalEntry_JournalID");
@@ -619,7 +617,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient klager over søvnbesvær",
                             JournalEntryStatusId = 1,
                             JournalId = 1,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(74),
+                            LastEdited = new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6275),
                             TreatmentPlaceId = 2
                         },
                         new
@@ -630,7 +628,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient vil gerne vide om de har mangel på D vitamin",
                             JournalEntryStatusId = 1,
                             JournalId = 1,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(85),
+                            LastEdited = new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6285),
                             TreatmentPlaceId = 2
                         },
                         new
@@ -641,7 +639,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient har svært ved at høre",
                             JournalEntryStatusId = 2,
                             JournalId = 2,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(92),
+                            LastEdited = new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6363),
                             TreatmentPlaceId = 1
                         });
                 });
@@ -1457,10 +1455,6 @@ namespace RegionSyd.Repositories.Migrations
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntry", b =>
                 {
-                    b.HasOne("RegionSyd.Repositories.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
                     b.HasOne("RegionSyd.Repositories.Entities.JournalEntryStatus", "JournalEntryStatus")
                         .WithMany("JournalEntries")
                         .HasForeignKey("JournalEntryStatusId")
@@ -1473,19 +1467,9 @@ namespace RegionSyd.Repositories.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_JournalEntry_Journal");
 
-                    b.HasOne("RegionSyd.Repositories.Entities.TreatmentPlace", "TreatmentPlace")
-                        .WithMany()
-                        .HasForeignKey("TreatmentPlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
                     b.Navigation("Journal");
 
                     b.Navigation("JournalEntryStatus");
-
-                    b.Navigation("TreatmentPlace");
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntryFile", b =>

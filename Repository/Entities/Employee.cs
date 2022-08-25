@@ -7,7 +7,7 @@ namespace RegionSyd.Repositories.Entities
     {
         public Employee()
         {
-            JournalEntries = new HashSet<JournalEntry>();
+            //JournalEntries = new HashSet<JournalEntry>();
             JournalEntryFiles = new HashSet<JournalEntryFile>();
             JournalEntryNotes = new HashSet<JournalEntryNote>();
         }
@@ -21,7 +21,7 @@ namespace RegionSyd.Repositories.Entities
         public virtual Department Department { get; set; } = null!;
         public virtual EmployeeType EmployeeType { get; set; } = null!;
         public virtual User User { get; set; } = null!;
-        public virtual ICollection<JournalEntry> JournalEntries { get; set; }
+        //public virtual ICollection<JournalEntry> JournalEntries { get; set; }
         public virtual ICollection<JournalEntryFile> JournalEntryFiles { get; set; }
         public virtual ICollection<JournalEntryNote> JournalEntryNotes { get; set; }
     }
