@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RegionSyd.Repositories;
 using RegionSyd.Repositories.Entities;
 using RegionSyd.Repositories.Interfaces;
+using RegionSyd.WebApi;
 using RegionSyd.WebApi.Services.Interfaces;
 using RegionSyd.WebApi.Services.Services;
 
@@ -14,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddDbContext<RegionSydDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Niels")));
+builder.Services.AddDbContext<RegionSydDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbConnectionString")));
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 builder.Services.AddScoped<IJournalRepository, JournalRepository>();
@@ -32,6 +33,8 @@ builder.Services.AddScoped<IEmployeeTypeService, EmployeeTypeService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
