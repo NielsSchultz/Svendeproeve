@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RegionSyd.Repositories.Entities;
+using RegionSyd.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly RegionSydDBContext _context;
 
@@ -50,6 +51,12 @@ namespace RegionSyd.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
+        public async Task<User> GetUserByPatientID(int id) 
+        {
+            //skal testes
+            var test = await _context.Patients.Where(u => u.PatientId == id).Select(p => p.User).FirstOrDefaultAsync();
+            return test;
+        }    
 
         public async Task<List<User>> GetUsers()
         {
@@ -60,7 +67,7 @@ namespace RegionSyd.Repositories
         {
             if (newUser != null)
             {
-                _context.Users.Add(newUser);
+                _context.Users.Update(newUser);
                 await _context.SaveChangesAsync();
                 return newUser;
             }
