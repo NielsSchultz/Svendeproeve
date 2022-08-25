@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RegionSyd.Common.DTOs;
+using RegionSyd.Common.Enums;
 using RegionSyd.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
