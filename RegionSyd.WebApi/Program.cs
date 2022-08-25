@@ -22,6 +22,8 @@ builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
 builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
 builder.Services.AddScoped<IBedRepository, BedRepository>();
 builder.Services.AddScoped<IBedService, BedService>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
