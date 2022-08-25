@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class TreatmentService : ITreatmentService
+    public class UserService : IUserService
     {
         private IHttpClientFactory _httpClientFactory;
-        private const string CONTROLLER = "Treatment";
+        private const string CONTROLLER = "User";
 
-        public TreatmentService(IHttpClientFactory httpClientFactory)
+        public UserService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<JournalDTO> GetById(int id)
+        public async Task<UserDTO> GetById(int id)
         {
-            JournalDTO journal = new JournalDTO();
+            UserDTO user = new UserDTO();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -32,43 +32,43 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return journal;
+            return user;
         }
 
-        public async Task<TreatmentDTO> Create(TreatmentDTO treatmentDTO)
+        public async Task<UserDTO> Create(UserDTO userDTO)
         {
-            var treatment = new TreatmentDTO();
+            var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return treatment;
+            return user;
         }
-        public async Task<TreatmentDTO> Update(TreatmentDTO treatmentDTO)
+        public async Task<UserDTO> Update(UserDTO userDTO)
         {
-            var treatment = new TreatmentDTO();
+            var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                user = JsonConvert.DeserializeObject<UserDTO>(await content);
             }
 
-            return treatment;
+            return user;
         }
 
         public async Task<string> Delete(int id)
@@ -77,11 +77,9 @@ namespace RegionSyd.Web.Services
 
             var httpResponseMessage = await httpClient.DeleteAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
 
-            var message = httpResponseMessage.IsSuccessStatusCode ? "undersøgelse er slettet" : "Der er sket en fejl prøv igen senere";
+            var message = httpResponseMessage.IsSuccessStatusCode ? "Journal er slettet" : "Der er sket en fejl prøv igen senere";
 
             return message;
         }
     }
 }
-
-

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using RegionSyd.Common.DTOs;
-using RegionSyd.Common.Enums;
 using RegionSyd.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ namespace RegionSyd.Web.Services
     public class JournalEntryService : IJournalEntryService
     {
         private IHttpClientFactory _httpClientFactory;
-        private string CONTROLLER = Controller.JournalEntry.ToString();
+        private const string CONTROLLER = "JournalEntry";
         public JournalEntryService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
@@ -26,7 +25,6 @@ namespace RegionSyd.Web.Services
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            // TODO JKL add the right api endpoint - and check if this enum work
             var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
 
             if (httpResponseMessage.IsSuccessStatusCode)
