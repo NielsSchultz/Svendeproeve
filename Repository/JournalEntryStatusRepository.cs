@@ -52,7 +52,7 @@ namespace RegionSyd.Repositories
             return await _context.JournalEntryStatuses.FindAsync(id);
         }
 
-        public async Task<List<JournalEntryStatus>> GetJournalEntries()
+        public async Task<List<JournalEntryStatus>> GetJournalEntryStatuses()
         {
             return await _context.JournalEntryStatuses.ToListAsync();
         }
