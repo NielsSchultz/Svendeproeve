@@ -14,6 +14,8 @@ namespace RegionSyd.Repositories.Interfaces
 
         // Get journal entry by ID
         Task<JournalEntryStatus> GetJournalEntryStatus(int id);
+        // Get All JournalEntryStatuses
+        Task<List<JournalEntryStatus>> GetJournalEntryStatuses();
 
         // Update Journal Entry
         Task<JournalEntryStatus> UpdateJournalEntryStatus(JournalEntryStatus newJournalEntryStatus);

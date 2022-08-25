@@ -22,6 +22,8 @@ builder.Services.AddScoped<IJournalRepository, JournalRepository>();
 builder.Services.AddScoped<IJournalService, JournalService>();
 builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
 builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+builder.Services.AddScoped<IJournalEntryStatusRepository, JournalEntryStatusRepository>();
+builder.Services.AddScoped<IJournalEntryStatusService, JournalEntryStatusService>();
 builder.Services.AddScoped<IBedRepository, BedRepository>();
 builder.Services.AddScoped<IBedService, BedService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
