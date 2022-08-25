@@ -49,7 +49,14 @@ namespace RegionSyd.Repositories
 
         public async Task<List<JournalEntry>> GetJournalEntriesForJournal(int id)
         {
-            return await _context.JournalEntries.Where(j => j.JournalId == id).ToListAsync();
+            return await _context.JournalEntries.Where(j => j.JournalId == id)
+                .Include(j => j.Journal)
+                .ThenInclude(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .Include(j => j.JournalEntryFiles)
+                .Include(j => j.JournalEntryNotes)
+                .Include(j => j.JournalEntryStatus)
+                .ToListAsync();
         }
 
         public async Task<JournalEntry> GetJournalEntry(int id)

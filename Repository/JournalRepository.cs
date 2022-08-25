@@ -59,7 +59,11 @@ namespace RegionSyd.Repositories
 
         public async Task<List<Journal>> GetJournals()
         {
-            return await _context.Journals.ToListAsync();
+            return await _context.Journals
+                .Include(j => j.JournalEntries)
+                .Include(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .ToListAsync();
         }
 
         public async Task<Journal> UpdateJournal(Journal newJournal)
