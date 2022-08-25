@@ -42,10 +42,14 @@ namespace RegionSyd.Repositories.Entities
             if (!optionsBuilder.IsConfigured)
             {
                 //Local DB
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
+                //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
+                
+                //Joan
+                optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=RegionSydDB;MultipleActiveResultSets=true;Trusted_Connection=True");
                 
                 // Christian
                 //optionsBuilder.UseSqlServer("Server=MSI;Database=RegionSydDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
+                
                 //Azure DB
                 // optionsBuilder.UseSqlServer("Server=dtdevelopment.database.windows.net,1433;Database=RegionSydDB;User ID=dtdev-admin;Password=DY5yMR01BjWt;");
             }

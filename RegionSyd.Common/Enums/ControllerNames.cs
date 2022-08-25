@@ -9,10 +9,13 @@ namespace RegionSyd.Common.Enums
     public enum Controller
     {
         Journal,
+        JournalEntry,
+        Treatment,
         Patient,
         Employee,
         Bed,
         Monitor,
-        Alarm
+        Alarm,
+        User
     }
 }
