@@ -23,6 +23,11 @@ namespace RegionSyd.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<JournalDTO> GetJournal(int id)
         {
+            return await _journalService.GetJournal(id);
+        }
+        [HttpGet("ByPatient/{id}")]
+        public async Task<JournalDTO> GetJournalByPatientID(int id)
+        {
             return await _journalService.GetJournalByPatientID(id);
         }
         [HttpPost]

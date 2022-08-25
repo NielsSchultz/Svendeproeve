@@ -11,6 +11,7 @@ namespace RegionSyd.WebApi.Services.Interfaces
     {
         Task<List<JournalDTO>> GetJournals();
         Task<JournalDTO> GetJournalByPatientID(int id);
+        Task<JournalDTO> GetJournal(int id);
         Task<JournalDTO> CreateJournal(JournalDTO journal);
         Task<JournalDTO> UpdateJournal(JournalDTO journal);
         Task<bool> DeleteJournal(int id);
