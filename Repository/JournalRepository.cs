@@ -49,12 +49,20 @@ namespace RegionSyd.Repositories
 
         public async Task<Journal> GetJournal(int id)
         {
-            return await _context.Journals.Where(j => j.JournalId == id).FirstOrDefaultAsync();
+            return await _context.Journals.Where(j => j.JournalId == id)
+                .Include(j => j.JournalEntries)
+                .Include(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Journal> GetJournalByPatientID(int id)
         {
-            return await _context.Journals.Where(j => j.PatientId == id).FirstOrDefaultAsync();
+            return await _context.Journals.Where(j => j.PatientId == id)
+                .Include(j => j.JournalEntries)
+                .Include(j => j.Patient)
+                .ThenInclude(p => p.User)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Journal>> GetJournals()

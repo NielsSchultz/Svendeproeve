@@ -12,6 +12,9 @@ namespace RegionSyd.Repositories.Interfaces
         // Create Journal Entry
         Task<JournalEntry> CreateJournalEntry(JournalEntry newJournalEntry);
 
+        // Get all journal entries
+        Task<List<JournalEntry>> GetJournalEntries();
+
         // Get all journal entries for Journal by Journal ID
         Task<List<JournalEntry>> GetJournalEntriesForJournal(int id);
 

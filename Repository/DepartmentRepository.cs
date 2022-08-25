@@ -49,7 +49,7 @@ namespace RegionSyd.Repositories
 
         public async Task<Department> GetDepartment(int id)
         {
-            return await _context.Departments.FindAsync(id);
+            return await _context.Departments.Where(d => d.DepartmentId == id).FirstOrDefaultAsync();
         }
 
         public async Task<List<Department>> GetDepartments()
