@@ -18,6 +18,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<RegionSydDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDbConnectionString")));
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
+builder.Services.AddScoped<ITreatmentPlaceRepository, TreatmentPlaceRepository>();
+builder.Services.AddScoped<ITreatmentPlaceService, TreatmentPlaceService>();
 builder.Services.AddScoped<IJournalRepository, JournalRepository>();
 builder.Services.AddScoped<IJournalService, JournalService>();
 builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
