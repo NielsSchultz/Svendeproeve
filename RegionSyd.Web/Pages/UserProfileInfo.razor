@@ -1,55 +1,49 @@
 ﻿@page "/mine-oplysninger"
 @using RegionSyd.Common.DTOs
+@using RegionSyd.Web.Models
+@using RegionSyd.Web.Services.Interfaces
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IPatientService _PatientService
 
 <div class="container">
     <div class="row">
         <div class="col-6 mx-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">@Helpers.FullNameHelper.GetFullName(patient.Firstname, patient.Middlename, patient.Lastname)</h5>
-                    <p>@Helpers.CprHelper.HideLastDigits(patient.Cpr)</p>
-                </div>
-                <div class="card-body">
-                    <input type="text" class="form-control mb-2" @bind="patient.Address" disabled />
-                    <div class="row">
-                        <div class="col-6">
-                            <input type="number" class="form-control mb-2" @bind="patient.ZipCode" disabled />
-                        </div>
-                        <div class="col-6">
-                            <input type="text" class="form-control mb-2" @bind="patient.City" disabled />
-                        </div>
+            @if (Patient != null)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">@Helpers.FullNameHelper.GetFullName(Patient.Firstname, Patient.Middlename, Patient.Lastname)</h5>
+                        <p>@Helpers.CprHelper.HideLastDigits(Patient.Cpr)</p>
                     </div>
-                    <input type="tel" class="form-control mb-2" @bind="patient.Phone" />
-                    <input type="email" class="form-control" @bind="patient.Email" />
-
+                    <div class="card-body">
+                        <input type="text" class="form-control mb-2" @bind="Patient.Address" disabled />
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="number" class="form-control mb-2" @bind="Patient.ZipCode" disabled />
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control mb-2" @bind="Patient.City" disabled />
+                            </div>
+                        </div>
+                        <input type="tel" class="form-control mb-2" @bind="Patient.Phone" />
+                        <input type="email" class="form-control" @bind="Patient.Email" />
+                    </div>
+                    <div class="card-footer">
+                        <input type="button" class="btn btn-green float-end m-1" value="Gem" />
+                        <input type="button" class="btn btn-outline-secondary float-end m-1" value="Annuller" />
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <input type="button" class="btn btn-green float-end m-1" value="Gem" />
-                    <input type="button" class="btn btn-outline-secondary float-end m-1" value="Annuller" />
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>
 
 @code {
-    PatientDTO patient { get; set; }
+    PatientDTO Patient { get; set; }
 
-    protected override void OnInitialized()
+    protected async override void OnInitialized()
     {
-        patient = new PatientDTO()
-        {
-            Cpr = "1910872342",
-            Firstname = "Joan",
-            Middlename = "Krarup",
-            Lastname = "Langgaard",
-            Address = "Kromai 43",
-            ZipCode = 6200,
-            City = "Aabenraa",
-            Phone = 25390009,
-            Email = "joan1329@elevcampus.dk"
-        };
-
-        base.OnInitialized();
+        var currentUser = await localStorage.GetItemAsync<CurrentUser>("currentUser");
+        Patient = await _PatientService.GetById(currentUser.Id);
     }
 }

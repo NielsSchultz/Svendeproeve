@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using RegionSyd.Web.Data;
@@ -9,11 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+// Services
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<IJournalService, JournalService>();
 builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 
+// Blazored.LocalStorage
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 
 //HttpClient
 builder.Services.AddHttpClient("RegionSydApi", httpClient =>
