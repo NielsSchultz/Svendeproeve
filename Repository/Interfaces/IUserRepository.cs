@@ -19,7 +19,7 @@ namespace RegionSyd.Repositories.Interfaces
         Task<User> GetUser(int id);
 
         // Get User by patient ID
-        Task<User> GetUserByPatientID(int id);
+        // Task<User> GetUserByPatientID(int id);
 
         // Update User
         Task<User> UpdateUser(User newUser);

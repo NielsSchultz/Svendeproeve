@@ -49,17 +49,35 @@ namespace RegionSyd.Repositories
 
         public async Task<JournalEntryFile> GetJournalEntryFile(int id)
         {
-            return await _context.JournalEntryFiles.FindAsync(id);
+            return await _context.JournalEntryFiles.Where(j => j.FileId == id)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.FileType)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<JournalEntryFile>> GetJournalEntryFiles()
         {
-            return await _context.JournalEntryFiles.ToListAsync();
+            return await _context.JournalEntryFiles
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.FileType)
+                .ToListAsync();
         }
 
         public async Task<List<JournalEntryFile>> GetJournalEntryFilesForJournalEntry(int id)
         {
-            return await _context.JournalEntryFiles.Where(j => j.JournalEntryId == id).ToListAsync();
+            return await _context.JournalEntryFiles.Where(j => j.JournalEntryId == id)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.FileType)
+                .ToListAsync();
         }
 
         public async Task<JournalEntryFile> UpdateJournalEntryFile(JournalEntryFile newJournalEntryFile)
