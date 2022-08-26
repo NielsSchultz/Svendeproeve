@@ -49,17 +49,32 @@ namespace RegionSyd.Repositories
 
         public async Task<JournalEntryNote> GetJournalEntryNote(int id)
         {
-            return await _context.JournalEntryNotes.FindAsync(id);
+            return await _context.JournalEntryNotes.Where(j => j.NoteId == id)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<JournalEntryNote>> GetJournalEntryNotes()
         {
-            return await _context.JournalEntryNotes.ToListAsync();
+            return await _context.JournalEntryNotes
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .ToListAsync();
         }
 
         public async Task<List<JournalEntryNote>> GetJournalEntryNotesForJournalEntry(int id)
         {
-            return await _context.JournalEntryNotes.Where(j => j.JournalEntryId == id).ToListAsync();
+            return await _context.JournalEntryNotes.Where(j => j.JournalEntryId == id)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .ToListAsync();
         }
 
         public async Task<JournalEntryNote> UpdateJournalEntryNote(JournalEntryNote newJournalEntryNote)

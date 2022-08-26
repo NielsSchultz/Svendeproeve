@@ -49,17 +49,30 @@ namespace RegionSyd.Repositories
 
         public async Task<Employee> GetEmployee(int id)
         {
-            return await _context.Employees.FindAsync(id);
+            return await _context.Employees
+                .Where(e => e.EmployeeId == id)
+                .Include(e => e.User)
+                .Include(e => e.EmployeeType)
+                .Include(e => e.Department)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Employee>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Employees
+                .Include(e => e.User)
+                .Include(e => e.EmployeeType)
+                .Include(e => e.Department)
+                .ToListAsync();
         }
 
         public async Task<List<Employee>> GetEmployeesForTreatmentPlace(int id)
         {
-            return await _context.Employees.Where(e => e.Department.TreatmentPlaceId == id).ToListAsync();
+            return await _context.Employees.Where(e => e.Department.TreatmentPlaceId == id)
+                .Include(e => e.User)
+                .Include(e => e.EmployeeType)
+                .Include(e => e.Department)
+                .ToListAsync();
         }
 
         public async Task<Employee> UpdateEmployee(Employee newEmployee)

@@ -13,7 +13,8 @@ namespace RegionSyd.WebApi.Services.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserDTO>();
+            CreateMap<User, UserDTO>()
+                .ForMember(a => a.UserTypeName, b => b.MapFrom(c => c.UserType.UserTypeName));
             CreateMap<UserDTO, User>();
         }        
     }

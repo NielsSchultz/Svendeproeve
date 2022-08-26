@@ -49,18 +49,16 @@ namespace RegionSyd.Repositories
 
         public async Task<User> GetUser(int id)
         {
-            return await _context.Users.FindAsync(id);
-        }
-        public async Task<User> GetUserByPatientID(int id) 
-        {
-            //skal testes
-            var test = await _context.Patients.Where(u => u.PatientId == id).Select(p => p.User).FirstOrDefaultAsync();
-            return test;
-        }    
+            return await _context.Users.Where(u => u.UserId == id)
+                .Include(u => u.UserType)
+                .FirstOrDefaultAsync();
+        }        
 
         public async Task<List<User>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.UserType)
+                .ToListAsync();
         }
 
         public async Task<User> UpdateUser(User newUser)
