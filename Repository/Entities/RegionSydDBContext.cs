@@ -43,7 +43,8 @@ namespace RegionSyd.Repositories.Entities
             {
                 //Local DB
                 //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RegionSydDB;MultipleActiveResultSets=true;");
-
+                //Joan
+                //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=RegionSydDB;MultipleActiveResultSets=true;Trusted_Connection=True");
                 // Christian
                 //optionsBuilder.UseSqlServer("Server=MSI;Database=RegionSydDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
                 //Azure DB
