@@ -47,27 +47,42 @@ namespace RegionSyd.Repositories
 
         public async Task<Booking> GetBookingById(int id)
         {
-            return await _context.Bookings.Where(b => b.BookingId == id).FirstOrDefaultAsync();
+            return await _context.Bookings.Where(b => b.BookingId == id)
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Booking>> GetBookings()
         {
-            return await _context.Bookings.ToListAsync();
+            return await _context.Bookings
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .ToListAsync();
         }
 
         public async Task<List<Booking>> GetBookingsByDate(DateTime date)
         {
-            return await _context.Bookings.Where(b => b.TreatmentStart.Date == date.Date).ToListAsync();
+            return await _context.Bookings.Where(b => b.TreatmentStart.Date == date.Date)
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .ToListAsync();
         }
 
         public async Task<List<Booking>> GetBookingsForDepartmentByDate(Treatment treatment, DateTime date)
         {
-            return await _context.Bookings.Where(b => b.TreatmentId == treatment.TreatmentId).Where(b => b.TreatmentStart.Date == date).ToListAsync();
+            return await _context.Bookings.Where(b => b.TreatmentId == treatment.TreatmentId).Where(b => b.TreatmentStart.Date == date)
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .ToListAsync();
         }
 
         public async Task<List<Booking>> GetBookingsForPatientByID(int id)
         {
-            return await _context.Bookings.Where(b => b.PatientId == id).ToListAsync();
+            return await _context.Bookings.Where(b => b.PatientId == id)
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .ToListAsync();
         }
 
         public async Task<Booking> UpdateBooking(Booking newBooking)

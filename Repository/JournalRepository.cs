@@ -51,6 +51,10 @@ namespace RegionSyd.Repositories
         {
             var test = await _context.Journals.Where(j => j.JournalId == id)
                 .Include(j => j.JournalEntries)
+                .ThenInclude(d => d.Department)
+                .ThenInclude(t => t.TreatmentPlace)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryStatus)
                 .Include(j => j.Patient)
                 .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync();
@@ -75,6 +79,10 @@ namespace RegionSyd.Repositories
         {
             return await _context.Journals
                 .Include(j => j.JournalEntries)
+                .ThenInclude(d => d.Department)
+                .ThenInclude(t => t.TreatmentPlace)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryStatus)
                 .Include(j => j.Patient)
                 .ThenInclude(p => p.User)
                 .ToListAsync();
