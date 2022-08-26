@@ -7,77 +7,85 @@
 @inject IJournalService _journalService
 @inject IJournalEntryService _journalEntryService
 
-<div class="container">
-</div>
-
 <div class="container-fluid w-75">
-    @if (true) //TODO show only if user is employee
+    @if (PatientJournal != null)
     {
-        <div class="justify-content-end d-flex mb-2">
-            <input type="button" value="Tilføj ny journal data" @onclick="(args => AddEditEntry(0))" class="btn btn-green btm-sm" />
+        @if (true) //TODO show only if user is employee
+        {
+            <div class="justify-content-end d-flex mb-2">
+                <input type="button" value="Tilføj ny journal data" @onclick="(args => AddEditEntry(0))" class="btn btn-green btm-sm" />
+            </div>
+        }
+
+        <div class="bg-light p-2">
+
+            <h4>Journal</h4>
+            @{
+                var name = FullNameHelper.GetFullName(PatientJournal.FirstName, PatientJournal.MiddleName, PatientJournal.LastName); //firstname + middlename + lastname;
+                                                                                                                                     //var cpr = PatientJournal.Cpr;
+                var cpr = CprHelper.HideLastDigits(PatientJournal.Cpr);
+            }
+            <h6>@name (@cpr)</h6>
         </div>
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowSorting="true" FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@PatientJournal.JournalEntries" TItem="JournalEntryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="LastEdited" Title="Senest opdateret" Filterable="false" FormatString="{0:d}" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DateAdded" Title="Forløb startdato" Filterable="false" FormatString="{0:d}" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="StatusName" Title="Status" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="TreatmentPlaceName" Title="Sygehus" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
+
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="data">
+                        <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="data">
+                        <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                    </Template>
+                </RadzenDataGridColumn>
+
+                @if (1 == 1) //TODO check if user is employee or not
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="journalEntry">
+                            <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => AddEditEntry(journalEntry.JournalEntryId))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+                @if (1 == 1) //TODO check if user is employee or not
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="journalEntry">
+                            <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry.JournalEntryId))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+            </Columns>
+        </RadzenDataGrid>
+    }
+    else
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto pt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
     }
 
-    <div class="bg-light p-2">
 
-        <h4>Journal</h4>
-        @{
-            var name = FullNameHelper.GetFullName(PatientJournal.FirstName, PatientJournal.MiddleName, PatientJournal.LastName); //firstname + middlename + lastname;
-            var cpr = CprHelper.HideLastDigits(PatientJournal.Cpr);
-        }
-        <h6>@name (@cpr)</h6>
-    </div>
-    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowSorting="true" FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-                    Data="@PatientJournal.JournalEntries" TItem="JournalEntryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
-        <Columns>
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="LastEdited" Title="Senest opdateret" Filterable="false" FormatString="{0:d}" Width="auto" />
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DateAdded" Title="Forløb startdato" Filterable="false" FormatString="{0:d}" Width="auto" />
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="StatusName" Title="Status" Filterable="false" Width="auto" />
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="TreatmentPlaceName" Title="Sygehus" Filterable="false" Width="auto" />
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
 
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
-                <Template Context="data">
-                    <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
-                </Template>
-            </RadzenDataGridColumn>
-
-            <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
-                <Template Context="data">
-                    <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
-                </Template>
-            </RadzenDataGridColumn>
-
-            @if (1 == 1) //TODO check if user is employee or not
-            {
-                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
-                    <Template Context="journalEntry">
-                        <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => AddEditEntry(journalEntry.JournalEntryId))">
-                        </RadzenButton>
-                    </Template>
-                </RadzenDataGridColumn>
-            }
-            @if (1 == 1) //TODO check if user is employee or not
-            {
-                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
-                    <Template Context="journalEntry">
-                        <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry.JournalEntryId))">
-                        </RadzenButton>
-                    </Template>
-                </RadzenDataGridColumn>
-            }
-        </Columns>
-    </RadzenDataGrid>
 </div>
 
 @code {
-    JournalDTO PatientJournal { get; set; }
-    List<JournalEntryDTO> JournalEntries;
+    public JournalDTO PatientJournal { get; set; }
 
     protected async override void OnInitialized()
     {
         PatientJournal = await _journalService.GetById(1);
+        StateHasChanged();
     }
 
     public async void OpenFilesList(int id)
@@ -99,40 +107,40 @@
         var message = await _journalEntryService.Delete(id);
     }
 
-    public void CreateJournalEntries()
-    {
+    //public void CreateJournalEntries()
+    //{
 
-        PatientJournal = new JournalDTO()
-        {
-            FirstName = "Joan",
-            MiddleName = "Krarup",
-            LastName = "Langgaard",
-            Cpr = "1910872342",
-            JournalEntries = new List<JournalEntryDTO>()
-            {
-                new JournalEntryDTO()
-                {
-                        JournalEntryId = 1,
-                        DateAdded = new DateTime(2022,08,18),
-                        LastEdited = new DateTime(2022,08,18),
-                        Description = "Anden kontakt",
-                        StatusName = "Igangværende",
-                        DepartmentName = "Øre-næse-halskirurgi",
-                        Diagnosis = "Sten i øret",
-                        TreatmentPlaceName = "Sygehus Sønderjylland",
-                },
-                new JournalEntryDTO()
-                {
-                        JournalEntryId = 2,
-                        DateAdded = new DateTime(2022,06,17),
-                        LastEdited = new DateTime(2022,06,17),
-                        Description = "Røntgen",
-                        StatusName = "Igangværende",
-                        DepartmentName = "Røntgen og Skanning",
-                        Diagnosis = "Kontakt mhp radiologisk undersøgelse",
-                        TreatmentPlaceName = "Sygehus Sønderjylland",
-                }
-            }
-        };
-    }
+    //    PatientJournal = new JournalDTO()
+    //    {
+    //        FirstName = "Joan",
+    //        MiddleName = "Krarup",
+    //        LastName = "Langgaard",
+    //        Cpr = "1910872342",
+    //        JournalEntries = new List<JournalEntryDTO>()
+    //        {
+    //            new JournalEntryDTO()
+    //            {
+    //                    JournalEntryId = 1,
+    //                    DateAdded = new DateTime(2022,08,18),
+    //                    LastEdited = new DateTime(2022,08,18),
+    //                    Description = "Anden kontakt",
+    //                    StatusName = "Igangværende",
+    //                    DepartmentName = "Øre-næse-halskirurgi",
+    //                    Diagnosis = "Sten i øret",
+    //                    TreatmentPlaceName = "Sygehus Sønderjylland",
+    //            },
+    //            new JournalEntryDTO()
+    //            {
+    //                    JournalEntryId = 2,
+    //                    DateAdded = new DateTime(2022,06,17),
+    //                    LastEdited = new DateTime(2022,06,17),
+    //                    Description = "Røntgen",
+    //                    StatusName = "Igangværende",
+    //                    DepartmentName = "Røntgen og Skanning",
+    //                    Diagnosis = "Kontakt mhp radiologisk undersøgelse",
+    //                    TreatmentPlaceName = "Sygehus Sønderjylland",
+    //            }
+    //        }
+    //    };
+    //}
 }
