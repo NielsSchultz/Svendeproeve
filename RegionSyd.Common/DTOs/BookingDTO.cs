@@ -8,7 +8,7 @@
         public string TreatmentPlaceName { get; set; }
         public int TreatmentId { get; set; }
         public string TreatmentName { get; set; }
-        public TimeSpan TreatmentDuration { get; set; }
+        public int TreatmentDuration { get; set; }
         public DateTime TreatmentStart { get; set; }
         public DateTime? TreatmentEnd { get; set; }
     }
