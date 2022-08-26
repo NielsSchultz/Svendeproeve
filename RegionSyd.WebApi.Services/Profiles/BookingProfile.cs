@@ -13,7 +13,9 @@ namespace RegionSyd.WebApi.Services.Profiles
     {
         public BookingProfile()
         {
-            CreateMap<Booking, BookingDTO>();
+            CreateMap<Booking, BookingDTO>()
+                .ForMember(a => a.TreatmentPlaceName, b => b.MapFrom(c => c.TreatmentPlace.TreatmentPlaceName))
+                .ForMember(a => a.TreatmentName, b => b.MapFrom(c => c.Treatment.TreatmentName));
             CreateMap<BookingDTO, Booking>();
         }        
     }

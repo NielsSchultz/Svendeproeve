@@ -20,17 +20,23 @@ namespace RegionSyd.Repositories
 
         public async Task<List<Treatment>> GetTreatments()
         {
-            return await _context.Treatments.ToListAsync();
+            return await _context.Treatments
+                .Include(t => t.Department)
+                .ToListAsync();
         }
 
         public async Task<Treatment> GetTreatment(int id)
         {
-            return await _context.Treatments.FindAsync(id);
+            return await _context.Treatments.Where(t => t.TreatmentId == id)
+                .Include(t => t.Department)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Treatment>> GetTreatmentsForHospital(int id)
         {
-            return await _context.Treatments.Where(t => t.Department.TreatmentPlaceId == id).ToListAsync();
+            return await _context.Treatments.Where(t => t.Department.TreatmentPlaceId == id)
+                .Include(t => t.Department)
+                .ToListAsync();
         }
 
         public async Task<Treatment> CreateTreatment(Treatment newTreatment)

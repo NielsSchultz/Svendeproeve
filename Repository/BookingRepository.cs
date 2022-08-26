@@ -47,7 +47,10 @@ namespace RegionSyd.Repositories
 
         public async Task<Booking> GetBookingById(int id)
         {
-            return await _context.Bookings.Where(b => b.BookingId == id).FirstOrDefaultAsync();
+            return await _context.Bookings.Where(b => b.BookingId == id)
+                .Include(b => b.Treatment)
+                .Include(b => b.TreatmentPlace)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Booking>> GetBookings()

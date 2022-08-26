@@ -4,7 +4,6 @@
     {
         public int TreatmentId { get; set; }
         public int DepartmentId { get; set; }
-        //DepartmentName
         public string DepartmentName { get; set; } = null!;
         public string TreatmentName { get; set; } = null!;
         public int TreatmentDuration { get; set; }
