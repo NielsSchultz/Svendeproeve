@@ -29,8 +29,8 @@ namespace RegionSyd.WebApi.Services.Services
         }
         public async Task<JournalEntryNoteDTO> GetJournalEntryNote(int id)
         {
-            var journalEntryStatus = await _journalEntryNoteRepository.GetJournalEntryNote(id);
-            return _mapper.Map<JournalEntryNoteDTO>(journalEntryStatus);
+            var journalEntryNote = await _journalEntryNoteRepository.GetJournalEntryNote(id);
+            return _mapper.Map<JournalEntryNoteDTO>(journalEntryNote);
         }
         public async Task<JournalEntryNoteDTO> CreateJournalEntryNote(JournalEntryNoteDTO journalEntryNoteDTO)
         {
