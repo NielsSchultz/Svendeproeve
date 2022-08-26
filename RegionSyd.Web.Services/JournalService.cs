@@ -26,7 +26,9 @@ namespace RegionSyd.Web.Services
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
+            var url = $"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}";
+
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}");
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
