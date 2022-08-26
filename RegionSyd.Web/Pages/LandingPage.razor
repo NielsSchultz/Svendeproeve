@@ -1,0 +1,42 @@
+﻿@page "/login-success"
+@inject NavigationManager navigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@using RegionSyd.Common.Enums
+@using RegionSyd.Web.Models
+
+
+
+@code {
+    //login-success?UserId=1&UserType=Employee
+    //System.Text.Encodings.Web.UrlEncoder.Default.Encode(token)
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string UserType { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUser = new CurrentUser();
+        var test = int.Parse(UserId);
+        currentUser.Id = int.Parse(UserId);
+        currentUser.Usertype = UserType == UserTypes.Employee.ToString() ? UserTypes.Employee : UserTypes.Patient;
+        await localStorage.SetItemAsync<CurrentUser>("currentUser", currentUser);
+
+        if (UserType == UserTypes.Employee.ToString())
+        {
+            navigationManager.NavigateTo("/soeg-journal");
+        }
+        else if (UserType == UserTypes.Patient.ToString())
+        {
+            navigationManager.NavigateTo("/mine-oplysninger");
+        }
+        else
+        {
+            navigationManager.NavigateTo("/");
+        }
+    }
+}
