@@ -19,6 +19,7 @@
     <Compile Remove="DTOs\JournalDetailsDTO.cs" />
     <Compile Remove="DTOs\JournalEntryDetailsDTO.cs" />
     <Compile Remove="DTOs\RoomDetailsDTO.cs" />
+    <Compile Remove="UserTypes.cs" />
   </ItemGroup>
 
 </Project>

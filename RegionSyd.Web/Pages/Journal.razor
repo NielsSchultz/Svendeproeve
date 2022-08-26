@@ -1,6 +1,7 @@
 ﻿@page "/journal"
 @using RegionSyd.Common.DTOs
 @using RegionSyd.Web.Helpers
+@using RegionSyd.Web.Models
 @using RegionSyd.Web.Services.Interfaces
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navigationManager
@@ -81,7 +82,17 @@
 
     protected async override void OnInitialized()
     {
-        PatientJournal = await _journalService.GetById(1);
+        var currentUser = await localStorage.GetItemAsync<CurrentUser>("currentUser");
+        if (currentUser.Usertype == Common.Enums.UserTypes.Patient)
+        {
+            PatientJournal = await _journalService.GetById(currentUser.Id);
+        }
+        if (currentUser.Usertype == Common.Enums.UserTypes.Employee)
+        {
+             PatientJournal = await _journalService.GetById(2);
+        }
+
+        
         StateHasChanged();
     }
 

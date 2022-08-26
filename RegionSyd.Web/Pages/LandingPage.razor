@@ -1,6 +1,5 @@
 ﻿@page "/login-success"
 @inject NavigationManager navigationManager
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @using RegionSyd.Common.Enums
 @using RegionSyd.Web.Models
 
@@ -8,6 +7,7 @@
 
 @code {
     //login-success?UserId=1&UserType=Employee
+    //login-success?UserId=1&UserType=Patient
     //System.Text.Encodings.Web.UrlEncoder.Default.Encode(token)
 
     [Parameter]
