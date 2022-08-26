@@ -56,7 +56,9 @@ namespace RegionSyd.Repositories
                 .Include(j => j.TreatmentPlace)
                 .Include(j => j.Department)
                 .Include(j => j.JournalEntryFiles)
+                .ThenInclude(f => f.Count)
                 .Include(j => j.JournalEntryNotes)
+                .ThenInclude(n => n.Count)
                 .Include(j => j.JournalEntryStatus)
                 .ToListAsync();
         }
