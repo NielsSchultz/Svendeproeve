@@ -20,6 +20,24 @@ namespace RegionSyd.Web.Services
             _httpClientFactory = httpClientFactory;
         }
 
+        public async Task<List<JournalDTO>> GetAll()
+        {
+            var journals = new List<JournalDTO>();
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}");
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                journals = JsonConvert.DeserializeObject<List<JournalDTO>>(await content);
+            }
+
+            return journals;
+        }
+
         public async Task<JournalDTO> GetById(int id)
         {
             JournalDTO journal = new JournalDTO();

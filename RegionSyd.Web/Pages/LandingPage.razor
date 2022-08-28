@@ -1,9 +1,5 @@
 ﻿@page "/login-success"
-@inject NavigationManager navigationManager
-@using RegionSyd.Common.Enums
-@using RegionSyd.Web.Models
-
-
+@layout LayoutWithoutNavButtons 
 
 @code {
     //login-success?UserId=1&UserType=Employee
@@ -24,7 +20,7 @@
         var test = int.Parse(UserId);
         currentUser.Id = int.Parse(UserId);
         currentUser.Usertype = UserType == UserTypes.Employee.ToString() ? UserTypes.Employee : UserTypes.Patient;
-        await localStorage.SetItemAsync<CurrentUser>("currentUser", currentUser);
+        await localStorage.SetItemAsync<CurrentUser>(SessionConstants.CurrentUser, currentUser);
 
         if (UserType == UserTypes.Employee.ToString())
         {

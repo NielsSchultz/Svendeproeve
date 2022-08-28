@@ -1,7 +1,4 @@
 ﻿@page "/mine-oplysninger"
-@using RegionSyd.Common.DTOs
-@using RegionSyd.Web.Models
-@using RegionSyd.Web.Services.Interfaces
 @inject IPatientService _PatientService
 
 <div class="container">
@@ -46,7 +43,7 @@
 
     protected async override void OnInitialized()
     {
-        var currentUser = await localStorage.GetItemAsync<CurrentUser>("currentUser");
+        var currentUser = await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser); //await Helpers.UserData.GetCurrentUser(SessionConstants.CurrentUser);
         Patient = await _PatientService.GetById(currentUser.Id);
         StateHasChanged();
     }
