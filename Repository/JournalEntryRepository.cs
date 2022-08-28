@@ -95,7 +95,7 @@ namespace RegionSyd.Repositories
         {
             if (newJournalEntry != null)
             {
-                _context.JournalEntries.Add(newJournalEntry);
+                _context.JournalEntries.Update(newJournalEntry);
                 await _context.SaveChangesAsync();
                 return newJournalEntry;
             }

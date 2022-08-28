@@ -65,7 +65,7 @@ namespace RegionSyd.Repositories
         {
             if (newPatient != null)
             {
-                _context.Patients.Add(newPatient);
+                _context.Patients.Update(newPatient);
                 await _context.SaveChangesAsync();
                 return newPatient;
             }

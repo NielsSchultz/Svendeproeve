@@ -61,7 +61,7 @@ namespace RegionSyd.Repositories
         {
             if (newRoom != null)
             {
-                _context.Rooms.Add(newRoom);
+                _context.Rooms.Update(newRoom);
                 await _context.SaveChangesAsync();
                 return newRoom;
             }

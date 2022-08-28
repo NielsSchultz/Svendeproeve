@@ -60,7 +60,7 @@ namespace RegionSyd.Repositories
         {
             if (newUserType != null)
             {
-                _context.UserTypes.Add(newUserType);
+                _context.UserTypes.Update(newUserType);
                 await _context.SaveChangesAsync();
                 return newUserType;
             }
