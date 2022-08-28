@@ -13,7 +13,8 @@ namespace RegionSyd.WebApi.Services.Profiles
     {
         public RoomProfile()
         {
-            CreateMap<Room, RoomDTO>();
+            CreateMap<Room, RoomDTO>()
+            .ForMember(a => a.DepartmentName, b => b.MapFrom(c => c.Department.DepartmentName));
             CreateMap<RoomDTO, Room>();
         }        
     }
