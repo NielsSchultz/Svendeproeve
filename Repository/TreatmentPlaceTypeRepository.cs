@@ -61,7 +61,7 @@ namespace RegionSyd.Repositories
         {
             if (newTreatmentPlaceType != null)
             {
-                _context.TreatmentPlaceTypes.Add(newTreatmentPlaceType);
+                _context.TreatmentPlaceTypes.Update(newTreatmentPlaceType);
                 await _context.SaveChangesAsync();
                 return newTreatmentPlaceType;
             }
