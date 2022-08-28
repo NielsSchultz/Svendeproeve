@@ -67,7 +67,7 @@ namespace RegionSyd.Repositories
         {
             if (newMonitor != null)
             {
-                _context.Monitors.Add(newMonitor);
+                _context.Monitors.Update(newMonitor);
                 await _context.SaveChangesAsync();
                 return newMonitor;
             }
