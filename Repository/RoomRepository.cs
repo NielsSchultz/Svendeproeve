@@ -54,7 +54,10 @@ namespace RegionSyd.Repositories
 
         public async Task<List<Room>> GetRooms()
         {
-            return await _context.Rooms.ToListAsync();
+            return await _context.Rooms
+                .Include(d => d.Department)
+                .Include(b => b.Beds)
+                .ToListAsync();
         }
 
         public async Task<Room> UpdateRoom(Room newRoom)

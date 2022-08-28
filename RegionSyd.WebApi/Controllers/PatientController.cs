@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Controllers
             return await _patientService.CreatePatient(patientDTO);
         }
         [HttpGet]
-        public async Task<List<PatientDTO>> GetAllPatients()
+        public async Task<List<PatientDTO>> GetPatients()
         {
             return await _patientService.GetPatients();
         }
