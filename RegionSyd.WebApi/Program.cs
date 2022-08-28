@@ -20,6 +20,8 @@ builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
 builder.Services.AddScoped<ITreatmentPlaceRepository, TreatmentPlaceRepository>();
 builder.Services.AddScoped<ITreatmentPlaceService, TreatmentPlaceService>();
+builder.Services.AddScoped<ITreatmentPlaceTypeRepository, TreatmentPlaceTypeRepository>();
+builder.Services.AddScoped<ITreatmentPlaceTypeService, TreatmentPlaceTypeService>();
 builder.Services.AddScoped<IJournalRepository, JournalRepository>();
 builder.Services.AddScoped<IJournalService, JournalService>();
 builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
