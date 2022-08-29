@@ -1,5 +1,38 @@
 ﻿@page "/mine-oplysninger"
 @inject IPatientService _PatientService
+@inject IBookingService _BookingService
+
+@if (Bookings != null)
+{
+    <div class="container">
+
+        @foreach (var booking in Bookings)
+        {
+
+        <div class="row p-2 mb-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+            <div class="col-lg-3"><span class="fw-bold">@booking.TreatmentStart</span> </div>
+            <div class="col-lg-3">
+                @booking.TreatmentName
+            </div>
+            <div class="col-lg-3">
+                @booking.TreatmentPlaceName
+            </div>
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-6">
+                        <input class="btn btn-outline-dark btn-sm w-100" type="button" value="Rediger" />
+                    </div>
+                    <div class="col-6">
+
+                        <input class="btn btn-danger btn-sm w-100" type="button" value="Slet" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        }
+    </div>
+}
 
 <div class="container">
     <div class="row">
@@ -40,11 +73,13 @@
 
 @code {
     PatientDTO Patient { get; set; }
+    List<BookingDTO> Bookings { get; set; }
 
     protected async override void OnInitialized()
     {
         var currentUser = await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser); //await Helpers.UserData.GetCurrentUser(SessionConstants.CurrentUser);
         Patient = await _PatientService.GetById(currentUser.Id);
+        Bookings = await _BookingService.GetById(currentUser.Id);
         StateHasChanged();
     }
 }
