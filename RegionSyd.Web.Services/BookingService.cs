@@ -4,25 +4,24 @@ using RegionSyd.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class TreatmentService : ITreatmentService
+    public class BookingService : IBookingService
     {
         private IHttpClientFactory _httpClientFactory;
-        private const string CONTROLLER = "Treatment";
+        private const string CONTROLLER = "Booking";
 
-        public TreatmentService(IHttpClientFactory httpClientFactory)
+        public BookingService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<List<TreatmentDTO>> GetAll()
+        public async Task<List<BookingDTO>> GetAll()
         {
-            List<TreatmentDTO> treatments = new List<TreatmentDTO>();
+            var bookings = new List<BookingDTO>();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -32,61 +31,61 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatments = JsonConvert.DeserializeObject<List<TreatmentDTO>>(await content);
+                bookings = JsonConvert.DeserializeObject<List<BookingDTO>>(await content);
             }
 
-            return treatments;
+            return bookings;
         }
 
-        public async Task<TreatmentDTO> GetById(int id)
+        public async Task<List<BookingDTO>> GetById(int id)
         {
-            var treatment = new TreatmentDTO();
+            List<BookingDTO> bookings = new List<BookingDTO>();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}");
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                bookings = JsonConvert.DeserializeObject<List<BookingDTO>>(await content);
             }
 
-            return treatment;
+            return bookings;
         }
 
-        public async Task<TreatmentDTO> Create(TreatmentDTO treatmentDTO)
+        public async Task<BookingDTO> Create(BookingDTO bookingDTO)
         {
-            var treatment = new TreatmentDTO();
+            var booking = new BookingDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                booking = JsonConvert.DeserializeObject<BookingDTO>(await content);
             }
 
-            return treatment;
+            return booking;
         }
-        public async Task<TreatmentDTO> Update(TreatmentDTO treatmentDTO)
+        public async Task<BookingDTO> Update(BookingDTO bookingDTO)
         {
-            var treatment = new TreatmentDTO();
+            var booking = new BookingDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                booking = JsonConvert.DeserializeObject<BookingDTO>(await content);
             }
 
-            return treatment;
+            return booking;
         }
 
         public async Task<string> Delete(int id)
@@ -95,11 +94,9 @@ namespace RegionSyd.Web.Services
 
             var httpResponseMessage = await httpClient.DeleteAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
 
-            var message = httpResponseMessage.IsSuccessStatusCode ? "undersøgelse er slettet" : "Der er sket en fejl prøv igen senere";
+            var message = httpResponseMessage.IsSuccessStatusCode ? "Patient er slettet" : "Der er sket en fejl prøv igen senere";
 
             return message;
         }
     }
 }
-
-

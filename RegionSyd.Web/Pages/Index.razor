@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.WebUtilities
 @layout LayoutWithoutNavButtons 
 
 <style>
@@ -99,16 +100,17 @@
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
     }
 
     public void PatientLogin()
     {
-
+        navigationManager.NavigateTo("https://localhost:7151/login-success?UserId=1&UserType=Patient");
     }
 
     public void EmployeeLogin()
     {
+
+       navigationManager.NavigateTo("https://localhost:7151/login-success?UserId=1&UserType=Employee");
 
     }
 }

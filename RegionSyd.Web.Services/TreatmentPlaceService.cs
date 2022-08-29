@@ -4,25 +4,24 @@ using RegionSyd.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RegionSyd.Web.Services
 {
-    public class TreatmentService : ITreatmentService
+    public class TreatmentPlaceService : ITreatmentPlaceService
     {
         private IHttpClientFactory _httpClientFactory;
-        private const string CONTROLLER = "Treatment";
+        private const string CONTROLLER = "TreatmentPlace";
 
-        public TreatmentService(IHttpClientFactory httpClientFactory)
+        public TreatmentPlaceService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<List<TreatmentDTO>> GetAll()
+        public async Task<List<TreatmentPlaceDTO>> GetAll()
         {
-            List<TreatmentDTO> treatments = new List<TreatmentDTO>();
+            List<TreatmentPlaceDTO> treatmentPlaces = new List<TreatmentPlaceDTO>();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -32,15 +31,15 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatments = JsonConvert.DeserializeObject<List<TreatmentDTO>>(await content);
+                treatmentPlaces = JsonConvert.DeserializeObject<List<TreatmentPlaceDTO>>(await content);
             }
 
-            return treatments;
+            return treatmentPlaces;
         }
 
-        public async Task<TreatmentDTO> GetById(int id)
+        public async Task<TreatmentPlaceDTO> GetById(int id)
         {
-            var treatment = new TreatmentDTO();
+            var treatmentPlace = new TreatmentPlaceDTO();
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
@@ -50,43 +49,43 @@ namespace RegionSyd.Web.Services
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                treatmentPlace = JsonConvert.DeserializeObject<TreatmentPlaceDTO>(await content);
             }
 
-            return treatment;
+            return treatmentPlace;
         }
 
-        public async Task<TreatmentDTO> Create(TreatmentDTO treatmentDTO)
+        public async Task<TreatmentPlaceDTO> Create(TreatmentPlaceDTO treatmentPlaceDTO)
         {
-            var treatment = new TreatmentDTO();
+            var treatmentPlace = new TreatmentPlaceDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentPlaceDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                treatmentPlace = JsonConvert.DeserializeObject<TreatmentPlaceDTO>(await content);
             }
 
-            return treatment;
+            return treatmentPlace;
         }
-        public async Task<TreatmentDTO> Update(TreatmentDTO treatmentDTO)
+        public async Task<TreatmentPlaceDTO> Update(TreatmentPlaceDTO treatmentPlaceDTO)
         {
-            var treatment = new TreatmentDTO();
+            var treatmentPlace = new TreatmentPlaceDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(treatmentPlaceDTO), Encoding.UTF8));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 using var content = httpResponseMessage.Content.ReadAsStringAsync();
 
-                treatment = JsonConvert.DeserializeObject<TreatmentDTO>(await content);
+                treatmentPlace = JsonConvert.DeserializeObject<TreatmentPlaceDTO>(await content);
             }
 
-            return treatment;
+            return treatmentPlace;
         }
 
         public async Task<string> Delete(int id)
@@ -99,7 +98,6 @@ namespace RegionSyd.Web.Services
 
             return message;
         }
+
     }
 }
-
-
