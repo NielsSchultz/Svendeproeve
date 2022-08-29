@@ -55,22 +55,26 @@
 
                     <div class="col-6">
                         <h6>Vælg dato</h6>
-                        <RadzenDatePicker ShowTime="true" DateFormat="dd/MM/yyyy" TValue="DateTime?" DateRender=@DateRender Change=@(args => OnChange(args,"dd-MM-yyyy")) Class="w-100" />
-                    </div>
+                        @*<RadzenDatePicker ShowTime="true" DateFormat="dd/MM/yyyy" TValue="DateTime?" DateRender=@DateRender Change=@(args => OnChange(args,"dd-MM-yyyy")) Class="w-100" />*@
+                   <input class="form-control" @bind="SelectedTreatmentDate" type="date">
+                        </div>
                     @if (SelectedTreatmentDate.HasValue)
                     {
                         <div class="col-6 mx-auto">
-                            @if (SelectedTreatmentTimes != null)
-                            {
+                           
+
+                
+           
                                 <h6>Vælg tid</h6>
-                                <select class="form-control" @bind="@SelectedTreatmentTime">
+                                 <input class="form-control" @bind="@SelectedTreatmentTime" step="1800" type="time">
+                              @*<select class="form-control" @bind="@SelectedTreatmentTime">
                                     <option disabled>Ledige tider</option>
                                     @foreach (var time in SelectedTreatmentTimes)
                                     {
                                         <option value="@time">kl. @time.ToShortTimeString()</option>
                                     }
-                                </select>
-                            }
+                                </select>*@
+                      
 
                         </div>
                     }
@@ -82,8 +86,8 @@
     @if (SelectedTreatmentTime.HasValue)
     {
         <div class="row">
-            <div class="col-4">
-                <input type="button" value="Book" @onclick="CreateBooking" />
+            <div class="col-6 mx-auto">
+                <input type="button" class="btn btn-green" style="width:125px" value="Book" @onclick="CreateBooking" />
             </div>
         </div>
     }
@@ -91,6 +95,10 @@
 </div>
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string BookingId { get; set; }
+
     DateTime? value = DateTime.Now;
 
     IEnumerable<DateTime> dates = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
@@ -109,6 +117,16 @@
         Treatments = await _treatmentService.GetAll();
         TreatmentPlaces = await _treatmentPlaceService.GetAll();
         GetAllBookingsByDate(DateTime.Now);
+
+        if (!string.IsNullOrEmpty(BookingId))
+        {
+            BookingDTO booking = await _bookingService.GetById(int.Parse(BookingId));
+            SelectedTreatmentId = booking.TreatmentId;
+            SelectedTreatmentPlaceId = booking.TreatmentPlaceId;
+            SelectedTreatmentDate = booking.TreatmentStart;
+            SelectedTreatmentTime = booking.TreatmentStart;
+        }
+
         StateHasChanged();
     }
 
@@ -195,13 +213,14 @@
         var duration = 30;
 
         var booking = new BookingDTO();
+        booking.TreatmentId = SelectedTreatmentId;
+        booking.TreatmentPlaceId = SelectedTreatmentPlaceId;
         booking.TreatmentStart = bookingDateTime;
         booking.TreatmentEnd = bookingDateTime.AddMinutes(duration);
         booking.TreatmentDuration = duration;
-        booking.PatientId = 1; //TODO get currentUser
+        booking.PatientId = CurrentUser.Id;  //TODO get currentUser
         var result = _bookingService.Create(booking);
-        StateHasChanged();
-
+ 
         //var tset = new List<BookingDTO>()
         //{
         //    new BookingDTO{BookingId=1, PatientId = 1, TreatmentDuration = 30, TreatmentStart = new DateTime(2022,08,30,11,00,00), TreatmentEnd = (start.AddMinutes(30)), TreatmentId = 1, TreatmentName = "Blodprøve", TreatmentPlaceId = 1, TreatmentPlaceName= "Sygehus" }

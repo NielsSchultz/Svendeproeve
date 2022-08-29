@@ -37,7 +37,24 @@ namespace RegionSyd.Web.Services
             return bookings;
         }
 
-        public async Task<List<BookingDTO>> GetById(int id)
+        public async Task<BookingDTO> GetById(int id)
+        {
+            BookingDTO bookings = new BookingDTO();
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                bookings = JsonConvert.DeserializeObject<BookingDTO>(await content);
+            }
+
+            return bookings;
+        }
+        public async Task<List<BookingDTO>> GetByPatientId(int id)
         {
             List<BookingDTO> bookings = new List<BookingDTO>();
 
@@ -60,7 +77,7 @@ namespace RegionSyd.Web.Services
             var booking = new BookingDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
