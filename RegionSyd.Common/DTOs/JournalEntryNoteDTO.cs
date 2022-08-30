@@ -5,6 +5,8 @@
         public int NoteId { get; set; }
         public string NoteContent { get; set; }
         public DateTime DateAdded { get; set; }
+        public bool IsApproved { get; set; }
+
         //Employee
         public int EmployeeId { get; set; }
         public string EmployeeTypeName { get; set; }

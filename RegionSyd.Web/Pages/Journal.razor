@@ -79,6 +79,9 @@
 
 @code {
     public JournalDTO PatientJournal { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int JournalId { get; set; }
     public CurrentUser CurrentUser { get; set; }
 
     protected async override void OnInitialized()
@@ -86,11 +89,11 @@
         CurrentUser = await GetCurrentUserAsync();
         if (CurrentUser.Usertype == Common.Enums.UserTypes.Patient)
         {
-            PatientJournal = await _journalService.GetById(CurrentUser.Id);
+            PatientJournal = await _journalService.GetByPatientId(CurrentUser.Id);
         }
         if (CurrentUser.Usertype == Common.Enums.UserTypes.Employee)
         {
-            PatientJournal = await _journalService.GetById(2);
+            PatientJournal = await _journalService.GetById(JournalId);
         }
 
 
@@ -106,6 +109,12 @@
         navigationManager.NavigateTo($"/journal/noter?Id={id}");
     }
 
+    public async Task CreateBookingForPatient(int id)
+    {
+       
+        navigationManager.NavigateTo($"/booking?PatientId={ PatientJournal.PatientId}");
+    }
+    
     public async Task AddEditEntry(int id)
     {
         navigationManager.NavigateTo($"/journal/indlæg?Id={id}");

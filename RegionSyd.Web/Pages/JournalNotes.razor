@@ -3,25 +3,27 @@
 @using Common.DTOs
 @inject IJournalNoteService _jornalNoteService
 
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-8 mx-auto">
-            <h6>Ny note</h6>
-            <input type="text" />
+@if (CurrentUser != null)
+{
+    if (CurrentUser.Usertype == UserTypes.Employee)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <h6>Ny note</h6>
+                    <textarea rows="6" style="width:100%" />
+                    <input type="button" class="btn btn-green" value="Opret note" />
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-
+    }
+}
 <div class="container">
     <div class="row">
         <div class="col-8 mx-auto">
             @if (notes != null)
             {
-                <RadzenAccordion Multiple="true" Collapse=@(args => Change(args))
-                             Expand=@(args => Change(args))>
+                <RadzenAccordion Multiple="true">
                     <Items>
                         @foreach (var note in notes)
                         {
@@ -44,33 +46,31 @@
     [Parameter]
     [SupplyParameterFromQuery]
     public int Id { get; set; }
+    public CurrentUser CurrentUser { get; set; }
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        CurrentUser = await GetCurrentUserAsync();
         notes = await _jornalNoteService.GetAll(Id);
-        //notes = new List<JournalEntryNoteDTO>()
-        //{
-        //    new JournalEntryNoteDTO()
-        //    {
-        //        NoteContent = "jfkdlsflsdfl fklsædfkæsdfkæsdf fdkslflsdf",
-        //        DateAdded = DateTime.Now,
-        //        EmployeeFirstname = "Martin",
-        //        EmployeeLastname = "Henriksen",
-        //        EmployeeTypeName = "Reservelæge"
-        //    },
-        //    new JournalEntryNoteDTO()
-        //    {
-        //        NoteContent = "juyikuyivvs ferwte rtre gfredt ret fsdf erferg juyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erferg",
-        //        DateAdded = DateTime.Now,
-        //        EmployeeFirstname = "Susanne",
-        //        EmployeeLastname = "Ludvigsen",
-        //        EmployeeTypeName = "Sygeplejerske"
-        //    }
-        //};
+    }
+
+    public void CreateNote(JournalEntryNoteDTO note)
+    {
+        note.DateAdded = DateTime.Now;
+        note.EmployeeId = CurrentUser.Id;
+        @if () //TODO get employee name and type here // if læge = true
+        {
+            note.IsApproved = true;
+        }
     }
 
     void Change(object value)
     {
         //console.Log($"{name} item with index {value} {action}");
+    }
+
+    public async Task<CurrentUser> GetCurrentUserAsync()
+    {
+        return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
     }
 }
