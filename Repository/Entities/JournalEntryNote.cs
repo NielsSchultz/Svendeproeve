@@ -10,6 +10,8 @@ namespace RegionSyd.Repositories.Entities
         public int EmployeeId { get; set; }
         public string NoteContent { get; set; } = null!;
         public bool IsApproved { get; set; }
+        public DateTime? DateAdded { get; set; }
+        public DateTime? LastEdited { get; set; }
 
         public virtual Employee Employee { get; set; } = null!;
         public virtual JournalEntry JournalEntry { get; set; } = null!;
