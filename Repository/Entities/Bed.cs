@@ -8,6 +8,7 @@ namespace RegionSyd.Repositories.Entities
         public Bed()
         {
             Alarms = new HashSet<Alarm>();
+            Patients = new HashSet<Patient>();
         }
 
         public int BedId { get; set; }
@@ -16,5 +17,6 @@ namespace RegionSyd.Repositories.Entities
 
         public virtual Room? Room { get; set; }
         public virtual ICollection<Alarm> Alarms { get; set; }
+        public virtual ICollection<Patient> Patients { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace RegionSyd.Repositories.Entities
         public Department()
         {
             Employees = new HashSet<Employee>();
+            JournalEntries = new HashSet<JournalEntry>();
             Rooms = new HashSet<Room>();
             Treatments = new HashSet<Treatment>();
         }
@@ -18,6 +19,7 @@ namespace RegionSyd.Repositories.Entities
 
         public virtual TreatmentPlace TreatmentPlace { get; set; } = null!;
         public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<JournalEntry> JournalEntries { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Treatment> Treatments { get; set; }
     }
