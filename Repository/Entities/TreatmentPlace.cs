@@ -9,6 +9,7 @@ namespace RegionSyd.Repositories.Entities
         {
             Bookings = new HashSet<Booking>();
             Departments = new HashSet<Department>();
+            JournalEntries = new HashSet<JournalEntry>();
         }
 
         public int TreatmentPlaceId { get; set; }
@@ -21,5 +22,6 @@ namespace RegionSyd.Repositories.Entities
         public virtual TreatmentPlaceType TreatmentPlaceType { get; set; } = null!;
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
+        public virtual ICollection<JournalEntry> JournalEntries { get; set; }
     }
 }
