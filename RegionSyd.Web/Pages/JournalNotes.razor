@@ -1,55 +1,75 @@
 ﻿@page "/journal/noter"
 
 @using Common.DTOs
+@inject IJournalNoteService _jornalNoteService
+
+
 
 <div class="container">
     <div class="row">
         <div class="col-8 mx-auto">
-    <RadzenAccordion Multiple="true" Collapse=@(args => Change(args, "Accordion with multiple expand", "collapsed"))
-                     Expand=@(args => Change(args, "Accordion with multiple expand", "expanded"))>
-        <Items>
-            @foreach (var note in notes)
-            {
-                        var enployeeName = Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname);
-                        var noteTitle = $"{note.DateAdded} {enployeeName}, {note.EmployeeTypeName}";
-                <RadzenAccordionItem Text="@noteTitle">
-                    @note.NoteContent
-                </RadzenAccordionItem>
-            }
-        </Items>
-    </RadzenAccordion>
-</div>
+            <h6>Ny note</h6>
+            <input type="text" />
+        </div>
     </div>
 </div>
 
+
+<div class="container">
+    <div class="row">
+        <div class="col-8 mx-auto">
+            @if (notes != null)
+            {
+                <RadzenAccordion Multiple="true" Collapse=@(args => Change(args))
+                             Expand=@(args => Change(args))>
+                    <Items>
+                        @foreach (var note in notes)
+                        {
+                            var enployeeName = Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname);
+                            var noteTitle = $"{note.DateAdded} {enployeeName}, {note.EmployeeTypeName}";
+                            <RadzenAccordionItem Text="@noteTitle">
+                                @note.NoteContent
+                            </RadzenAccordionItem>
+                        }
+                    </Items>
+                </RadzenAccordion>
+            }
+        </div>
+    </div>
+</div>
+
+
 @code {
     List<JournalEntryNoteDTO> notes;
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        //notes = journalService.GetNotes();
-        notes = new List<JournalEntryNoteDTO>()
-        {
-            new JournalEntryNoteDTO()
-            {
-                NoteContent = "jfkdlsflsdfl fklsædfkæsdfkæsdf fdkslflsdf",
-                DateAdded = DateTime.Now,
-                EmployeeFirstname = "Martin",
-                EmployeeLastname = "Henriksen",
-                EmployeeTypeName = "Reservelæge"
-            },
-            new JournalEntryNoteDTO()
-            {
-                NoteContent = "juyikuyivvs ferwte rtre gfredt ret fsdf erferg juyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erferg",
-                DateAdded = DateTime.Now,
-                EmployeeFirstname = "Susanne",
-                EmployeeLastname = "Ludvigsen",
-                EmployeeTypeName = "Sygeplejerske"
-            }
-        };
+        notes = await _jornalNoteService.GetAll(Id);
+        //notes = new List<JournalEntryNoteDTO>()
+        //{
+        //    new JournalEntryNoteDTO()
+        //    {
+        //        NoteContent = "jfkdlsflsdfl fklsædfkæsdfkæsdf fdkslflsdf",
+        //        DateAdded = DateTime.Now,
+        //        EmployeeFirstname = "Martin",
+        //        EmployeeLastname = "Henriksen",
+        //        EmployeeTypeName = "Reservelæge"
+        //    },
+        //    new JournalEntryNoteDTO()
+        //    {
+        //        NoteContent = "juyikuyivvs ferwte rtre gfredt ret fsdf erferg juyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erfergjuyikuyivvs ferwte rtre gfredt ret fsdf erferg",
+        //        DateAdded = DateTime.Now,
+        //        EmployeeFirstname = "Susanne",
+        //        EmployeeLastname = "Ludvigsen",
+        //        EmployeeTypeName = "Sygeplejerske"
+        //    }
+        //};
     }
 
-    void Change(object value, string name, string action)
+    void Change(object value)
     {
         //console.Log($"{name} item with index {value} {action}");
     }

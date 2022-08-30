@@ -17,6 +17,9 @@ builder.Services.AddScoped<IJournalService, JournalService>();
 builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ITreatmentService, TreatmentService>();
+builder.Services.AddScoped<ITreatmentPlaceService, TreatmentPlaceService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IJournalNoteService, JournalNoteService>();
 
 // Blazored.LocalStorage
 builder.Services.AddBlazoredLocalStorage();
