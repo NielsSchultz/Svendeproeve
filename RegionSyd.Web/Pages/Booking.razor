@@ -3,6 +3,8 @@
 @inject ITreatmentService _treatmentService
 @inject ITreatmentPlaceService _treatmentPlaceService
 @inject IBookingService _bookingService
+@inject IBedService _bedService
+@inject IRoomService _roomService
 
 <div class="container">
     <div class="row mb-4">
@@ -56,28 +58,19 @@
                     <div class="col-6">
                         <h6>Vælg dato</h6>
                         @*<RadzenDatePicker ShowTime="true" DateFormat="dd/MM/yyyy" TValue="DateTime?" DateRender=@DateRender Change=@(args => OnChange(args,"dd-MM-yyyy")) Class="w-100" />*@
-                   <input class="form-control" @bind="SelectedTreatmentDate" type="date">
-                        </div>
+                        <input class="form-control" @bind="SelectedTreatmentDate" type="date">
+                    </div>
                     @if (SelectedTreatmentDate.HasValue)
                     {
                         <div class="col-6 mx-auto">
-                           
-
-                
-           
-                                <h6>Vælg tid</h6>
-                                 <input class="form-control" @bind="@SelectedTreatmentTime" step="1800" type="time">
-                              @*<select class="form-control" @bind="@SelectedTreatmentTime">
-                                    <option disabled>Ledige tider</option>
-                                    @foreach (var time in SelectedTreatmentTimes)
-                                    {
-                                        <option value="@time">kl. @time.ToShortTimeString()</option>
-                                    }
-                                </select>*@
-                      
-
+                            <h6>Vælg tid</h6>
+                            <input class="form-control" @bind="@SelectedTreatmentTime" step="1800" type="time">
                         </div>
                     }
+                </div>
+                <div class="row">
+                    <div class="col-4">Skal patienten indlægges</div>
+                    <div class="col-2"><input class="form-control" type="checkbox" @bind="PatientToBed" /></div>
                 </div>
             </div>
 
@@ -99,6 +92,10 @@
     [SupplyParameterFromQuery]
     public string BookingId { get; set; }
 
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string PatientId { get; set; }
+
     DateTime? value = DateTime.Now;
 
     IEnumerable<DateTime> dates = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
@@ -106,6 +103,7 @@
     public List<TreatmentPlaceDTO> TreatmentPlaces { get; set; }
     public int SelectedTreatmentId;
     public int SelectedTreatmentPlaceId;
+    public bool PatientToBed;
     public DateTime? SelectedTreatmentDate;
     public DateTime? SelectedTreatmentTime;
     public List<DateTime> SelectedTreatmentTimes;
@@ -202,7 +200,7 @@
         if (SelectedTreatmentDate != null && SelectedTreatmentTime != null)
         {
             bookingDateTime = new DateTime
-            (SelectedTreatmentDate.Value.Day,
+            (SelectedTreatmentDate.Value.Year,
             SelectedTreatmentDate.Value.Month,
             SelectedTreatmentDate.Value.Day,
             SelectedTreatmentTime.Value.Hour,
@@ -218,14 +216,27 @@
         booking.TreatmentStart = bookingDateTime;
         booking.TreatmentEnd = bookingDateTime.AddMinutes(duration);
         booking.TreatmentDuration = duration;
-        booking.PatientId = CurrentUser.Id;  //TODO get currentUser
-        var result = _bookingService.Create(booking);
- 
-        //var tset = new List<BookingDTO>()
-        //{
-        //    new BookingDTO{BookingId=1, PatientId = 1, TreatmentDuration = 30, TreatmentStart = new DateTime(2022,08,30,11,00,00), TreatmentEnd = (start.AddMinutes(30)), TreatmentId = 1, TreatmentName = "Blodprøve", TreatmentPlaceId = 1, TreatmentPlaceName= "Sygehus" }
-        //};
+        if (CurrentUser.Usertype == UserTypes.Patient)
+        {
+            booking.PatientId = CurrentUser.Id;
+        }
+        else if (CurrentUser.Usertype == UserTypes.Employee)
+        {
+            booking.PatientId = int.Parse(PatientId);
 
+        }
+        if (PatientToBed == true)
+        {
+            AddPatientToBed();
+        }
+        var result = _bookingService.Create(booking);
+    }
+
+    public async Task AddPatientToBed()
+    {
+        var room = await _roomService.GetAll();
+        //TODO Get departmentId
+        //TODO get beds and make check on occupied
     }
 
     public async Task<CurrentUser> GetCurrentUserAsync()

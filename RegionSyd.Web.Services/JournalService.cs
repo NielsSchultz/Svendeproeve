@@ -44,6 +44,26 @@ namespace RegionSyd.Web.Services
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
+            var url = $"{httpClient.BaseAddress}{CONTROLLER}/{id}";
+
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}");
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                journal = JsonConvert.DeserializeObject<JournalDTO>(await content);
+            }
+
+            return journal;
+        } 
+        
+        public async Task<JournalDTO> GetByPatientId(int id)
+        {
+            JournalDTO journal = new JournalDTO();
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
             var url = $"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}";
 
             var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}/ByPatient/{id}");
@@ -101,7 +121,5 @@ namespace RegionSyd.Web.Services
 
             return message;
         }
-
-
     }
 }

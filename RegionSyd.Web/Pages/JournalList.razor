@@ -81,7 +81,7 @@
         var result = Journals.Where(journal => journal.Cpr == Cpr).FirstOrDefault();
         if (result != null)
         {
-            navigationManager.NavigateTo($"/journal? journalId={result.JournalId}");
+            navigationManager.NavigateTo($"/journal?journalId={result.JournalId}");
         }
         else
             Message = "Kan ikke finde en journal med dette cpr nummer";
