@@ -12,8 +12,8 @@ using RegionSyd.Repositories.Entities;
 namespace RegionSyd.Repositories.Migrations
 {
     [DbContext(typeof(RegionSydDBContext))]
-    [Migration("20220825135216_test")]
-    partial class test
+    [Migration("20220831132656_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -602,13 +602,13 @@ namespace RegionSyd.Repositories.Migrations
 
                     b.HasKey("JournalEntryId");
 
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("TreatmentPlaceId");
+                    b.HasIndex(new[] { "DepartmentId" }, "IX_JournalEntry_DepartmentID");
 
                     b.HasIndex(new[] { "JournalEntryStatusId" }, "IX_JournalEntry_JournalEntryStatusID");
 
                     b.HasIndex(new[] { "JournalId" }, "IX_JournalEntry_JournalID");
+
+                    b.HasIndex(new[] { "TreatmentPlaceId" }, "IX_JournalEntry_TreatmentPlaceID");
 
                     b.ToTable("JournalEntry", (string)null);
 
@@ -621,7 +621,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient klager over søvnbesvær",
                             JournalEntryStatusId = 1,
                             JournalId = 1,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(74),
+                            LastEdited = new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(2962),
                             TreatmentPlaceId = 2
                         },
                         new
@@ -632,7 +632,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient vil gerne vide om de har mangel på D vitamin",
                             JournalEntryStatusId = 1,
                             JournalId = 1,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(85),
+                            LastEdited = new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(2977),
                             TreatmentPlaceId = 2
                         },
                         new
@@ -643,7 +643,7 @@ namespace RegionSyd.Repositories.Migrations
                             Description = "Patient har svært ved at høre",
                             JournalEntryStatusId = 2,
                             JournalId = 2,
-                            LastEdited = new DateTime(2022, 8, 25, 13, 52, 15, 913, DateTimeKind.Utc).AddTicks(92),
+                            LastEdited = new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(3012),
                             TreatmentPlaceId = 1
                         });
                 });
@@ -698,6 +698,9 @@ namespace RegionSyd.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NoteId"), 1L, 1);
 
+                    b.Property<DateTime?>("DateAdded")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int")
                         .HasColumnName("EmployeeID");
@@ -708,6 +711,9 @@ namespace RegionSyd.Repositories.Migrations
                     b.Property<int>("JournalEntryId")
                         .HasColumnType("int")
                         .HasColumnName("JournalEntryID");
+
+                    b.Property<DateTime?>("LastEdited")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("NoteContent")
                         .IsRequired()
@@ -833,11 +839,17 @@ namespace RegionSyd.Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"), 1L, 1);
 
+                    b.Property<int?>("BedId")
+                        .HasColumnType("int")
+                        .HasColumnName("BedID");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int")
                         .HasColumnName("UserID");
 
                     b.HasKey("PatientId");
+
+                    b.HasIndex("BedId");
 
                     b.HasIndex(new[] { "UserId" }, "IX_Patient_UserID");
 
@@ -1460,7 +1472,7 @@ namespace RegionSyd.Repositories.Migrations
             modelBuilder.Entity("RegionSyd.Repositories.Entities.JournalEntry", b =>
                 {
                     b.HasOne("RegionSyd.Repositories.Entities.Department", "Department")
-                        .WithMany()
+                        .WithMany("JournalEntries")
                         .HasForeignKey("DepartmentId");
 
                     b.HasOne("RegionSyd.Repositories.Entities.JournalEntryStatus", "JournalEntryStatus")
@@ -1476,7 +1488,7 @@ namespace RegionSyd.Repositories.Migrations
                         .HasConstraintName("FK_JournalEntry_Journal");
 
                     b.HasOne("RegionSyd.Repositories.Entities.TreatmentPlace", "TreatmentPlace")
-                        .WithMany()
+                        .WithMany("JournalEntries")
                         .HasForeignKey("TreatmentPlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1548,11 +1560,18 @@ namespace RegionSyd.Repositories.Migrations
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Patient", b =>
                 {
+                    b.HasOne("RegionSyd.Repositories.Entities.Bed", "Bed")
+                        .WithMany("Patients")
+                        .HasForeignKey("BedId")
+                        .HasConstraintName("FK_Patient_Bed");
+
                     b.HasOne("RegionSyd.Repositories.Entities.User", "User")
                         .WithMany("Patients")
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Patient_User");
+
+                    b.Navigation("Bed");
 
                     b.Navigation("User");
                 });
@@ -1604,11 +1623,15 @@ namespace RegionSyd.Repositories.Migrations
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Bed", b =>
                 {
                     b.Navigation("Alarms");
+
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.Department", b =>
                 {
                     b.Navigation("Employees");
+
+                    b.Navigation("JournalEntries");
 
                     b.Navigation("Rooms");
 
@@ -1673,6 +1696,8 @@ namespace RegionSyd.Repositories.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Departments");
+
+                    b.Navigation("JournalEntries");
                 });
 
             modelBuilder.Entity("RegionSyd.Repositories.Entities.TreatmentPlaceType", b =>

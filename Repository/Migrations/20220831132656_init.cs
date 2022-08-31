@@ -144,24 +144,6 @@ namespace RegionSyd.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patient",
-                columns: table => new
-                {
-                    PatientID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patient", x => x.PatientID);
-                    table.ForeignKey(
-                        name: "FK_Patient_User",
-                        column: x => x.UserID,
-                        principalTable: "User",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Employee",
                 columns: table => new
                 {
@@ -231,6 +213,99 @@ namespace RegionSyd.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bed",
+                columns: table => new
+                {
+                    BedID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoomID = table.Column<int>(type: "int", nullable: true),
+                    IsOccupied = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bed", x => x.BedID);
+                    table.ForeignKey(
+                        name: "FK_Bed_Room",
+                        column: x => x.RoomID,
+                        principalTable: "Room",
+                        principalColumn: "RoomID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Alarm",
+                columns: table => new
+                {
+                    AlarmID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BedID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Alarm", x => x.AlarmID);
+                    table.ForeignKey(
+                        name: "FK_Alarm_Bed",
+                        column: x => x.BedID,
+                        principalTable: "Bed",
+                        principalColumn: "BedID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patient",
+                columns: table => new
+                {
+                    PatientID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    BedID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patient", x => x.PatientID);
+                    table.ForeignKey(
+                        name: "FK_Patient_Bed",
+                        column: x => x.BedID,
+                        principalTable: "Bed",
+                        principalColumn: "BedID");
+                    table.ForeignKey(
+                        name: "FK_Patient_User",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Booking",
+                columns: table => new
+                {
+                    BookingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: false),
+                    TreatmentPlaceID = table.Column<int>(type: "int", nullable: false),
+                    TreatmentID = table.Column<int>(type: "int", nullable: false),
+                    TreatmentStart = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TreatmentEnd = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Booking", x => x.BookingID);
+                    table.ForeignKey(
+                        name: "FK_Booking_Patient",
+                        column: x => x.PatientID,
+                        principalTable: "Patient",
+                        principalColumn: "PatientID");
+                    table.ForeignKey(
+                        name: "FK_Booking_Treatment",
+                        column: x => x.TreatmentID,
+                        principalTable: "Treatment",
+                        principalColumn: "TreatmentID");
+                    table.ForeignKey(
+                        name: "FK_Booking_TreatmentPlace",
+                        column: x => x.TreatmentPlaceID,
+                        principalTable: "TreatmentPlace",
+                        principalColumn: "TreatmentPlaceID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Journal",
                 columns: table => new
                 {
@@ -267,57 +342,6 @@ namespace RegionSyd.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bed",
-                columns: table => new
-                {
-                    BedID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoomID = table.Column<int>(type: "int", nullable: true),
-                    IsOccupied = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bed", x => x.BedID);
-                    table.ForeignKey(
-                        name: "FK_Bed_Room",
-                        column: x => x.RoomID,
-                        principalTable: "Room",
-                        principalColumn: "RoomID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Booking",
-                columns: table => new
-                {
-                    BookingID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientID = table.Column<int>(type: "int", nullable: false),
-                    TreatmentPlaceID = table.Column<int>(type: "int", nullable: false),
-                    TreatmentID = table.Column<int>(type: "int", nullable: false),
-                    TreatmentStart = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TreatmentEnd = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Booking", x => x.BookingID);
-                    table.ForeignKey(
-                        name: "FK_Booking_Patient",
-                        column: x => x.PatientID,
-                        principalTable: "Patient",
-                        principalColumn: "PatientID");
-                    table.ForeignKey(
-                        name: "FK_Booking_Treatment",
-                        column: x => x.TreatmentID,
-                        principalTable: "Treatment",
-                        principalColumn: "TreatmentID");
-                    table.ForeignKey(
-                        name: "FK_Booking_TreatmentPlace",
-                        column: x => x.TreatmentPlaceID,
-                        principalTable: "TreatmentPlace",
-                        principalColumn: "TreatmentPlaceID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "JournalEntry",
                 columns: table => new
                 {
@@ -336,6 +360,11 @@ namespace RegionSyd.Repositories.Migrations
                 {
                     table.PrimaryKey("PK_JournalEntry", x => x.JournalEntryID);
                     table.ForeignKey(
+                        name: "FK_JournalEntry_Department_DepartmentID",
+                        column: x => x.DepartmentID,
+                        principalTable: "Department",
+                        principalColumn: "DepartmentID");
+                    table.ForeignKey(
                         name: "FK_JournalEntry_Journal",
                         column: x => x.JournalID,
                         principalTable: "Journal",
@@ -345,24 +374,12 @@ namespace RegionSyd.Repositories.Migrations
                         column: x => x.JournalEntryStatusID,
                         principalTable: "JournalEntryStatus",
                         principalColumn: "JournalEntryStatusID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Alarm",
-                columns: table => new
-                {
-                    AlarmID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BedID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Alarm", x => x.AlarmID);
                     table.ForeignKey(
-                        name: "FK_Alarm_Bed",
-                        column: x => x.BedID,
-                        principalTable: "Bed",
-                        principalColumn: "BedID");
+                        name: "FK_JournalEntry_TreatmentPlace_TreatmentPlaceID",
+                        column: x => x.TreatmentPlaceID,
+                        principalTable: "TreatmentPlace",
+                        principalColumn: "TreatmentPlaceID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,7 +423,9 @@ namespace RegionSyd.Repositories.Migrations
                     JournalEntryID = table.Column<int>(type: "int", nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: false),
                     NoteContent = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime", nullable: true),
+                    LastEdited = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -509,11 +528,11 @@ namespace RegionSyd.Repositories.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patient",
-                columns: new[] { "PatientID", "UserID" },
+                columns: new[] { "PatientID", "BedID", "UserID" },
                 values: new object[,]
                 {
-                    { 1, 9 },
-                    { 2, 10 }
+                    { 1, null, 9 },
+                    { 2, null, 10 }
                 });
 
             migrationBuilder.InsertData(
@@ -621,22 +640,22 @@ namespace RegionSyd.Repositories.Migrations
                 columns: new[] { "JournalEntryID", "DateAdded", "DepartmentID", "Description", "Diagnosis", "JournalEntryStatusID", "JournalID", "LastEdited", "TreatmentPlaceID" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 7, 24, 13, 45, 0, 0, DateTimeKind.Unspecified), 2, "Patient klager over søvnbesvær", null, 1, 1, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6275), 2 },
-                    { 2, new DateTime(2017, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 4, "Patient vil gerne vide om de har mangel på D vitamin", null, 1, 1, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6285), 2 },
-                    { 3, new DateTime(2022, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 3, "Patient har svært ved at høre", null, 2, 2, new DateTime(2022, 8, 25, 13, 46, 46, 907, DateTimeKind.Utc).AddTicks(6363), 1 }
+                    { 1, new DateTime(2021, 7, 24, 13, 45, 0, 0, DateTimeKind.Unspecified), 2, "Patient klager over søvnbesvær", null, 1, 1, new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(2962), 2 },
+                    { 2, new DateTime(2017, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 4, "Patient vil gerne vide om de har mangel på D vitamin", null, 1, 1, new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(2977), 2 },
+                    { 3, new DateTime(2022, 2, 27, 8, 15, 0, 0, DateTimeKind.Unspecified), 3, "Patient har svært ved at høre", null, 2, 2, new DateTime(2022, 8, 31, 13, 26, 55, 904, DateTimeKind.Utc).AddTicks(3012), 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "JournalEntryNote",
-                columns: new[] { "NoteID", "EmployeeID", "IsApproved", "JournalEntryID", "NoteContent" },
+                columns: new[] { "NoteID", "DateAdded", "EmployeeID", "IsApproved", "JournalEntryID", "LastEdited", "NoteContent" },
                 values: new object[,]
                 {
-                    { 1, 2, false, 1, "har givet rådgivning om brug af mobiltelefoner før sengetid" },
-                    { 2, 2, false, 1, "patient mener de lider af søvnapnø, har givet CPAP-maskine med hjem til at måle det" },
-                    { 3, 2, false, 1, "CPAP-maskine viser ikke tegn på søvnapnø" },
-                    { 4, 4, false, 2, "Henvist patient til at få taget en blodprøve" },
-                    { 5, 4, false, 2, "Måling viser mangel på vitamin D, gevet rådgivning om tilskud" },
-                    { 6, 3, false, 3, "Udført undersøgelse af hørsel, anbefaler høreapparat" }
+                    { 1, null, 2, false, 1, null, "har givet rådgivning om brug af mobiltelefoner før sengetid" },
+                    { 2, null, 2, false, 1, null, "patient mener de lider af søvnapnø, har givet CPAP-maskine med hjem til at måle det" },
+                    { 3, null, 2, false, 1, null, "CPAP-maskine viser ikke tegn på søvnapnø" },
+                    { 4, null, 4, false, 2, null, "Henvist patient til at få taget en blodprøve" },
+                    { 5, null, 4, false, 2, null, "Måling viser mangel på vitamin D, gevet rådgivning om tilskud" },
+                    { 6, null, 3, false, 3, null, "Udført undersøgelse af hørsel, anbefaler høreapparat" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -690,6 +709,11 @@ namespace RegionSyd.Repositories.Migrations
                 column: "PatientID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JournalEntry_DepartmentID",
+                table: "JournalEntry",
+                column: "DepartmentID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JournalEntry_JournalEntryStatusID",
                 table: "JournalEntry",
                 column: "JournalEntryStatusID");
@@ -698,6 +722,11 @@ namespace RegionSyd.Repositories.Migrations
                 name: "IX_JournalEntry_JournalID",
                 table: "JournalEntry",
                 column: "JournalID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JournalEntry_TreatmentPlaceID",
+                table: "JournalEntry",
+                column: "TreatmentPlaceID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JournalEntryFile_EmployeeID",
@@ -728,6 +757,11 @@ namespace RegionSyd.Repositories.Migrations
                 name: "IX_Monitor_PatientID",
                 table: "Monitor",
                 column: "PatientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patient_BedID",
+                table: "Patient",
+                column: "BedID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patient_UserID",
@@ -779,9 +813,6 @@ namespace RegionSyd.Repositories.Migrations
                 name: "Monitor");
 
             migrationBuilder.DropTable(
-                name: "Bed");
-
-            migrationBuilder.DropTable(
                 name: "Treatment");
 
             migrationBuilder.DropTable(
@@ -794,9 +825,6 @@ namespace RegionSyd.Repositories.Migrations
                 name: "JournalEntry");
 
             migrationBuilder.DropTable(
-                name: "Room");
-
-            migrationBuilder.DropTable(
                 name: "EmployeeType");
 
             migrationBuilder.DropTable(
@@ -806,22 +834,28 @@ namespace RegionSyd.Repositories.Migrations
                 name: "JournalEntryStatus");
 
             migrationBuilder.DropTable(
-                name: "Department");
-
-            migrationBuilder.DropTable(
                 name: "Patient");
 
             migrationBuilder.DropTable(
-                name: "TreatmentPlace");
+                name: "Bed");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "TreatmentPlaceType");
+                name: "Room");
 
             migrationBuilder.DropTable(
                 name: "UserType");
+
+            migrationBuilder.DropTable(
+                name: "Department");
+
+            migrationBuilder.DropTable(
+                name: "TreatmentPlace");
+
+            migrationBuilder.DropTable(
+                name: "TreatmentPlaceType");
         }
     }
 }
