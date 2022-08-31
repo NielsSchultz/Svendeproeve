@@ -22,6 +22,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBedService, BedService>();
 builder.Services.AddScoped<IJournalNoteService, JournalNoteService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 // Blazored.LocalStorage
 builder.Services.AddBlazoredLocalStorage();
@@ -33,6 +34,8 @@ builder.Services.AddHttpClient("RegionSydApi", httpClient =>
     httpClient.BaseAddress = new Uri("https://localhost:7297/api/"); //For localhost API
 });
 
+
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

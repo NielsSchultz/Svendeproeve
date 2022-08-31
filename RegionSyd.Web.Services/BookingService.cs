@@ -76,9 +76,9 @@ namespace RegionSyd.Web.Services
         public async Task<BookingDTO> Create(BookingDTO bookingDTO)
         {
             var booking = new BookingDTO();
-            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}/TestTest", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
