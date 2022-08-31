@@ -100,8 +100,5 @@ namespace RegionSyd.Web.Services
 
             return message;
         }
-
-
     }
-}
 }
