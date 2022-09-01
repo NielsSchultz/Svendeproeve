@@ -1,9 +1,12 @@
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.IdentityModel.Tokens;
 using RegionSyd.Web.Data;
 using RegionSyd.Web.Services;
 using RegionSyd.Web.Services.Interfaces;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,21 @@ builder.Services.AddScoped<IBedService, BedService>();
 builder.Services.AddScoped<IJournalNoteService, JournalNoteService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+
+string domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = domain;
+        options.Audience = builder.Configuration["Auth0:Audience"];
+        // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+    });
 
 // Blazored.LocalStorage
 builder.Services.AddBlazoredLocalStorage();

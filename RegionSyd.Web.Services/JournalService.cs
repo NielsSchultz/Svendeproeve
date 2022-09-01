@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,10 +15,12 @@ namespace RegionSyd.Web.Services
     {
         private IHttpClientFactory _httpClientFactory;
         private const string CONTROLLER = "Journal";
+        public string AccessToken { get; set; }
 
         public JournalService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
+            AccessToken = TokenService.GetAccessToken().Result;
         }
 
         public async Task<List<JournalDTO>> GetAll()
@@ -26,6 +29,7 @@ namespace RegionSyd.Web.Services
 
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
             var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}");
 
             if (httpResponseMessage.IsSuccessStatusCode)
@@ -56,8 +60,8 @@ namespace RegionSyd.Web.Services
             }
 
             return journal;
-        } 
-        
+        }
+
         public async Task<JournalDTO> GetByPatientId(int id)
         {
             JournalDTO journal = new JournalDTO();
