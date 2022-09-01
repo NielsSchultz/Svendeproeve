@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public JournalEntryNoteController(IJournalEntryNoteService journalEntryNoteService)
         {
-            _journalEntryNoteService = journalEntryNoteService;
+            _journalEntryNoteService = journalEntryNoteService ?? throw new ArgumentNullException(nameof(journalEntryNoteService));
         }
         [HttpGet("ByJournalEntry/{id}")]
         public async Task<List<JournalEntryNoteDTO>> GetJournalEntryNotesForJournalEntry(int id)

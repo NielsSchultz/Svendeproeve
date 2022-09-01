@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public RoomController(IRoomService roomService)
         {
-            _roomService = roomService;
+            _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
         }
         [HttpPost]
         public async Task<RoomDTO> CreateRoom(RoomDTO roomDTO)

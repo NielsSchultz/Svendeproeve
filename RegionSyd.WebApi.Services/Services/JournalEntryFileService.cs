@@ -21,7 +21,7 @@ namespace RegionSyd.WebApi.Services.Services
         public JournalEntryFileService(IJournalEntryFileRepository journalEntryFileRepository, IMapper mapper)
         {
             _journalEntryFileRepository = journalEntryFileRepository ?? throw new ArgumentNullException(nameof(journalEntryFileRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<JournalEntryFileDTO> CreateJournalEntryFile(JournalEntryFileDTO journalEntryFileDTO)
         {

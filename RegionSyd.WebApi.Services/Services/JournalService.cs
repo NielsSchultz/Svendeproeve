@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public JournalService(IJournalRepository journalRepository, IMapper mapper)
         {
             _journalRepository = journalRepository ?? throw new ArgumentNullException(nameof(journalRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<List<JournalDTO>> GetJournals()
         {
