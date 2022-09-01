@@ -6,9 +6,13 @@
         {
             var fullName = string.Empty;
 
-            middlename = middlename != null ? middlename : "";
+            if (!string.IsNullOrEmpty(firstname) || !string.IsNullOrEmpty(lastname))
+            {
+                middlename = middlename != null ? middlename : "";
 
-            fullName = firstname + " " + middlename + " " + lastname;
+                fullName = firstname + " " + middlename + " " + lastname;
+            }
+
             return fullName;
         }
     }

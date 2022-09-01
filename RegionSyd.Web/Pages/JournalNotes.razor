@@ -2,6 +2,7 @@
 
 @using Common.DTOs
 @inject IJournalNoteService _jornalNoteService
+@inject IEmployeeService _employeeService
 
 @if (CurrentUser != null)
 {
@@ -11,21 +12,22 @@
             <div class="row">
                 <div class="col-8 mx-auto">
                     <h6>Ny note</h6>
-                    <textarea rows="6" style="width:100%" />
-                    <input type="button" class="btn btn-green" value="Opret note" />
+                    <textarea rows="6" @bind="NoteContent" style="width:100%" />
+                    <input type="button" class="btn btn-green" value="Opret note" @onclick="CreateNote" />
                 </div>
             </div>
         </div>
     }
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-8 mx-auto">
+            <h4>Noter</h4>
             @if (notes != null)
             {
                 <RadzenAccordion Multiple="true">
                     <Items>
-                        @foreach (var note in notes)
+                        @foreach (var note in notes.Where(n => n.IsApproved == true))
                         {
                             var enployeeName = Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname);
                             var noteTitle = $"{note.DateAdded} {enployeeName}, {note.EmployeeTypeName}";
@@ -46,6 +48,7 @@
     [Parameter]
     [SupplyParameterFromQuery]
     public int Id { get; set; }
+    public string NoteContent { get; set; }
     public CurrentUser CurrentUser { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -54,20 +57,37 @@
         notes = await _jornalNoteService.GetAll(Id);
     }
 
-    public void CreateNote(JournalEntryNoteDTO note)
+    public async void CreateNote()
     {
+        var note = new JournalEntryNoteDTO();
+
         note.DateAdded = DateTime.Now;
         note.EmployeeId = CurrentUser.Id;
+        note.NoteContent = NoteContent;
+        note.JournalEntryId = Id;
 
-        //@if () //TODO get employee name and type here // if læge = true
-        //{
-        //    note.IsApproved = true;
-        //}
-    }
+        var employee = await _employeeService.GetById(CurrentUser.Id);
 
-    void Change(object value)
-    {
-        //console.Log($"{name} item with index {value} {action}");
+        if (employee.EmployeeTypeId == (int)EmployeeTypes.Hospitals_Læge || employee.EmployeeTypeId == (int)EmployeeTypes.Praktiserende_Læge)
+        {
+            note.IsApproved = true;
+        } 
+        else if (employee.EmployeeTypeId == (int)EmployeeTypes.Sygeplejerske)
+        {
+            note.IsApproved = false;
+        }
+
+        var noteDto = await _jornalNoteService.Create(note);
+        if (noteDto != null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Note er oprettet");
+            navigationManager.NavigateTo("/soeg-journal");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
+        
     }
 
     public async Task<CurrentUser> GetCurrentUserAsync()

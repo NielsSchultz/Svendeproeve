@@ -62,7 +62,7 @@ namespace RegionSyd.WebApi.Controllers
         }
 
         // Delete booking
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<bool> DeleteBooking(int id)
         {
             return await _bookingService.DeleteBooking(id);

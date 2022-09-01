@@ -12,7 +12,7 @@
         public string? EmployeeTypeName { get; set; }
 
         //User
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string? EmployeeFirstname{ get; set; }
         public string? EmployeeMiddlename{ get; set; }
         public string? EmployeeLastname { get; set; }

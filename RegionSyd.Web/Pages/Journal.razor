@@ -11,7 +11,7 @@
 <div class="container-fluid w-75">
     @if (PatientJournal != null)
     {
-        @if (CurrentUser.Usertype == UserTypes.Employee) 
+        @if (CurrentUser.Usertype == UserTypes.Employee)
         {
             <div class="justify-content-end d-flex mb-2">
                 <input type="button" value="Tilføj ny journal data" @onclick="(args => AddEditEntry(0))" class="btn btn-green btm-sm" />
@@ -38,21 +38,30 @@
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
 
-                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Opret booking" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
-                    <Template Context="data">
-                        <RadzenButton Icon="event" Class="btn btn-green" Click=@(() => CreateBookingForPatient(PatientJournal.UserId)) /> @*Text="@data.JournalEntryId.ToString()"*@
-                    </Template>
-                </RadzenDataGridColumn> 
-                
+                @if (CurrentUser.Usertype == UserTypes.Employee)
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Book" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="data">
+                            <RadzenButton Icon="event" Class="btn btn-green" Click=@(() => CreateBookingForPatient(PatientJournal.UserId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="data">
-                        <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        @if (data.JournalEntryNotesCount < 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        {
+                            <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        }
                     </Template>
                 </RadzenDataGridColumn>
 
+
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="data">
-                        <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        @if (data.JournalEntryFilesCount < 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        {
+                            <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        }
                     </Template>
                 </RadzenDataGridColumn>
 
@@ -65,7 +74,7 @@
                         </Template>
                     </RadzenDataGridColumn>
                 }
-               @if (CurrentUser.Usertype == UserTypes.Employee)
+                @if (CurrentUser.Usertype == UserTypes.Employee)
                 {
                     <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                         <Template Context="journalEntry">
@@ -117,10 +126,10 @@
 
     public async Task CreateBookingForPatient(int id)
     {
-       
-        navigationManager.NavigateTo($"/booking?PatientId={ PatientJournal.PatientId}");
+
+        navigationManager.NavigateTo($"/booking?PatientId={PatientJournal.PatientId}");
     }
-    
+
     public async Task AddEditEntry(int id)
     {
         navigationManager.NavigateTo($"/journal/indlæg?Id={id}");
