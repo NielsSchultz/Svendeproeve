@@ -27,7 +27,8 @@ namespace RegionSyd.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<PatientDTO> GetPatient(int id)
         {
-            return await _patientService.GetPatient(id);
+            var test = await _patientService.GetPatient(id);
+            return test;
         }
         [HttpPut]
         public async Task<PatientDTO> UpdatePatient(PatientDTO patientDTO)

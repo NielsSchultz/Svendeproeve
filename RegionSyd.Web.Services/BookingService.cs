@@ -76,9 +76,9 @@ namespace RegionSyd.Web.Services
         public async Task<BookingDTO> Create(BookingDTO bookingDTO)
         {
             var booking = new BookingDTO();
-            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}/TestTest", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -95,7 +95,7 @@ namespace RegionSyd.Web.Services
             var booking = new BookingDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(bookingDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -113,9 +113,9 @@ namespace RegionSyd.Web.Services
 
             var httpResponseMessage = await httpClient.DeleteAsync($"{httpClient.BaseAddress}{CONTROLLER}/{id}");
 
-            var message = httpResponseMessage.IsSuccessStatusCode ? "Patient er slettet" : "Der er sket en fejl prøv igen senere";
+            var message = httpResponseMessage.IsSuccessStatusCode ? "Booking er slettet" : "Der er sket en fejl prøv igen senere";
 
-            return message;
+            return message; 
         }
     }
 }

@@ -24,6 +24,6 @@ namespace RegionSyd.WebApi.Services.Profiles
                 .ForMember(a => a.Phone, b => b.MapFrom(c => c.User.Phone))
                 .ForMember(a => a.Email, b => b.MapFrom(c => c.User.Email));
             CreateMap<PatientDTO, Patient>();
-        }        
+        }
     }
 }

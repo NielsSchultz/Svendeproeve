@@ -38,6 +38,12 @@
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
 
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Opret booking" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="data">
+                        <RadzenButton Icon="event" Class="btn btn-green" Click=@(() => CreateBookingForPatient(PatientJournal.UserId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                    </Template>
+                </RadzenDataGridColumn> 
+                
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="data">
                         <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@

@@ -51,6 +51,7 @@ namespace RegionSyd.Repositories
         {
             return await _context.Patients.Where(p => p.PatientId == id)
                 .Include(p => p.User)
+                .Include(p => p.Bed)
                 .FirstOrDefaultAsync();
         }
 

@@ -14,7 +14,7 @@ namespace RegionSyd.WebApi.Controllers
         {
             _bookingService = bookingService;
         }
-        [HttpPost("TestTest")]
+        [HttpPost]
         public async Task<BookingDTO> CreateBooking(BookingDTO newBooking)
         {
             return await _bookingService.CreateBooking(newBooking);
