@@ -23,6 +23,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBedService, BedService>();
 builder.Services.AddScoped<IJournalNoteService, JournalNoteService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 // Blazored.LocalStorage
 builder.Services.AddBlazoredLocalStorage();

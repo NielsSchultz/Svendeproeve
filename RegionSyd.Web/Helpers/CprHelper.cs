@@ -10,6 +10,7 @@
                 cpr = cpr + "XXXX";
                 return cpr;
             }
+            cpr = string.Empty;
             return cpr;
         }
     }
