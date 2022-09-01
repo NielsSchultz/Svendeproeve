@@ -2,6 +2,7 @@
 
 @using Common.DTOs
 @inject IJournalNoteService _jornalNoteService
+@inject IEmployeeService _employeeService
 
 @if (CurrentUser != null)
 {
@@ -25,7 +26,7 @@
             {
                 <RadzenAccordion Multiple="true">
                     <Items>
-                        @foreach (var note in notes)
+                        @foreach (var note in notes.Where(n => n.IsApproved == true))
                         {
                             var enployeeName = Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname);
                             var noteTitle = $"{note.DateAdded} {enployeeName}, {note.EmployeeTypeName}";
@@ -54,15 +55,22 @@
         notes = await _jornalNoteService.GetAll(Id);
     }
 
-    public void CreateNote(JournalEntryNoteDTO note)
+    public async void CreateNote(JournalEntryNoteDTO note)
     {
         note.DateAdded = DateTime.Now;
         note.EmployeeId = CurrentUser.Id;
 
-        //@if () //TODO get employee name and type here // if læge = true
-        //{
-        //    note.IsApproved = true;
-        //}
+
+        var employee = await _employeeService.GetById(CurrentUser.Id);
+
+        if (employee.EmployeeTypeId == (int)EmployeeTypes.Hospitals_Læge || employee.EmployeeTypeId == (int)EmployeeTypes.Praktiserende_Læge)
+        {
+            note.IsApproved = true;
+        } 
+        else if (employee.EmployeeTypeId == (int)EmployeeTypes.Sygeplejerske)
+        {
+            note.IsApproved = false;
+        }
     }
 
     void Change(object value)

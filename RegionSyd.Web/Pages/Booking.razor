@@ -69,10 +69,13 @@
                         </div>
                     }
                 </div>
+                @if (SelectedTreatmentTime.HasValue && CurrentUser.Usertype == UserTypes.Employee)
+                {
                 <div class="row" style="padding: 30px 5px 5px 5px">
                     <div class="col-4">Skal patienten indlægges</div>
                     <div class="col-2"><input type="checkbox" @bind="PatientToBed" /></div>
                 </div>
+                }
             </div>
         </div>
     }
@@ -128,40 +131,6 @@
         StateHasChanged();
     }
 
-    async void OnChange(DateTime? value, string format)
-    {
-        //console.Log($"{name} value changed to {value?.ToString(format)}");
-        //JsRuntime.InvokeVoidAsync("alert", $"{name} value changed to {value?.ToString(format)}"); // Alert
-
-        SelectedTreatmentDate = value;
-        SelectedTreatmentTimes = TreatmentTimeOfDayList();
-        StateHasChanged();
-    }
-
-    void DateRenderSpecial(DateRenderEventArgs args)
-    {
-        if (dates.Contains(args.Date))
-        {
-            args.Attributes.Add("style", "background-color: #ff6d41; border-color: white;");
-        }
-    }
-
-    void DateRender(DateRenderEventArgs args)
-    {
-        args.Disabled = args.Disabled || dates.Contains(args.Date);
-    }
-
-    void DateRenderNoWeekends(DateRenderEventArgs args)
-    {
-        args.Disabled = args.Disabled || args.Date.DayOfWeek == DayOfWeek.Sunday || args.Date.DayOfWeek == DayOfWeek.Saturday;
-    }
-
-    void OnTodayClick()
-    {
-        value = DateTime.Now;
-
-    }
-
     List<DateTime> TreatmentTimeOfDayList()
     {
         var date = DateTime.Now;
@@ -184,12 +153,6 @@
 
     void GetAllBookingsByDate(DateTime dateSelected)
     {
-        var start = new DateTime(2022, 08, 30, 11, 00, 00);
-        var tset = new List<BookingDTO>()
-        {
-            new BookingDTO{BookingId=1, PatientId = 1, TreatmentDuration = 30, TreatmentStart = new DateTime(2022,08,30,11,00,00), TreatmentEnd = (start.AddMinutes(30)), TreatmentId = 1, TreatmentName = "Blodprøve", TreatmentPlaceId = 1, TreatmentPlaceName= "Sygehus" }
-        };
-
         //_bookingService.GetAll(); TODO
     }
 
