@@ -43,7 +43,7 @@ namespace RegionSyd.Web.Services
             var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PostAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -59,7 +59,7 @@ namespace RegionSyd.Web.Services
             var user = new UserDTO();
             var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
 
-            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8));
+            var httpResponseMessage = await httpClient.PutAsync($"{httpClient.BaseAddress}{CONTROLLER}", new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8, "application/json"));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {

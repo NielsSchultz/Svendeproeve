@@ -6,6 +6,7 @@
 @inject IBedService _bedService
 @inject IRoomService _roomService
 @inject IDepartmentService _departmentService
+@inject IPatientService _patientService
 
 <div class="container">
     <div class="row mb-4">
@@ -25,7 +26,6 @@
             else
             {
                 <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
-
             }
         </div>
     </div>
@@ -234,20 +234,17 @@
 
     public async Task AddPatientToBed()
     {
-        //var departments = await _departmentService.GetDepartmentsForTreatmentPlace(SelectedTreatmentPlaceId);
+        var beds = await _bedService.GetAll();
 
-        //var rooms = await _roomService.GetAll();
+        var bedId = beds.Where(b => b.IsOccupied == false).Select(b => b.BedId).FirstOrDefault();
 
-        //var bedId = rooms.Select(r => r.Beds.Where(b => b.IsOccupied == false).Select(b => b.BedId)).Any();
-
-        //TODO get beds and make check on occupied
+        var patient = await _patientService.GetById(int.Parse(PatientId));
+        patient.BedId = bedId;
+        var message = await _patientService.Update(patient);
     }
 
     public async Task<CurrentUser> GetCurrentUserAsync()
     {
         return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
     }
-
-
-
 }
