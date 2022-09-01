@@ -18,7 +18,7 @@ namespace RegionSyd.WebApi.Services.Services
         public RoomService(IRoomRepository roomRepository, IMapper mapper)
         {
             _roomRepository = roomRepository ?? throw new ArgumentNullException(nameof(roomRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         // Create new Room
         public async Task<RoomDTO> CreateRoom(RoomDTO roomDTO)

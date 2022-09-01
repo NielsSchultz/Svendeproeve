@@ -14,7 +14,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public JournalEntryController(IJournalEntryService journalEntryService)
         {
-            _journalEntryService = journalEntryService;
+            _journalEntryService = journalEntryService ?? throw new ArgumentNullException(nameof(journalEntryService));
         }
         [HttpGet("ByPatient/{id}")]
         public async Task<List<JournalEntryDTO>> GetJournalEntriesForJournal(int id)

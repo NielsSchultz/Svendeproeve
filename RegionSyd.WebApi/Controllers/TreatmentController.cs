@@ -13,7 +13,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public TreatmentController(ITreatmentService treatmentService)
         {
-            _treatmentService = treatmentService;
+            _treatmentService = treatmentService ?? throw new ArgumentNullException(nameof(treatmentService));
         }
         [HttpGet]
         public async Task<List<TreatmentDTO>> GetAllTreatments()
