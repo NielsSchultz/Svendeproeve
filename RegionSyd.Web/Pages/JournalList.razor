@@ -2,30 +2,9 @@
 @inject IJournalService _journalService
 @inject IJournalNoteService _jornalNoteService
 
-
 <div class="container">
-    <div class="row">
-        <div class="col-6 mx-auto p-4" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
-            <div class="row">
-                <div class="col-2">Oprettet dato</div>
-                <div class="col-2"></div>
-            </div>
-            @foreach (var note in Notes)
-            {
-                <div class="row">
-                    <div class="col-2">@note.DateAdded</div>
-                    <div class="col-2">
-                        @Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname) @if (!string.IsNullOrEmpty(note.EmployeeTypeName))
-                        {
-                            @:,
-                            @note.EmployeeTypeName
-                        }
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-    <div class="row mb-4">
+
+    <div class="row mt-4 mb-4">
         <div class="col-6 mx-auto p-4" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
             <div class="row">
                 <div class="col-10">
@@ -70,6 +49,42 @@
 
         </div>
     </div>
+    @if (Notes != null)
+    {
+        <div class="row mt-4">
+            <div class="col-6 mx-auto p-5" style="border: 1px solid #E6ECEF; border-radius:4px;">
+                <h4>Noter til godkendelse</h4>
+                <div class="row p-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                    <div class="col-4">Oprettet dato</div>
+                    <div class="col-8">Medarbejder</div>
+                </div>
+                @foreach (var note in Notes)
+                {
+                    <div class="row mt-2 mb-2 p-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                        <div class="col-4">@note.DateAdded</div>
+                        <div class="col-4">
+                            @Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname) @if (!string.IsNullOrEmpty(note.EmployeeTypeName))
+                            {
+                                @:, @note.EmployeeTypeName
+                            }
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-10">
+                                @note.NoteContent
+                            </div>
+                            <div class="col-2">
+                                <input type="button" value="Godkend" class="btn btn-green" @onclick="() => ApproveNote(note)" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
 </div>
 
 @code {
@@ -82,12 +97,10 @@
     protected override async Task OnInitializedAsync()
     {
         Journals = await _journalService.GetAll();
-
-        Notes = new List<JournalEntryNoteDTO>();
-        //var notes = await _jornalNoteService.GetAll(); // TODO get notes where IsAproved == false;
+        Notes = await _jornalNoteService.GetJournalNotesForApproval();
         StateHasChanged();
     }
-    public void Search()
+    public async void Search()
     {
         var result = Journals.Where(journal => journal.Cpr == Cpr).FirstOrDefault();
         if (result != null)
@@ -95,7 +108,24 @@
             navigationManager.NavigateTo($"/journal?journalId={result.JournalId}");
         }
         else
-            Message = "Kan ikke finde en journal med dette cpr nummer";
+            await JsRuntime.InvokeVoidAsync("alert", "Kan ikke finde en journal med dette cpr nummer");
+
+    }
+
+    public async Task ApproveNote(JournalEntryNoteDTO note)
+    {
+        note.IsApproved = true;
+        var noteDto = await _jornalNoteService.Update(note);
+        if (noteDto != null)
+        {
+            Notes = await _jornalNoteService.GetJournalNotesForApproval();
+            StateHasChanged();
+            await JsRuntime.InvokeVoidAsync("alert", "Note er godkendt");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
     }
 
     public void AddEditJournal()

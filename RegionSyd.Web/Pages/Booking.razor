@@ -71,10 +71,10 @@
                 </div>
                 @if (SelectedTreatmentTime.HasValue && CurrentUser.Usertype == UserTypes.Employee)
                 {
-                <div class="row" style="padding: 30px 5px 5px 5px">
-                    <div class="col-4">Skal patienten indlægges</div>
-                    <div class="col-2"><input type="checkbox" @bind="PatientToBed" /></div>
-                </div>
+                    <div class="row" style="padding: 30px 5px 5px 5px">
+                        <div class="col-4">Skal patienten indlægges</div>
+                        <div class="col-2"><input type="checkbox" @bind="PatientToBed" /></div>
+                    </div>
                 }
             </div>
         </div>
@@ -117,7 +117,6 @@
         CurrentUser = await GetCurrentUserAsync();
         Treatments = await _treatmentService.GetAll();
         TreatmentPlaces = await _treatmentPlaceService.GetAll();
-        GetAllBookingsByDate(DateTime.Now);
 
         if (!string.IsNullOrEmpty(BookingId))
         {
@@ -131,33 +130,7 @@
         StateHasChanged();
     }
 
-    List<DateTime> TreatmentTimeOfDayList()
-    {
-        var date = DateTime.Now;
-        var starttime = new DateTime(date.Year, date.Month, date.Day, 10, 00, 00);
-        return new List<DateTime>()
-        {
-            starttime.AddMinutes(30),
-            starttime.AddHours(1),
-            starttime.AddHours(1).AddMinutes(30),
-            starttime.AddHours(2),
-            starttime.AddHours(2).AddMinutes(30),
-            starttime.AddHours(3),
-            starttime.AddHours(3).AddMinutes(30),
-            starttime.AddHours(4),
-            starttime.AddHours(4).AddMinutes(30),
-            starttime.AddHours(5),
-            starttime.AddHours(5).AddMinutes(30),
-        };
-    }
-
-    void GetAllBookingsByDate(DateTime dateSelected)
-    {
-        //_bookingService.GetAll(); TODO
-    }
-
-
-    void CreateBooking()
+    public async void CreateBooking()
     {
         var bookingDateTime = DateTime.Now;
         if (SelectedTreatmentDate != null && SelectedTreatmentTime != null)
@@ -192,7 +165,34 @@
         {
             AddPatientToBed();
         }
-        var result = _bookingService.Create(booking);
+
+        var bookingDTO = new BookingDTO();
+        if (!string.IsNullOrEmpty(BookingId))
+        {
+            booking.BookingId = int.Parse(BookingId);
+            bookingDTO = await _bookingService.Update(booking);
+        }
+        else
+        {
+            bookingDTO = await _bookingService.Create(booking);
+        }
+
+        if (bookingDTO != null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Booking er oprettet");
+            if (CurrentUser.Usertype == UserTypes.Employee)
+            {
+                navigationManager.NavigateTo("soeg-journal");
+            }
+            else if(CurrentUser.Usertype == UserTypes.Patient)
+            {
+                navigationManager.NavigateTo("mine-oplysninger");
+            }
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
     }
 
     public async Task AddPatientToBed()

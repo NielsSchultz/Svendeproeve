@@ -12,16 +12,17 @@
             <div class="row">
                 <div class="col-8 mx-auto">
                     <h6>Ny note</h6>
-                    <textarea rows="6" style="width:100%" />
-                    <input type="button" class="btn btn-green" value="Opret note" />
+                    <textarea rows="6" @bind="NoteContent" style="width:100%" />
+                    <input type="button" class="btn btn-green" value="Opret note" @onclick="CreateNote" />
                 </div>
             </div>
         </div>
     }
 }
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-8 mx-auto">
+            <h4>Noter</h4>
             @if (notes != null)
             {
                 <RadzenAccordion Multiple="true">
@@ -47,6 +48,7 @@
     [Parameter]
     [SupplyParameterFromQuery]
     public int Id { get; set; }
+    public string NoteContent { get; set; }
     public CurrentUser CurrentUser { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -55,11 +57,14 @@
         notes = await _jornalNoteService.GetAll(Id);
     }
 
-    public async void CreateNote(JournalEntryNoteDTO note)
+    public async void CreateNote()
     {
+        var note = new JournalEntryNoteDTO();
+
         note.DateAdded = DateTime.Now;
         note.EmployeeId = CurrentUser.Id;
-
+        note.NoteContent = NoteContent;
+        note.JournalEntryId = Id;
 
         var employee = await _employeeService.GetById(CurrentUser.Id);
 
@@ -71,11 +76,18 @@
         {
             note.IsApproved = false;
         }
-    }
 
-    void Change(object value)
-    {
-        //console.Log($"{name} item with index {value} {action}");
+        var noteDto = await _jornalNoteService.Create(note);
+        if (noteDto != null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Note er oprettet");
+            navigationManager.NavigateTo("/soeg-journal");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
+        
     }
 
     public async Task<CurrentUser> GetCurrentUserAsync()

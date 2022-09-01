@@ -6,7 +6,7 @@
         {
             var fullName = string.Empty;
 
-            if (string.IsNullOrEmpty(firstname) || string.IsNullOrEmpty(lastname))
+            if (!string.IsNullOrEmpty(firstname) || !string.IsNullOrEmpty(lastname))
             {
                 middlename = middlename != null ? middlename : "";
 

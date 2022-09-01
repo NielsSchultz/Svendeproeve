@@ -35,6 +35,25 @@ namespace RegionSyd.Web.Services
 
             return notes;
         }
+
+        public async Task<List<JournalEntryNoteDTO>> GetJournalNotesForApproval()
+        {
+            List<JournalEntryNoteDTO> notes = new List<JournalEntryNoteDTO>();
+
+            var httpClient = _httpClientFactory.CreateClient("RegionSydApi");
+
+            var httpResponseMessage = await httpClient.GetAsync($"{httpClient.BaseAddress}{CONTROLLER}");
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                using var content = httpResponseMessage.Content.ReadAsStringAsync();
+
+                notes = JsonConvert.DeserializeObject<List<JournalEntryNoteDTO>>(await content);
+            }
+
+            return notes;
+        }
+
         public async Task<JournalEntryNoteDTO> GetById(int id)
         {
             JournalEntryNoteDTO note = new JournalEntryNoteDTO();
