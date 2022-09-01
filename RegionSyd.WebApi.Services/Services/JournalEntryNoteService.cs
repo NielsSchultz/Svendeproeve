@@ -32,13 +32,19 @@ namespace RegionSyd.WebApi.Services.Services
             var journalEntryNote = await _journalEntryNoteRepository.GetJournalEntryNote(id);
             return _mapper.Map<JournalEntryNoteDTO>(journalEntryNote);
         }
+
+        public async Task<List<JournalEntryNoteDTO>> GetJournalEntryNotesAwaitingApproval()
+        {
+            var journalEntryNotes = await _journalEntryNoteRepository.GetJournalEntryNotesAwaitingApproval();
+            return _mapper.Map<List<JournalEntryNoteDTO>>(journalEntryNotes);
+        }
         public async Task<JournalEntryNoteDTO> CreateJournalEntryNote(JournalEntryNoteDTO journalEntryNoteDTO)
         {
             var journalEntryNote = _mapper.Map<JournalEntryNote>(journalEntryNoteDTO);
             var returnJournalEntryNote = await _journalEntryNoteRepository.CreateJournalEntryNote(journalEntryNote);
             return _mapper.Map<JournalEntryNoteDTO>(returnJournalEntryNote);
         }
-
+        
         public async Task<bool> DeleteJournalEntryNote(int id)
         {
             return await _journalEntryNoteRepository.DeleteJournalEntryNote(id);

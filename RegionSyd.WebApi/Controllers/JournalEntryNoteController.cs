@@ -24,6 +24,12 @@ namespace RegionSyd.WebApi.Controllers
         {
             return await _journalEntryNoteService.GetJournalEntryNote(id);
         }
+
+        [HttpGet]
+        public async Task<List<JournalEntryNoteDTO>> GetJournalEntryNotesAwaitingApproval()
+        {
+            return await _journalEntryNoteService.GetJournalEntryNotesAwaitingApproval();
+        }
         [HttpPost]
         public async Task<JournalEntryNoteDTO> CreateJournalEntryNote(JournalEntryNoteDTO journalEntryNoteDTO)
         {
