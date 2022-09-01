@@ -18,6 +18,8 @@ namespace RegionSyd.Repositories.Interfaces
         // Get journal entry by ID
         Task<JournalEntryNote> GetJournalEntryNote(int id);
 
+        // Get all journal entries waiting for approval
+        Task<List<JournalEntryNote>> GetJournalEntryNotesAwaitingApproval();
         // Update Journal Entry
         Task<JournalEntryNote> UpdateJournalEntryNote(JournalEntryNote newJournalEntryNote);
 

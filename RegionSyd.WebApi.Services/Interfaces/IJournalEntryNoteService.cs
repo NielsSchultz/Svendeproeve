@@ -1,4 +1,5 @@
 ﻿using RegionSyd.Common.DTOs;
+using RegionSyd.Repositories.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace RegionSyd.WebApi.Services.Interfaces
 
         // Get all JournalEntryNote
         Task<List<JournalEntryNoteDTO>> GetJournalEntryNotesForJournalEntry(int id);
+
+        // Get all JournalEntryNote waiting for approval
+        Task<List<JournalEntryNoteDTO>> GetJournalEntryNotesAwaitingApproval();
 
         // Get JournalEntryNote by ID
         Task<JournalEntryNoteDTO> GetJournalEntryNote(int id);

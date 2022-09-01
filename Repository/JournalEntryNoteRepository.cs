@@ -67,6 +67,17 @@ namespace RegionSyd.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<JournalEntryNote>> GetJournalEntryNotesAwaitingApproval()
+        {
+            return await _context.JournalEntryNotes
+                .Where(a => a.IsApproved == false)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.User)
+                .Include(j => j.Employee)
+                .ThenInclude(e => e.EmployeeType)
+                .ToListAsync();
+        }
+
         public async Task<List<JournalEntryNote>> GetJournalEntryNotesForJournalEntry(int id)
         {
             return await _context.JournalEntryNotes.Where(j => j.JournalEntryId == id)
