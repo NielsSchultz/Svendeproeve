@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public BookingController(IBookingService bookingService)
         {
-            _bookingService = bookingService;
+            _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
         }
         [HttpPost]
         public async Task<BookingDTO> CreateBooking(BookingDTO newBooking)

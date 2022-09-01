@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public BookingService(IBookingRepository bookingRepository, IMapper mapper)
         {
             _bookingRepository = bookingRepository ?? throw new ArgumentNullException(nameof(bookingRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<BookingDTO> CreateBooking(BookingDTO bookingDTO)
         {

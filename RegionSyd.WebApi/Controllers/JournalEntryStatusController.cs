@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public JournalEntryStatusController(IJournalEntryStatusService journalEntryStatusService)
         {
-            _journalEntryStatusService = journalEntryStatusService;
+            _journalEntryStatusService = journalEntryStatusService ?? throw new ArgumentNullException(nameof(journalEntryStatusService));
         }
         [HttpGet]
         public async Task<List<JournalEntryStatusDTO>> GetJournalEntryStatuses()
