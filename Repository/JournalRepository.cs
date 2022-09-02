@@ -55,6 +55,10 @@ namespace RegionSyd.Repositories
                 .ThenInclude(t => t.TreatmentPlace)
                 .Include(j => j.JournalEntries)
                 .ThenInclude(je => je.JournalEntryStatus)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryFiles)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryNotes)
                 .Include(j => j.Patient)
                 .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync();
@@ -70,6 +74,10 @@ namespace RegionSyd.Repositories
                 .ThenInclude(t => t.TreatmentPlace)
                 .Include(j => j.JournalEntries)
                 .ThenInclude(je => je.JournalEntryStatus)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryFiles)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryNotes)
                 .Include(j => j.Patient)
                 .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync();
@@ -83,6 +91,10 @@ namespace RegionSyd.Repositories
                 .ThenInclude(t => t.TreatmentPlace)
                 .Include(j => j.JournalEntries)
                 .ThenInclude(je => je.JournalEntryStatus)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryFiles)
+                .Include(j => j.JournalEntries)
+                .ThenInclude(je => je.JournalEntryNotes)
                 .Include(j => j.Patient)
                 .ThenInclude(p => p.User)
                 .ToListAsync();
