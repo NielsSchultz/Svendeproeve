@@ -48,7 +48,7 @@
                 }
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="data">
-                        @if (data.JournalEntryNotesCount < 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        @if (data.JournalEntryNotesCount > 0 || CurrentUser.Usertype == UserTypes.Employee)
                         {
                             <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
                         }
@@ -58,7 +58,7 @@
 
                 <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
                     <Template Context="data">
-                        @if (data.JournalEntryFilesCount < 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        @if (data.JournalEntryFilesCount > 0 || CurrentUser.Usertype == UserTypes.Employee)
                         {
                             <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
                         }
