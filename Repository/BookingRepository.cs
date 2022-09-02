@@ -87,8 +87,8 @@ namespace RegionSyd.Repositories
 
         public async Task<Booking> UpdateBooking(Booking newBooking)
         {
-            var booking = GetBookingById(newBooking.BookingId);
-            if(booking != null)
+            //var booking = GetBookingById(newBooking.BookingId);
+            if(newBooking != null)
             {
                 _context.Bookings.Update(newBooking);
                 await _context.SaveChangesAsync();
