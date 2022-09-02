@@ -1,0 +1,147 @@
+﻿@page "/journal"
+@using RegionSyd.Common.DTOs
+@using RegionSyd.Web.Helpers
+@using RegionSyd.Web.Models
+@using RegionSyd.Web.Services.Interfaces
+@using RegionSyd.Common.Constants
+@inject IJSRuntime JsRuntime
+@inject IJournalService _journalService
+@inject IJournalEntryService _journalEntryService
+
+<div class="container-fluid w-75">
+    @if (PatientJournal != null)
+    {
+        @if (CurrentUser.Usertype == UserTypes.Employee)
+        {
+            <div class="justify-content-end d-flex mb-2">
+                <input type="button" value="Tilføj ny journal data" @onclick="(args => AddEditEntry(0))" class="btn btn-green btm-sm" />
+            </div>
+        }
+
+        <div class="bg-light p-2">
+
+            <h4>Journal</h4>
+            @{
+                var name = FullNameHelper.GetFullName(PatientJournal.FirstName, PatientJournal.MiddleName, PatientJournal.LastName); //firstname + middlename + lastname;
+                                                                                                                                     //var cpr = PatientJournal.Cpr;
+                var cpr = CprHelper.HideLastDigits(PatientJournal.Cpr);
+            }
+            <h6>@name (@cpr)</h6>
+        </div>
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowSorting="true" FilterMode="FilterMode.Advanced" PageSize="10" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="@PatientJournal.JournalEntries" TItem="JournalEntryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="LastEdited" Title="Senest opdateret" Filterable="false" FormatString="{0:d}" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DateAdded" Title="Forløb startdato" Filterable="false" FormatString="{0:d}" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="StatusName" Title="Status" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="TreatmentPlaceName" Title="Sygehus" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="DepartmentName" Title="Afdeling" Filterable="false" Width="auto" />
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Property="Diagnosis" Title="Diagnose" Filterable="false" Width="auto" />
+
+                @if (CurrentUser.Usertype == UserTypes.Employee)
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Book" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="data">
+                            <RadzenButton Icon="event" Class="btn btn-green" Click=@(() => CreateBookingForPatient(PatientJournal.UserId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Filer" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="data">
+                        @if (data.JournalEntryNotesCount > 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        {
+                            <RadzenButton Icon="list" Class="btn btn-green" Click=@(() => OpenFilesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        }
+                    </Template>
+                </RadzenDataGridColumn>
+
+
+                <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Noter" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                    <Template Context="data">
+                        @if (data.JournalEntryFilesCount > 0 || CurrentUser.Usertype == UserTypes.Employee)
+                        {
+                            <RadzenButton Icon="assignment" Class="btn btn-green" Click=@(() => OpenNotesList(data.JournalEntryId)) /> @*Text="@data.JournalEntryId.ToString()"*@
+                        }
+                    </Template>
+                </RadzenDataGridColumn>
+
+                @if (CurrentUser.Usertype == UserTypes.Employee)
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Ændre" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="journalEntry">
+                            <RadzenButton Icon="edit" Class="btn btn-light" Click="@(args => AddEditEntry(journalEntry.JournalEntryId))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+                @if (CurrentUser.Usertype == UserTypes.Employee)
+                {
+                    <RadzenDataGridColumn TItem="JournalEntryDTO" Title="Slet" Context="JournalEntries" Filterable="false" Sortable="false" Width="60px" TextAlign="TextAlign.Left">
+                        <Template Context="journalEntry">
+                            <RadzenButton Icon="delete" Class="btn btn-danger" Click="@(args => DeleteEntry(journalEntry.JournalEntryId))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+                }
+            </Columns>
+        </RadzenDataGrid>
+    }
+    else
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
+</div>
+
+@code {
+    public JournalDTO PatientJournal { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int JournalId { get; set; }
+    public CurrentUser CurrentUser { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        CurrentUser = await GetCurrentUserAsync();
+        if (CurrentUser.Usertype == Common.Enums.UserTypes.Patient)
+        {
+            PatientJournal = await _journalService.GetByPatientId(CurrentUser.Id);
+        }
+        if (CurrentUser.Usertype == Common.Enums.UserTypes.Employee)
+        {
+            PatientJournal = await _journalService.GetById(JournalId);
+        }
+
+
+        StateHasChanged();
+    }
+
+    public async void OpenFilesList(int id)
+    {
+        navigationManager.NavigateTo($"/journal/filer?Id={id}");
+    }
+    public async void OpenNotesList(int id)
+    {
+        navigationManager.NavigateTo($"/journal/noter?Id={id}");
+    }
+
+    public async Task CreateBookingForPatient(int id)
+    {
+
+        navigationManager.NavigateTo($"/booking?PatientId={PatientJournal.PatientId}");
+    }
+
+    public async Task AddEditEntry(int id)
+    {
+        navigationManager.NavigateTo($"/journal/indlæg?Id={id}");
+    }
+
+    public async void DeleteEntry(int id)
+    {
+        var message = await _journalEntryService.Delete(id);
+    }
+
+    public async Task<CurrentUser> GetCurrentUserAsync()
+    {
+        return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
+    }
+}

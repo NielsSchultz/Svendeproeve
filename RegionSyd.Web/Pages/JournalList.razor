@@ -1,0 +1,147 @@
+﻿@page "/soeg-journal"
+@inject IJournalService _journalService
+@inject IJournalNoteService _jornalNoteService
+
+<div class="container">
+
+    <div class="row mt-4 mb-4">
+        <div class="col-6 mx-auto p-4" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+            <div class="row">
+                <div class="col-10">
+                    <input type="text" placeholder="Indtast cpr-nr" class="form-control" @bind="@Cpr" />
+                </div>
+                <div class="col-2">
+                    <input type="button" class="btn btn-green w-100" @onclick="Search" value="Søg"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 mx-auto" style="border: 1px solid #E6ECEF; border-radius:4px; padding:20px 40px">
+
+            <h4>Journaler</h4>
+            @if (Journals != null)
+            {
+                foreach (var journal in Journals)
+                {
+                    <div class="row p-2 mb-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                        <div class="col-lg-3"><span class="fw-bold">@journal.Cpr</span> </div>
+                        <div class="col-lg-6">
+                            <span>@(Helpers.FullNameHelper.GetFullName(journal.FirstName, journal.MiddleName, journal.LastName))</span>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input class="btn btn-outline-dark btn-sm w-100" type="button" value="Rediger" />
+                                </div>
+                                <div class="col-6">
+                                    <input class="btn btn-danger btn-sm w-100" type="button" value="Slet" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            }
+
+        </div>
+    </div>
+    @if (Notes != null)
+    {
+        <div class="row mt-4">
+            <div class="col-6 mx-auto p-5" style="border: 1px solid #E6ECEF; border-radius:4px;">
+                <h4>Noter til godkendelse</h4>
+                <div class="row p-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                    <div class="col-4">Oprettet dato</div>
+                    <div class="col-8">Medarbejder</div>
+                </div>
+                @foreach (var note in Notes)
+                {
+                    <div class="row mt-2 mb-2 p-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                        <div class="col-4">@note.DateAdded</div>
+                        <div class="col-4">
+                            @Helpers.FullNameHelper.GetFullName(note.EmployeeFirstname, note.EmployeeMiddlename, note.EmployeeLastname) @if (!string.IsNullOrEmpty(note.EmployeeTypeName))
+                            {
+                                @:, @note.EmployeeTypeName
+                            }
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-10">
+                                @note.NoteContent
+                            </div>
+                            <div class="col-2">
+                                <input type="button" value="Godkend" class="btn btn-green" @onclick="() => ApproveNote(note)" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    }
+</div>
+
+@code {
+
+    List<JournalDTO> Journals { get; set; }
+    List<JournalEntryNoteDTO> Notes { get; set; }
+    string Message { get; set; }
+    string Cpr { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Journals = await _journalService.GetAll();
+        Notes = await _jornalNoteService.GetJournalNotesForApproval();
+        StateHasChanged();
+    }
+    public async void Search()
+    {
+        var result = Journals.Where(journal => journal.Cpr == Cpr).FirstOrDefault();
+        if (result != null)
+        {
+            navigationManager.NavigateTo($"/journal?journalId={result.JournalId}");
+        }
+        else
+            await JsRuntime.InvokeVoidAsync("alert", "Kan ikke finde en journal med dette cpr nummer");
+
+    }
+
+    public async Task ApproveNote(JournalEntryNoteDTO note)
+    {
+        note.IsApproved = true;
+        var noteDto = await _jornalNoteService.Update(note);
+        if (noteDto != null)
+        {
+            Notes = await _jornalNoteService.GetJournalNotesForApproval();
+            StateHasChanged();
+            await JsRuntime.InvokeVoidAsync("alert", "Note er godkendt");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
+    }
+
+    public void AddEditJournal()
+    {
+
+    }
+
+    public void DeleteJournal()
+    {
+
+    }
+
+    public async Task<CurrentUser> GetCurrentUserAsync()
+    {
+        return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
+    }
+
+
+}

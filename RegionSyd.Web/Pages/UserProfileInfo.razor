@@ -1,0 +1,109 @@
+﻿@page "/mine-oplysninger"
+@inject IPatientService _PatientService
+@inject IBookingService _BookingService
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            @if (Patient != null)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">@Helpers.FullNameHelper.GetFullName(Patient.FirstName, Patient.MiddleName, Patient.LastName)</h5>
+                        <p>@Helpers.CprHelper.HideLastDigits(Patient.Cpr)</p>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" class="form-control mb-2" @bind="Patient.Address" disabled />
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="number" class="form-control mb-2" @bind="Patient.ZipCode" disabled />
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control mb-2" @bind="Patient.CityName" disabled />
+                            </div>
+                        </div>
+                        <input type="tel" class="form-control mb-2" @bind="Patient.Phone" />
+                        <input type="email" class="form-control" @bind="Patient.Email" />
+                    </div>
+                    <div class="card-footer">
+                        <input type="button" class="btn btn-green float-end m-1" value="Gem" />
+                        <input type="button" class="btn btn-outline-secondary float-end m-1" value="Annuller" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            }
+        </div>
+    </div>
+</div>
+
+@if (Bookings != null)
+{
+    <div class="container mt-5 p-2">
+        <div class="row">
+            <div class="col-8 mx-auto p-5" style="border: 1px solid #F7F7F7; border-radius: 4px">
+            <h4 class="pb-2">Mine undersøgelser</h4>
+                @foreach (var booking in Bookings.Where(b => b.TreatmentStart >= DateTime.Now).OrderBy(b => b.TreatmentStart))
+                {
+                    <div class="row p-2 mb-2" style="border: 1px solid #E6ECEF; border-radius:4px; background-color:#f3f3f3">
+                        <div class="col-lg-3"><span class="fw-bold">@booking.TreatmentStart</span> </div>
+                        <div class="col-lg-3">
+                            @booking.TreatmentName
+                        </div>
+                        <div class="col-lg-3">
+                            @booking.TreatmentPlaceName
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input class="btn btn-outline-dark btn-sm w-100" type="button" value="Rediger" @onclick="() => EditBooking(booking.BookingId)" />
+                                </div>
+                                <div class="col-6">
+                                    <input class="btn btn-danger btn-sm w-100" type="button" value="Slet" @onclick="() => DeleteBooking(booking.BookingId)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+}
+
+@code {
+    PatientDTO Patient { get; set; }
+    List<BookingDTO> Bookings { get; set; }
+    public CurrentUser CurrentUser { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        CurrentUser = await GetCurrentUserAsync(); //await Helpers.UserData.GetCurrentUser(SessionConstants.CurrentUser);
+        Patient = await _PatientService.GetById(CurrentUser.Id);
+        Bookings = await _BookingService.GetByPatientId(CurrentUser.Id);
+        StateHasChanged();
+    }
+
+    public void EditBooking(int bookingId)
+    {
+        navigationManager.NavigateTo($"/booking?BookingId={bookingId}");
+    }
+    public async void DeleteBooking(int bookingId)
+    {
+        var message = await _BookingService.Delete(bookingId);
+        Bookings = await _BookingService.GetByPatientId(CurrentUser.Id);
+        StateHasChanged();
+        await JsRuntime.InvokeVoidAsync("alert", $"{message}");
+    }
+     public async Task<CurrentUser> GetCurrentUserAsync()
+    {
+        return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
+    }
+}

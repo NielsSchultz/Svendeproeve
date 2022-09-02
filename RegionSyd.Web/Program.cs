@@ -1,14 +1,42 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using RegionSyd.Web.Data;
+using RegionSyd.Web.Services;
+using RegionSyd.Web.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 
+// Services
+builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<IJournalService, JournalService>();
+builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<ITreatmentService, TreatmentService>();
+builder.Services.AddScoped<ITreatmentPlaceService, TreatmentPlaceService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IBedService, BedService>();
+builder.Services.AddScoped<IJournalNoteService, JournalNoteService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+// Blazored.LocalStorage
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
+
+//HttpClient
+builder.Services.AddHttpClient("RegionSydApi", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("https://localhost:7297/api/"); //For localhost API
+});
+
+
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

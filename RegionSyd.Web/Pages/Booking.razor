@@ -1,0 +1,213 @@
+﻿@page "/booking"
+@inject IJSRuntime JsRuntime
+@inject ITreatmentService _treatmentService
+@inject ITreatmentPlaceService _treatmentPlaceService
+@inject IBookingService _bookingService
+@inject IBedService _bedService
+@inject IRoomService _roomService
+@inject IDepartmentService _departmentService
+@inject IPatientService _patientService
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-6 mx-auto">
+            @if (Treatments != null)
+            {
+                <h6>Vælg undersøgelse</h6>
+                <select @bind="SelectedTreatmentId" class="form-control">
+                    <option disabled>Vælg undersøgelse</option>
+                    @foreach (var treatment in Treatments)
+                    {
+                        <option value="@treatment.TreatmentId">@treatment.TreatmentName</option>
+                    }
+
+                </select>
+            }
+            else
+            {
+                <RadzenProgressBar ProgressBarStyle="ProgressBarStyle.Success" class="w-50 mx-auto mt-5" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            }
+        </div>
+    </div>
+
+    @if (SelectedTreatmentId > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-6 mx-auto">
+                @if (TreatmentPlaces != null)
+                {
+
+                    <h6>Vælg sted</h6>
+                    <select class="form-control" @bind="@SelectedTreatmentPlaceId">
+                        <option disabled>Vælg sted</option>
+                        @foreach (var treatmentPlace in TreatmentPlaces)
+                        {
+                            <option value="@treatmentPlace.TreatmentPlaceId">@treatmentPlace.TreatmentPlaceName</option>
+                        }
+                    </select>
+                }
+            </div>
+        </div>
+    }
+
+    @if (SelectedTreatmentPlaceId > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-6 m-auto d-table">
+                <div class="row">
+
+                    <div class="col-6">
+                        <h6>Vælg dato</h6>
+                        @*<RadzenDatePicker ShowTime="true" DateFormat="dd/MM/yyyy" TValue="DateTime?" DateRender=@DateRender Change=@(args => OnChange(args,"dd-MM-yyyy")) Class="w-100" />*@
+                        <input class="form-control" @bind="SelectedTreatmentDate" type="date">
+                    </div>
+                    @if (SelectedTreatmentDate.HasValue)
+                    {
+                        <div class="col-6 mx-auto">
+                            <h6>Vælg tid</h6>
+                            <input class="form-control" @bind="@SelectedTreatmentTime" step="1800" type="time">
+                        </div>
+                    }
+                </div>
+                @if (SelectedTreatmentTime.HasValue && CurrentUser.Usertype == UserTypes.Employee)
+                {
+                    <div class="row" style="padding: 30px 5px 5px 5px">
+                        <div class="col-4">Skal patienten indlægges</div>
+                        <div class="col-2"><input type="checkbox" @bind="PatientToBed" /></div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    @if (SelectedTreatmentTime.HasValue)
+    {
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <input type="button" class="btn btn-green" style="width:125px" value="Book" @onclick="CreateBooking" />
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string BookingId { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string PatientId { get; set; }
+
+    DateTime? value = DateTime.Now;
+
+    IEnumerable<DateTime> dates = new DateTime[] { DateTime.Today.AddDays(-1), DateTime.Today.AddDays(1) };
+    public List<TreatmentDTO> Treatments { get; set; }
+    public List<TreatmentPlaceDTO> TreatmentPlaces { get; set; }
+    public int SelectedTreatmentId;
+    public int SelectedTreatmentPlaceId;
+    public bool PatientToBed;
+    public DateTime? SelectedTreatmentDate;
+    public DateTime? SelectedTreatmentTime;
+    public List<DateTime> SelectedTreatmentTimes;
+    public CurrentUser CurrentUser { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = await GetCurrentUserAsync();
+        Treatments = await _treatmentService.GetAll();
+        TreatmentPlaces = await _treatmentPlaceService.GetAll();
+
+        if (!string.IsNullOrEmpty(BookingId))
+        {
+            BookingDTO booking = await _bookingService.GetById(int.Parse(BookingId));
+            SelectedTreatmentId = booking.TreatmentId;
+            SelectedTreatmentPlaceId = booking.TreatmentPlaceId;
+            SelectedTreatmentDate = booking.TreatmentStart;
+            SelectedTreatmentTime = booking.TreatmentStart;
+        }
+
+        StateHasChanged();
+    }
+
+    public async void CreateBooking()
+    {
+        var bookingDateTime = DateTime.Now;
+        if (SelectedTreatmentDate != null && SelectedTreatmentTime != null)
+        {
+            bookingDateTime = new DateTime
+            (SelectedTreatmentDate.Value.Year,
+            SelectedTreatmentDate.Value.Month,
+            SelectedTreatmentDate.Value.Day,
+            SelectedTreatmentTime.Value.Hour,
+            SelectedTreatmentTime.Value.Minute,
+            SelectedTreatmentTime.Value.Second);
+        }
+
+        var duration = 30;
+
+        var booking = new BookingDTO();
+        booking.TreatmentId = SelectedTreatmentId;
+        booking.TreatmentPlaceId = SelectedTreatmentPlaceId;
+        booking.TreatmentStart = bookingDateTime;
+        booking.TreatmentEnd = bookingDateTime.AddMinutes(duration);
+        booking.TreatmentDuration = duration;
+        if (CurrentUser.Usertype == UserTypes.Patient)
+        {
+            booking.PatientId = CurrentUser.Id;
+        }
+        else if (CurrentUser.Usertype == UserTypes.Employee)
+        {
+            booking.PatientId = int.Parse(PatientId);
+
+        }
+        if (PatientToBed == true)
+        {
+            AddPatientToBed();
+        }
+
+        var bookingDTO = new BookingDTO();
+        if (!string.IsNullOrEmpty(BookingId))
+        {
+            booking.BookingId = int.Parse(BookingId);
+            bookingDTO = await _bookingService.Update(booking);
+        }
+        else
+        {
+            bookingDTO = await _bookingService.Create(booking);
+        }
+
+        if (bookingDTO != null)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Booking er oprettet");
+            if (CurrentUser.Usertype == UserTypes.Employee)
+            {
+                navigationManager.NavigateTo("soeg-journal");
+            }
+            else if(CurrentUser.Usertype == UserTypes.Patient)
+            {
+                navigationManager.NavigateTo("mine-oplysninger");
+            }
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Der er sket en fejl");
+        }
+    }
+
+    public async Task AddPatientToBed()
+    {
+        var beds = await _bedService.GetAll();
+
+        var bedId = beds.Where(b => b.IsOccupied == false).Select(b => b.BedId).FirstOrDefault();
+
+        var patient = await _patientService.GetById(int.Parse(PatientId));
+        patient.BedId = bedId;
+        var message = await _patientService.Update(patient);
+    }
+
+    public async Task<CurrentUser> GetCurrentUserAsync()
+    {
+        return await localStorage.GetItemAsync<CurrentUser>(SessionConstants.CurrentUser);
+    }
+}

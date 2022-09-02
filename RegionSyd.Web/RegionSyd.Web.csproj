@@ -6,4 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Modals\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+    <PackageReference Include="Radzen.Blazor" Version="3.20.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RegionSyd.Common\RegionSyd.Common.csproj" />
+    <ProjectReference Include="..\RegionSyd.Web.Services\RegionSyd.Web.Services.csproj" />
+  </ItemGroup>
+
 </Project>
