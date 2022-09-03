@@ -1,0 +1,73 @@
+﻿@page "/"
+@using Grpc.Net.Client
+@using Grpc.Net.Client.Web
+@using Protos;
+
+<div class="container pt-5">
+    <div class="row">
+        <h4 class="text-center">Sengeafsnit 4</h4>
+        <h4 class="text-center">Stue 2</h4>
+    </div>
+    <div class="row pt-5">
+        
+            @foreach (var bed in patientResponse.Telemetrics)
+            {
+                <div class="col-3">
+                    @if (bed.Alert == true)
+                    {
+                        Blink = "blink";
+                    }
+                    else
+                    {
+                        Blink = string.Empty;
+                    }
+                    <div class="@Blink blink-box">
+                        <h4 class="text-center m-0 p-5">Seng @bed.Bed</h4>
+                    </div>
+                </div>
+            }
+        
+    </div>
+</div>
+
+
+
+@code {
+    string Blink { get; set; }
+    List<BedAlert> BedAlerts { get; set; }
+    string serveraddress = "https://localhost:7143/";
+    private TelemetricResponse patientResponse = new();
+
+    protected async override void OnInitialized()
+    {
+        GetBedAlerts();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public class BedAlert
+    {
+        public string BedName { get; set; }
+        public bool Alert { get; set; }
+    }
+
+    protected async Task GetBedAlerts()
+    {
+        
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        while (true)
+        {
+
+            patientResponse = await client.RequestTelemetricsAsync(
+                              new Protos.DepartmentNumber {  Departmentnumber = 1 });
+            
+            StateHasChanged();
+            await Task.Delay(1000);
+
+        }
+    }
+}
+

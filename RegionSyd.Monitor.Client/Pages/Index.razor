@@ -1,0 +1,150 @@
+﻿@using Protos;
+@using Grpc.Net.Client;
+@page "/"
+
+<PageTitle>Index</PageTitle>
+@if (!isStarted1)
+{
+    <div>
+        <label>Indtast Sengenummer:</label>
+        <input placeholder="Indtast Sengenummer" class="form-control" @bind-value="cpr" />
+        <button class="btn btn-primary align-content-center float-center" @onclick="@(g => OnClick_EnterCpr())">Ok</button>
+    </div>
+}
+else
+{
+    <h1>@message</h1>
+
+    @if (!help)
+    {
+        <button class="btn btn-primary align-content-center float-center" @onclick="@(g => OnClick_AskForHelp())">Hjælp</button>
+    }
+    else{
+        <button class="btn btn-primary align-content-center float-center" @onclick="@(g => OnClick_StopAskForHelp())">Hjælp er ankommet</button>
+    }
+
+    <br />
+    @if (!isStarted)
+    {
+        <button class="btn btn-primary align-content-center float-center" @onclick="@(g => OnClick_StartSendInfo())">Start Monitorering</button>
+    }
+    else
+    {
+        <button class="btn btn-primary align-content-center float-center" @onclick="@(g => OnClick_StopSendInfo())">Stop Monitorering</button>
+        <h4>Din puls er: @heartRate</h4>
+        alert = false;
+    }
+    <br />
+    
+}
+
+
+@code {
+    public string message = "";
+    public bool alert;
+    public string cpr = "";
+    public string cpre = "";
+    public bool isStarted = false;
+    public bool isStarted1 = false;
+    public int heartRate = new();
+    public bool help;
+    public Random rnd = new();
+    private Response helpResponse = new();
+    private IsNominalResponse heartRateResponse = new();
+    string serveraddress = "https://localhost:7143/";
+    protected async Task OnClick_AskForHelp()
+    {
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        helpResponse = await client.AskForHelpAsync(
+                          new Protos.HelpRequest { Bednumber = cpr });
+
+        if (helpResponse.Received)
+        {
+            help = true;
+            message = "Personalet har modtaget din anmodning om hjælp og er på vej!";
+        }
+    }
+    protected async Task OnClick_StartSendInfo()
+    {
+        isStarted = true;
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        while (isStarted)
+        {
+
+            heartRateResponse = await client.SendInfoAsync(
+                              new Protos.HeartRate { Bednumber = cpr, Heartrate = await GetHeartRate() });
+            if (!heartRateResponse.IsNominal)
+            {
+                message = "Din puls er udenfor de normale værdier, personalet er undervejs!";
+                alert = true;
+                StateHasChanged();
+                break;
+            }
+            StateHasChanged();
+            await Task.Delay(2000);
+
+        }
+
+    }
+
+    protected async void OnClick_StopAskForHelp()
+    {
+        message = "";
+        help = false;
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        var received = await client.StopAskForHelpAsync(
+                          new Protos.HelpRequest { Bednumber = cpr });
+        StateHasChanged();
+
+    }
+
+    protected async void OnClick_EnterCpr()
+    {
+        isStarted1 = true;
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        helpResponse = await client.AddBedAsync(
+                          new Protos.HelpRequest { Bednumber = cpr });
+        StateHasChanged();
+    }
+
+    protected async void OnClick_StopSendInfo()
+    {
+        message = "";
+        isStarted = false;
+        using var channel = GrpcChannel.ForAddress(serveraddress, new GrpcChannelOptions
+            {
+                HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+            });
+        var client = new Protos.Patient.PatientClient(channel);
+        var received = await client.StopAskForHelpAsync(
+                          new Protos.HelpRequest { Bednumber = cpr });
+        StateHasChanged();
+
+    }
+    protected async Task<int> GetHeartRate()
+    {
+
+        await Task.Run(() =>
+        {
+            heartRate = rnd.Next(58, 142);
+        });
+        return heartRate;
+    }
+
+}
