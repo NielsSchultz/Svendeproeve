@@ -1,0 +1,41 @@
+syntax = "proto3";
+option csharp_namespace = "Protos";
+package patient;
+// The patient service definition.
+service Patient {
+  rpc SendInfo (HeartRate) returns (IsNominalResponse);
+  rpc AskForHelp (HelpRequest) returns (Response);
+  rpc StopAskForHelp (HelpRequest) returns (Response);
+  rpc AddBed (HelpRequest) returns (Response);
+  rpc RequestTelemetrics (DepartmentNumber) returns (TelemetricResponse);
+}
+// The request message containing the user's bednumber and heartrate.
+message HeartRate {
+  string bednumber = 1;
+  int32 heartrate = 2;
+}
+// The request message containing the user's bednumber who is asking for assistance.
+message HelpRequest {
+	string bednumber = 1;
+}
+// The response message containing the either confirming the message is received.
+message Response {
+  bool received = 1;
+}
+// The request message containing the departmentnumber that you wish to monitor.
+message DepartmentNumber {
+  int32 departmentnumber = 1;
+}
+//The response message containing a collection of telemetrics.
+message TelemetricResponse{
+	repeated Telemetrics telemetrics = 1;
+}
+// The class containing infomation for the telemetrics response
+message Telemetrics {
+  string bed = 1;
+  bool alert = 2;
+}
+// The response message containing confirmation of whether heartrate is within normal parameters.
+message IsNominalResponse {
+  bool isNominal = 1;
+}
