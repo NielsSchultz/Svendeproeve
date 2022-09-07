@@ -13,7 +13,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public EmployeeController(IEmployeeService employeeService)
         {
-            _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
+            _employeeService = employeeService;
         }
         [HttpGet]
         public async Task<List<EmployeeDTO>> GetEmployees()

@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public DepartmentService(IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper;
         }
         public async Task<DepartmentDTO> CreateDepartment(DepartmentDTO departmentDTO)
         {

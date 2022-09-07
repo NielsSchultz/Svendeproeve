@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper;
         }
         public async Task<EmployeeDTO> CreateEmployee(EmployeeDTO employeeDTO)
         {

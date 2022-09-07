@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RegionSyd.Common.DTOs;
 using RegionSyd.WebApi.Services.Interfaces;
 
@@ -13,12 +12,12 @@ namespace RegionSyd.WebApi.Controllers
 
         public BedController(IBedService bedService)
         {
-            _bedService = bedService ?? throw new ArgumentNullException(nameof(bedService));
+            _bedService = bedService;
         }
         [HttpGet]
         public async Task<List<BedDTO>> GetAllBeds()
         {
-            return await _bedService.GetBeds();            
+            return await _bedService.GetBeds();
         }
         [HttpGet("{id}")]
         public async Task<BedDTO> GetBed(int id)

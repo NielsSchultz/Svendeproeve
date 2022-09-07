@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper;
         }
         public async Task<UserDTO> CreateUser(UserDTO userDTO)
         {

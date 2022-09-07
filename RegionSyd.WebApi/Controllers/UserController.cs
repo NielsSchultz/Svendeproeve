@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public UserController(IUserService userService)
         {
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userService = userService;
         }
         [HttpGet]
         public async Task<List<UserDTO>> GetUsers()

@@ -13,7 +13,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public JournalEntryFileController(IJournalEntryFileService journalEntryFileService)
         {
-            _journalEntryFileService = journalEntryFileService ?? throw new ArgumentNullException(nameof(journalEntryFileService));
+            _journalEntryFileService = journalEntryFileService;
         }
         [HttpPost]
         public async Task<JournalEntryFileDTO> CreateJournalEntryFile(JournalEntryFileDTO journalEntryFileDTO)

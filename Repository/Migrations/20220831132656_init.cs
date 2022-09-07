@@ -442,7 +442,6 @@ namespace RegionSyd.Repositories.Migrations
                         principalColumn: "JournalEntryID");
                 });
 
-<<<<<<<< HEAD:Repository/Migrations/20220831132656_init.cs
             migrationBuilder.InsertData(
                 table: "EmployeeType",
                 columns: new[] { "EmployeeTypeID", "EmployeeTypeName" },
@@ -659,8 +658,6 @@ namespace RegionSyd.Repositories.Migrations
                     { 6, null, 3, false, 3, null, "Udført undersøgelse af hørsel, anbefaler høreapparat" }
                 });
 
-========
->>>>>>>> a007813b31e8dae10949e5aabdde0549a615d438:Repository/Migrations/20220831130721_init.cs
             migrationBuilder.CreateIndex(
                 name: "IX_Alarm_BedID",
                 table: "Alarm",

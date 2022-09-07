@@ -18,7 +18,7 @@ namespace RegionSyd.WebApi.Services.Services
         public PatientService(IPatientRepository patientRepository, IMapper mapper)
         {
             _patientRepository = patientRepository ?? throw new ArgumentNullException(nameof(patientRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper;
         }
         // Create new Patient
         public async Task<PatientDTO> CreatePatient(PatientDTO patientDTO)

@@ -13,7 +13,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public DepartmentController(IDepartmentService departmentService)
         {
-            _departmentService = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
+            _departmentService = departmentService;
         }
         [HttpGet]
         public async Task<List<DepartmentDTO>> GetAllDepartments()

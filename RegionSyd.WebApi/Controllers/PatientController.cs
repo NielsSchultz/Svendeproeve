@@ -12,7 +12,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public PatientController(IPatientService patientService)
         {
-            _patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
+            _patientService = patientService;
         }
         [HttpPost]
         public async Task<PatientDTO> CreatePatient(PatientDTO patientDTO)
