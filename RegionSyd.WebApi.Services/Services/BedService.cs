@@ -19,7 +19,7 @@ namespace RegionSyd.WebApi.Services.Services
         public BedService(IBedRepository bedRepository, IMapper mapper)
         {
             _bedRepository = bedRepository ?? throw new ArgumentNullException(nameof(bedRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<List<BedDTO>> GetBeds()
         {

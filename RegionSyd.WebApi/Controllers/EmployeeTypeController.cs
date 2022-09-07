@@ -14,7 +14,7 @@ namespace RegionSyd.WebApi.Controllers
 
         public EmployeeTypeController(IEmployeeTypeService employeeTypeService)
         {
-            _employeeTypeService = employeeTypeService;
+            _employeeTypeService = employeeTypeService ?? throw new ArgumentNullException(nameof(employeeTypeService));
         }
         [HttpGet]
         public async Task<List<EmployeeTypeDTO>> GetEmployeeTypes()

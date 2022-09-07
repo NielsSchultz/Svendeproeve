@@ -20,7 +20,7 @@ namespace RegionSyd.WebApi.Services.Services
         public TreatmentPlaceService(ITreatmentPlaceRepository treatmentPlaceRepository, IMapper mapper)
         {
             _treatmentPlaceRepository = treatmentPlaceRepository ?? throw new ArgumentNullException(nameof(treatmentPlaceRepository));
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<TreatmentPlaceDTO> CreateTreatmentPlace(TreatmentPlaceDTO treatmentPlaceDTO)
         {
